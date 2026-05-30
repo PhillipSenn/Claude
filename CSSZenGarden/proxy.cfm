@@ -2,7 +2,7 @@
 // proxy.cfm — Anthropic API proxy
 // Keep this file on your server. Never expose your API key in frontend code.
 
-apiKey = "YOUR_ANTHROPIC_API_KEY_HERE"
+include '/Passwords/Anthropic.cfm'
 apiUrl = "https://api.anthropic.com/v1/messages"
 
 // Only allow POST requests
