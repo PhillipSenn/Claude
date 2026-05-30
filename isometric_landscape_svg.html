@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isometric Landscape — SVG</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #c8e6f5; font-family: sans-serif; }
+
+  #iso-wrap {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+  }
+
+  #iso-wrap svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #controls {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #controls button {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: white;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #hint {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    font-size: 12px;
+    color: #555;
+    background: rgba(255,255,255,0.75);
+    padding: 4px 8px;
+    border-radius: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div id="iso-wrap">
+  <svg id="iso" viewBox="0 0 800 560" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#87ceeb"/>
+        <stop offset="100%" stop-color="#c8e6f5"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="560" fill="url(#sky)"/>
+    <g id="world"></g>
+  </svg>
+
+  <div id="controls">
+    <button id="zin"  aria-label="Zoom in">+</button>
+    <button id="zout" aria-label="Zoom out">−</button>
+  </div>
+  <div id="hint">drag to pan · scroll to zoom</div>
+</div>
+
+<script>
+const NS    = 'http://www.w3.org/2000/svg';
+const wrap  = document.getElementById('iso-wrap');
+const world = document.getElementById('world');
+
+// ── Camera state ──────────────────────────────────────────────────────────────
+let camX = 0, camY = 0, zoom = 1;
+const MIN_Z = 0.35, MAX_Z = 3.5;
+
+/** Push the current camera state into the SVG group transform. */
+function setTransform() {
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  world.setAttribute('transform',
+    `translate(${W/2 + camX} ${H/3 + camY}) scale(${zoom})`);
+}
+
+/**
+ * Zoom by `factor` keeping the screen point (mx, my) stationary.
+ * We find the world-space point under the cursor before the zoom,
+ * then reposition the camera so that same world point stays there after.
+ */
+function zoomAt(mx, my, factor) {
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  const wx = (mx - W/2 - camX) / zoom;   // world point under cursor
+  const wy = (my - H/3 - camY) / zoom;
+  zoom = Math.min(MAX_Z, Math.max(MIN_Z, zoom * factor));
+  camX = mx - W/2 - wx * zoom;            // recalculate camera offset
+  camY = my - H/3 - wy * zoom;
+  setTransform();
+}
+
+// ── World generation ───────────────────────────────────────────────────────────
+const TW = 64, TH = 32;   // tile width / height in isometric space
+const COLS = 22, ROWS = 22;
+
+const T = { WATER:0, SAND:1, GRASS:2, DIRT:3, SNOW:4 };
+
+/** Deterministic pseudo-random hash. */
+function hash(x, y) {
+  return Math.sin(x * 127.1 + y * 311.7) * 43758.5453 % 1;
+}
+
+/** 4-octave fractal noise, output in [0, 1]. */
+function noise(x, y) {
+  let v = 0, a = 1, s = 0;
+  for (let o = 0; o < 4; o++) {
+    const f = 1 << o;
+    v += a * hash(Math.floor(x * f), Math.floor(y * f));
+    s += a;
+    a *= 0.5;
+  }
+  return (v / s + 1) / 2;
+}
+
+// Build height map and tile-type grid.
+const heights = [], types = [];
+for (let r = 0; r < ROWS; r++) {
+  heights[r] = []; types[r] = [];
+  for (let c = 0; c < COLS; c++) {
+    const h = noise(c / 8, r / 8);
+    heights[r][c] = h;
+    types[r][c] =
+      h < 0.32 ? T.WATER :
+      h < 0.38 ? T.SAND  :
+      h < 0.72 ? T.GRASS :
+      h < 0.85 ? T.DIRT  : T.SNOW;
+  }
+}
+
+// Three-face color palette per tile type.
+const PALETTE = {
+  [T.WATER]: { top:'#5aade0', left:'#3b8abf', right:'#2e6e99' },
+  [T.SAND]:  { top:'#e8d59a', left:'#c4b07a', right:'#a89060' },
+  [T.GRASS]: { top:'#7dc873', left:'#5a9e52', right:'#457a3e' },
+  [T.DIRT]:  { top:'#b07a4a', left:'#8a5e38', right:'#6e4c2e' },
+  [T.SNOW]:  { top:'#eef4fa', left:'#c8d8e8', right:'#a8bed2' },
+};
+
+// ── Isometric projection ───────────────────────────────────────────────────────
+/**
+ * Maps grid (col, row, height) → isometric screen coords.
+ * The camera translation (W/2 + camX, H/3 + camY) is applied by the
+ * SVG group transform, so tile coords here are relative to world origin.
+ */
+function iso(c, r, h) {
+  return [
+    (c - r) * TW / 2,
+    (c + r) * TH / 2 - h * 40
+  ];
+}
+
+// ── SVG helpers ───────────────────────────────────────────────────────────────
+function mkEl(tag, attrs) {
+  const el = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+  return el;
+}
+
+/** Create a <polygon> from an array of [x, y] pairs. */
+function poly(pts, fill) {
+  return mkEl('polygon', {
+    points: pts.map(p => p.join(',')).join(' '),
+    fill,
+    stroke: 'black',
+    'stroke-width': '0.5',
+    'stroke-opacity': '0.07',
+  });
+}
+
+// ── Build scene (once) ─────────────────────────────────────────────────────────
+// Use a DocumentFragment so we hit the DOM in one shot.
+const frag = document.createDocumentFragment();
+
+// Tiles — painter's order: back row (r=0, c=0) first so front tiles occlude them.
+for (let r = 0; r < ROWS; r++) {
+  for (let c = 0; c < COLS; c++) {
+    const h   = heights[r][c];
+    const col = PALETTE[types[r][c]];
+    const [px, py] = iso(c, r, h);
+    const eH = Math.max(4, h * 40);   // visual elevation in px
+
+    // Left face (darker)
+    frag.appendChild(poly([
+      [px,       py + TH/2],
+      [px - TW/2, py],
+      [px - TW/2, py - eH],
+      [px,        py + TH/2 - eH],
+    ], col.left));
+
+    // Right face (mid)
+    frag.appendChild(poly([
+      [px,        py + TH/2],
+      [px + TW/2, py],
+      [px + TW/2, py - eH],
+      [px,        py + TH/2 - eH],
+    ], col.right));
+
+    // Top face (lightest)
+    frag.appendChild(poly([
+      [px,        py - eH],
+      [px - TW/2, py - TH/2 - eH],
+      [px,        py - TH   - eH],
+      [px + TW/2, py - TH/2 - eH],
+    ], col.top));
+  }
+}
+
+// Trees — appended after all tiles so they always draw on top.
+for (let r = 1; r < ROWS - 1; r++) {
+  for (let c = 1; c < COLS - 1; c++) {
+    if (types[r][c] !== T.GRASS || hash(c + 100, r + 200) <= 0.75) continue;
+
+    const h = heights[r][c];
+    const [px, py] = iso(c, r, h);
+    const base = py - TH/2 - h * 40 - 2;   // trunk base y
+
+    // Trunk
+    frag.appendChild(mkEl('rect', {
+      x: px - 2.5, y: base - 12, width: 5, height: 14,
+      fill: '#7a4f2e',
+    }));
+
+    // Canopy — three ellipse layers from bottom to top
+    [
+      { dy: 0,   rx: 16, fill: '#3a7d3a' },
+      { dy: -10, rx: 13, fill: '#4a9a4a' },
+      { dy: -19, rx: 9,  fill: '#5ab55a' },
+    ].forEach(l => {
+      // Ambient shadow blob underneath each layer
+      frag.appendChild(mkEl('ellipse', {
+        cx: px - 3, cy: base + l.dy + 2,
+        rx: l.rx * 0.6, ry: l.rx * 0.3,
+        fill: 'black', 'fill-opacity': '0.12',
+      }));
+      // Canopy ellipse
+      frag.appendChild(mkEl('ellipse', {
+        cx: px, cy: base + l.dy,
+        rx: l.rx, ry: l.rx * 0.6,
+        fill: l.fill,
+      }));
+    });
+  }
+}
+
+world.appendChild(frag);
+setTransform();
+
+// ── Input: mouse pan ──────────────────────────────────────────────────────────
+let dragging = false, lx = 0, ly = 0;
+
+wrap.addEventListener('mousedown', e => {
+  dragging = true; lx = e.clientX; ly = e.clientY;
+  wrap.style.cursor = 'grabbing';
+});
+window.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  camX += e.clientX - lx;
+  camY += e.clientY - ly;
+  lx = e.clientX; ly = e.clientY;
+  setTransform();
+});
+window.addEventListener('mouseup', () => {
+  dragging = false;
+  wrap.style.cursor = 'grab';
+});
+
+// ── Input: touch pan + pinch zoom ─────────────────────────────────────────────
+let lt = null;
+
+wrap.addEventListener('touchstart', e => {
+  e.preventDefault();
+  lt = [...e.touches];
+}, { passive: false });
+
+wrap.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const ts = [...e.touches];
+  const r  = wrap.getBoundingClientRect();
+
+  if (ts.length === 1 && lt?.length === 1) {
+    // Single-finger pan
+    camX += ts[0].clientX - lt[0].clientX;
+    camY += ts[0].clientY - lt[0].clientY;
+    setTransform();
+  } else if (ts.length === 2 && lt?.length === 2) {
+    // Two-finger pinch zoom
+    const d0 = Math.hypot(lt[0].clientX - lt[1].clientX, lt[0].clientY - lt[1].clientY);
+    const d1 = Math.hypot(ts[0].clientX - ts[1].clientX, ts[0].clientY - ts[1].clientY);
+    const mx = (ts[0].clientX + ts[1].clientX) / 2 - r.left;
+    const my = (ts[0].clientY + ts[1].clientY) / 2 - r.top;
+    zoomAt(mx, my, d1 / d0);
+  }
+  lt = ts;
+}, { passive: false });
+
+// ── Input: scroll wheel zoom ──────────────────────────────────────────────────
+wrap.addEventListener('wheel', e => {
+  e.preventDefault();
+  const r = wrap.getBoundingClientRect();
+  zoomAt(e.clientX - r.left, e.clientY - r.top, e.deltaY < 0 ? 1.1 : 0.91);
+}, { passive: false });
+
+// ── Input: zoom buttons ───────────────────────────────────────────────────────
+const cx = () => wrap.clientWidth  / 2;
+const cy = () => wrap.clientHeight / 2;
+document.getElementById('zin').onclick  = () => zoomAt(cx(), cy(),  1.2);
+document.getElementById('zout').onclick = () => zoomAt(cx(), cy(), 1/1.2);
+
+// ── Resize ────────────────────────────────────────────────────────────────────
+window.addEventListener('resize', setTransform);
+</script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isometric Landscape</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #c8e6f5; font-family: sans-serif; }
+  #iso-wrap {
+    position: relative; width: 100vw; height: 100vh;
+    overflow: hidden; background: #c8e6f5;
+    cursor: grab; user-select: none;
+  }
+  canvas { position: absolute; top: 0; left: 0; }
+  #controls {
+    position: absolute; bottom: 12px; right: 12px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  #controls button {
+    width: 32px; height: 32px; border-radius: 8px;
+    border: 1px solid #ccc; background: white;
+    font-size: 18px; line-height: 1; cursor: pointer;
+  }
+  #hint {
+    position: absolute; bottom: 12px; left: 12px;
+    font-size: 12px; color: #555;
+    background: rgba(255,255,255,0.75);
+    padding: 4px 8px; border-radius: 20px;
+  }
+</style>
+</head>
+<body>
+<div id="iso-wrap">
+  <canvas id="iso"></canvas>
+  <div id="controls">
+    <button id="zin" aria-label="Zoom in">+</button>
+    <button id="zout" aria-label="Zoom out">−</button>
+  </div>
+  <div id="hint">drag to pan · scroll to zoom</div>
+  
+</div>
+Here's the <a href="isometric_landscape_svg.html">same thing</a> written using svg instead of canvas.
+<script>
+const wrap = document.getElementById('iso-wrap');
+const canvas = document.getElementById('iso');
+const ctx = canvas.getContext('2d');
+
+let W, H;
+function resize() {
+  W = wrap.clientWidth;
+  H = wrap.clientHeight;
+  canvas.width = W;
+  canvas.height = H;
+  draw();
+}
+
+// Camera state
+let camX = 0, camY = 0, zoom = 1;
+const MIN_ZOOM = 0.4, MAX_ZOOM = 3;
+
+// Tile dimensions
+const TW = 64, TH = 32;
+
+// World grid size
+const COLS = 22, ROWS = 22;
+
+// Tile type constants
+const T = { GRASS: 0, WATER: 1, SAND: 2, DIRT: 3, SNOW: 4 };
+
+// --- Procedural noise ---
+function hash(x, y) {
+  return Math.sin(x * 127.1 + y * 311.7) * 43758.5453 % 1;
+}
+
+function noise(x, y) {
+  let v = 0, a = 1, s = 0;
+  for (let o = 0; o < 4; o++) {
+    let f = 1 << o;
+    v += a * hash(Math.floor(x * f), Math.floor(y * f));
+    s += a;
+    a *= 0.5;
+  }
+  return (v / s + 1) / 2;
+}
+
+// --- Build height map and tile types ---
+const heights = [], types = [];
+for (let r = 0; r < ROWS; r++) {
+  heights[r] = []; types[r] = [];
+  for (let c = 0; c < COLS; c++) {
+    const h = noise(c / 8, r / 8);
+    heights[r][c] = h;
+    types[r][c] =
+      h < 0.32 ? T.WATER :
+      h < 0.38 ? T.SAND  :
+      h < 0.72 ? T.GRASS :
+      h < 0.85 ? T.DIRT  : T.SNOW;
+  }
+}
+
+// --- Scatter trees on grass tiles ---
+const trees = [];
+for (let r = 1; r < ROWS - 1; r++) {
+  for (let c = 1; c < COLS - 1; c++) {
+    if (types[r][c] === T.GRASS && hash(c + 100, r + 200) > 0.75) {
+      trees.push([c, r]);
+    }
+  }
+}
+
+// --- Isometric projection ---
+// Converts grid (col, row, height) → screen (x, y) relative to world origin
+function toScreen(c, r, h) {
+  const elevation = (h || 0) * 40;
+  const sx = (c - r) * TW / 2;
+  const sy = (c + r) * TH / 2 - elevation;
+  return [sx, sy];
+}
+
+// --- Color palette per tile type ---
+const COLORS = {
+  [T.WATER]: { top: '#5aade0', left: '#3b8abf', right: '#2e6e99' },
+  [T.SAND]:  { top: '#e8d59a', left: '#c4b07a', right: '#a89060' },
+  [T.GRASS]: { top: '#7dc873', left: '#5a9e52', right: '#457a3e' },
+  [T.DIRT]:  { top: '#b07a4a', left: '#8a5e38', right: '#6e4c2e' },
+  [T.SNOW]:  { top: '#eef4fa', left: '#c8d8e8', right: '#a8bed2' },
+};
+
+// --- Draw a single isometric tile ---
+function drawTile(c, r) {
+  const t = types[r][c];
+  const h = heights[r][c];
+  const [sx, sy] = toScreen(c, r, h);
+  const px = sx + W / 2 + camX;
+  const py = sy + H / 3 + camY;
+  const col = COLORS[t];
+  const elevH = Math.max(4, h * 40);
+
+  // Rough frustum cull
+  if (px < -TW * 2 || px > W + TW * 2 || py < -TH * 4 || py > H + TH * 4) return;
+
+  // Left face
+  ctx.beginPath();
+  ctx.moveTo(px, py + TH / 2);
+  ctx.lineTo(px - TW / 2, py);
+  ctx.lineTo(px - TW / 2, py - elevH);
+  ctx.lineTo(px, py + TH / 2 - elevH);
+  ctx.closePath();
+  ctx.fillStyle = col.left;
+  ctx.fill();
+
+  // Right face
+  ctx.beginPath();
+  ctx.moveTo(px, py + TH / 2);
+  ctx.lineTo(px + TW / 2, py);
+  ctx.lineTo(px + TW / 2, py - elevH);
+  ctx.lineTo(px, py + TH / 2 - elevH);
+  ctx.closePath();
+  ctx.fillStyle = col.right;
+  ctx.fill();
+
+  // Top face
+  ctx.beginPath();
+  ctx.moveTo(px, py - elevH);
+  ctx.lineTo(px - TW / 2, py - TH / 2 - elevH);
+  ctx.lineTo(px, py - TH - elevH);
+  ctx.lineTo(px + TW / 2, py - TH / 2 - elevH);
+  ctx.closePath();
+  ctx.fillStyle = col.top;
+  ctx.fill();
+
+  // Subtle grid edge
+  ctx.strokeStyle = 'rgba(0,0,0,0.07)';
+  ctx.lineWidth = 0.5;
+  ctx.stroke();
+}
+
+// --- Draw a tree at grid position (c, r) ---
+function drawTree(c, r) {
+  const h = heights[r][c];
+  const [sx, sy] = toScreen(c, r, h);
+  const px = sx + W / 2 + camX;
+  const py = sy + H / 3 + camY;
+
+  // Rough cull
+  if (px < -60 || px > W + 60 || py < -100 || py > H + 60) return;
+
+  const elevH = h * 40;
+  const bx = px;
+  const by = py - TH / 2 - elevH - 2;
+
+  // Trunk
+  ctx.fillStyle = '#7a4f2e';
+  ctx.fillRect(bx - 2.5, by - 12, 5, 14);
+
+  // Canopy: three layered ellipses for depth
+  const layers = [
+    { r: 16, y: 0,   c: '#3a7d3a' },
+    { r: 13, y: -10, c: '#4a9a4a' },
+    { r: 9,  y: -19, c: '#5ab55a' },
+  ];
+  layers.forEach(l => {
+    ctx.beginPath();
+    ctx.ellipse(bx, by + l.y, l.r, l.r * 0.6, 0, 0, Math.PI * 2);
+    ctx.fillStyle = l.c;
+    ctx.fill();
+
+    // Ambient shadow blob
+    ctx.beginPath();
+    ctx.ellipse(bx - 3, by + l.y + 2, l.r * 0.6, l.r * 0.3, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,0,0,0.12)';
+    ctx.fill();
+  });
+}
+
+// --- Main render ---
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Sky gradient
+  const sky = ctx.createLinearGradient(0, 0, 0, H);
+  sky.addColorStop(0, '#87ceeb');
+  sky.addColorStop(1, '#c8e6f5');
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, W, H);
+
+  // Apply zoom around canvas centre
+  ctx.save();
+  ctx.translate(W / 2, H / 2);
+  ctx.scale(zoom, zoom);
+  ctx.translate(-W / 2, -H / 2);
+
+  // Painter's order: back row → front row, left col → right col
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      drawTile(c, r);
+    }
+  }
+
+  // Trees drawn after all tiles so they sit on top
+  trees.forEach(([c, r]) => drawTree(c, r));
+
+  ctx.restore();
+}
+
+// ─── Input: mouse pan ─────────────────────────────────────────────────────────
+let dragging = false, lastX = 0, lastY = 0;
+
+wrap.addEventListener('mousedown', e => {
+  dragging = true; lastX = e.clientX; lastY = e.clientY;
+  wrap.style.cursor = 'grabbing';
+});
+window.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  camX += (e.clientX - lastX) / zoom;
+  camY += (e.clientY - lastY) / zoom;
+  lastX = e.clientX; lastY = e.clientY;
+  draw();
+});
+window.addEventListener('mouseup', () => { dragging = false; wrap.style.cursor = 'grab'; });
+
+// ─── Input: touch pan + pinch zoom ───────────────────────────────────────────
+let lastTouches = null;
+
+wrap.addEventListener('touchstart', e => {
+  e.preventDefault();
+  lastTouches = [...e.touches];
+}, { passive: false });
+
+wrap.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const ts = [...e.touches];
+  if (ts.length === 1 && lastTouches.length === 1) {
+    camX += (ts[0].clientX - lastTouches[0].clientX) / zoom;
+    camY += (ts[0].clientY - lastTouches[0].clientY) / zoom;
+    draw();
+  } else if (ts.length === 2 && lastTouches.length === 2) {
+    const d0 = Math.hypot(
+      lastTouches[0].clientX - lastTouches[1].clientX,
+      lastTouches[0].clientY - lastTouches[1].clientY
+    );
+    const d1 = Math.hypot(
+      ts[0].clientX - ts[1].clientX,
+      ts[0].clientY - ts[1].clientY
+    );
+    zoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom * (d1 / d0)));
+    draw();
+  }
+  lastTouches = ts;
+}, { passive: false });
+
+// ─── Input: scroll wheel zoom ─────────────────────────────────────────────────
+wrap.addEventListener('wheel', e => {
+  e.preventDefault();
+  const dz = e.deltaY < 0 ? 1.1 : 0.91;
+  zoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom * dz));
+  draw();
+}, { passive: false });
+
+// ─── Input: zoom buttons ──────────────────────────────────────────────────────
+document.getElementById('zin').onclick  = () => { zoom = Math.min(MAX_ZOOM, zoom * 1.2); draw(); };
+document.getElementById('zout').onclick = () => { zoom = Math.max(MIN_ZOOM, zoom / 1.2); draw(); };
+
+// ─── Bootstrap ────────────────────────────────────────────────────────────────
+window.addEventListener('resize', resize);
+resize();
+</script>
+</body>
+</html>
