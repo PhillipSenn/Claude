@@ -1,0 +1,1 @@
+<cfset apiKey = 'YOUR_API_KEY'>
