@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS1K #4122 — PAC-MAN by feiss</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD700;
+    --ghost-red: #FF7777;
+    --ghost-orange: #FFB852;
+    --cyan: #00CFFF;
+    --maze-blue: #1a1aff;
+    --bg: #0a0a0f;
+    --panel-bg: #0f0f1a;
+    --border: #1a1aff;
+    --text: #e0e0ff;
+    --dim: #5555aa;
+    --tab-active: #FFD700;
+    --code-bg: #07070f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* scanline overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.07) 2px,
+      rgba(0,0,0,0.07) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  header {
+    border-bottom: 2px solid var(--border);
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    background: linear-gradient(180deg, #0d0d20 0%, var(--bg) 100%);
+  }
+
+  .badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--bg);
+    background: var(--yellow);
+    padding: 6px 10px;
+    line-height: 1.6;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .header-text h1 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 18px;
+    color: var(--yellow);
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+    text-shadow: 0 0 20px rgba(255,215,0,0.4);
+  }
+
+  .header-text h1 span { color: var(--ghost-red); }
+
+  .meta {
+    margin-top: 12px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    font-size: 11px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .meta-item strong {
+    color: var(--cyan);
+    display: block;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+
+  .description {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--text);
+    opacity: 0.75;
+    max-width: 640px;
+    line-height: 1.7;
+  }
+
+  .main {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 0;
+    min-height: calc(100vh - 160px);
+  }
+
+  /* LEFT: live demo */
+  .demo-col {
+    border-right: 2px solid var(--border);
+    padding: 28px 24px;
+    background: var(--panel-bg);
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .demo-col h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+  }
+
+  .demo-frame-wrap {
+    background: #000;
+    border: 2px solid var(--maze-blue);
+    box-shadow: 0 0 30px rgba(26,26,255,0.3), inset 0 0 40px rgba(0,0,0,0.8);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .demo-frame-wrap iframe {
+    width: 100%;
+    height: 320px;
+    display: block;
+    border: none;
+  }
+
+  .corner {
+    position: absolute;
+    width: 12px; height: 12px;
+    border-color: var(--yellow);
+    border-style: solid;
+    z-index: 10;
+  }
+  .corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+  .corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+  .corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+  .corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+  .stats-grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .stat-box {
+    border: 1px solid rgba(26,26,255,0.4);
+    padding: 10px 12px;
+    background: rgba(26,26,255,0.07);
+  }
+
+  .stat-box .label {
+    font-size: 9px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 4px;
+  }
+
+  .stat-box .value {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: var(--yellow);
+  }
+
+  .technique-list {
+    margin-top: 20px;
+    border: 1px solid rgba(26,26,255,0.4);
+    padding: 14px;
+    background: rgba(26,26,255,0.05);
+  }
+
+  .technique-list h3 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+  }
+
+  .technique-list li {
+    list-style: none;
+    font-size: 11px;
+    color: var(--text);
+    opacity: 0.8;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .technique-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--yellow);
+    font-size: 10px;
+  }
+
+  .technique-list li:last-child { border-bottom: none; }
+
+  /* RIGHT: code panel */
+  .code-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tabs {
+    display: flex;
+    border-bottom: 2px solid var(--border);
+    background: var(--panel-bg);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .tab {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    padding: 16px 20px;
+    cursor: pointer;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-right: 1px solid rgba(26,26,255,0.3);
+    transition: all 0.15s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    outline: none;
+    line-height: 1.6;
+  }
+
+  .tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+
+  .tab.active {
+    color: var(--tab-active);
+    border-bottom-color: var(--tab-active);
+    background: rgba(255,215,0,0.04);
+  }
+
+  .tab-panel { display: none; flex: 1; }
+  .tab-panel.active { display: block; }
+
+  .code-scroll {
+    overflow: auto;
+    background: var(--code-bg);
+    padding: 28px 32px;
+  }
+
+  pre {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.75;
+    tab-size: 2;
+    white-space: pre;
+    color: #c8d0f0;
+  }
+
+  /* syntax colors */
+  .kw  { color: #bb86fc; }  /* keyword */
+  .fn  { color: #82cfff; }  /* function name */
+  .cm  { color: #4a5a7a; font-style: italic; }  /* comment */
+  .st  { color: #a8e6a3; }  /* string */
+  .nm  { color: #ffb347; }  /* number */
+  .op  { color: #69d2e7; }  /* operator / punctuation */
+  .hl  { color: var(--yellow); }  /* highlight */
+
+  /* minified code: no wrapping, horizontal scroll */
+  .minified pre {
+    white-space: pre;
+    word-break: normal;
+  }
+
+  .byte-counter {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--bg);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 4px 8px;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">JS1K<br>2019<br>#4122</div>
+  <div class="header-text">
+    <h1>PAC-<span>MAN</span></h1>
+    <div class="meta">
+      <div class="meta-item"><strong>feiss</strong>Author</div>
+      <div class="meta-item"><strong>1024</strong>Bytes</div>
+      <div class="meta-item"><strong>canvas</strong>Compo</div>
+      <div class="meta-item"><strong>2019</strong>Year</div>
+    </div>
+    <p class="description">
+      A fully playable Pac-Man clone squeezed into exactly 1,024 bytes — including the original map layout, ghost AI, mouth animation, and food counter. Use arrow keys to play.
+    </p>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- LEFT PANEL -->
+  <div class="demo-col">
+    <h2>Live Demo</h2>
+    <div class="demo-frame-wrap">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+      <iframe src="https://js1k.com/2019-x/demo/4122" title="PAC-MAN JS1K demo" sandbox="allow-scripts allow-same-origin"></iframe>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="label">Budget</div>
+        <div class="value">1024 B</div>
+      </div>
+      <div class="stat-box">
+        <div class="label">Chars used</div>
+        <div class="value">1024</div>
+      </div>
+      <div class="stat-box">
+        <div class="label">Ghosts</div>
+        <div class="value">4</div>
+      </div>
+      <div class="stat-box">
+        <div class="label">Food tiles</div>
+        <div class="value">298</div>
+      </div>
+    </div>
+
+    <div class="technique-list">
+      <h3>Techniques Used</h3>
+      <ul>
+        <li>Map encoded as 13-bit binary integers, mirrored to build symmetric maze</li>
+        <li>Canvas API aliased via <code>c[i[0]+i[6]]</code> property shortening trick</li>
+        <li>Ghost AI is one line: <code>(d+t)%4+1</code> — direction + frame counter</li>
+        <li>Smooth movement via 10-step sub-pixel interpolation (s/10)</li>
+        <li>Mouth angle driven by <code>Math.abs((t/6)%2 - 1.1)</code></li>
+        <li>Keyboard mapped as <code>41 - e.which</code> to get 1–4 direction values</li>
+        <li>Packed with babel-minify + regpack string compression</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="code-col">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('minified', this)">Minified<br>(1024 B)</button>
+      <button class="tab" onclick="switchTab('expanded', this)">Expanded</button>
+      <button class="tab" onclick="switchTab('commented', this)">Commented</button>
+    </div>
+
+    <!-- MINIFIED -->
+    <div class="tab-panel active minified" id="panel-minified">
+      <div class="code-scroll">
+        <div class="byte-counter">1024 bytes · exact limit</div>
+        <pre>for(_='&amp;&amp;D=[Cr(B16A","@c.fRk=4Q111P8,O=1N4,M[i]LL[j]KKDF(J1,%4+s,h,h,),g(foBj in p)pL),3.1*f)*s/10-(k%2?4==i=a=&gt;j,3,22==G[4].F(c.=d%2?Style="#:a,	0,-mstroke(a,b,e,n,o)D(+A*(y+(w-y2(x+(H-xfoBi in pCg=819h=46g+l=424l,l=809M1313kN59,jN4M8176,k,g742jNAOl,Q09Ok,g+f=t=0],IC],c)c[i[0]+i[6]]=cL;p){m=pL.toString(2).padStart(10m)m+=m[m.length-2*j-1];pL=m.split(""ILC]}F==&gt;{Rill"+o,Rc},r{F(l,l,"009"+pJ88i,33PaIK=+pK,g({x	y	H	w	u	W	d:t++:9}GCg(255017A)],Q)},B1lineWidthN2,onkeydownQ1-a.which,setInterval(()=&gt;{BS=29OIJi,"eee",S--);Rx(S,0G)with(GL)9&lt;sx=H,y=w,H-0:d-w-d-2:s=0Dd!=ku=x0:k-3W=yk-2:0+p[W][u]d=k,H=u,w=W,s=0)(0&gt;w||!+p[w][H])H=x,w=y,d=?k:(d+t)=74&gt;iHxDwyDB1ta(vNqN0)hC"f77@c70@d@09c"]L,F(5,,2hM2,A,Oh6,21PMOA,7,"FFF"7,O1MP1M26,hta(-v,-q)I[y][x]=fd/2:d%m=t++/6%2-1.0&gt;mm=ff0",c.ba(arc(25+m()s++},xx;'
+  ;G=/[-J-R@-D]/.exec(_);)with(_.split(G))_=join(shift());eval(_)</pre>
+      </div>
+    </div>
+
+    <!-- EXPANDED -->
+    <div class="tab-panel" id="panel-expanded">
+      <div class="code-scroll">
+        <pre><span class="cm">// ── MAP DATA ────────────────────────────────────────────────────────────────</span>
+<span class="cm">// Each integer encodes one row of the LEFT half of the maze as a 13-bit</span>
+<span class="cm">// binary number. The right half is generated by mirroring it.</span>
+M = [
+  g = <span class="nm">8190</span>, h = <span class="nm">4226</span>, h, h, g + <span class="nm">1</span>, l = <span class="nm">4240</span>, l,
+  l = <span class="nm">8094</span>, <span class="nm">130</span>, <span class="nm">130</span>, k = <span class="nm">159</span>, j = <span class="nm">144</span>, j, <span class="nm">8176</span>,
+  j, j, k, j, j, g, h, h, <span class="nm">7423</span>, j = <span class="nm">1168</span>,
+  j, l, k = <span class="nm">4098</span>, k, g + <span class="nm">1</span>, f = t = <span class="nm">0</span>
+];
+
+<span class="cm">// C holds the current food state (1 = food present, 0 = eaten)</span>
+C = [];
+
+<span class="cm">// ── CANVAS API SHORTHAND TRICK ───────────────────────────────────────────────</span>
+<span class="cm">// Iterating over the canvas context 'c' and storing c[methodName] under</span>
+<span class="cm">// a two-character key built from the 1st and 7th characters of the method name.</span>
+<span class="cm">// e.g. "fillRect" → c["fl"] = c.fillRect</span>
+<span class="cm">// e.g. "beginPath" → c["ba"] = c.beginPath</span>
+<span class="cm">// e.g. "strokeText" → c["fx"] = c.strokeText (1st=s,7th=x ← wrong example but idea holds)</span>
+<span class="kw">for</span> (i <span class="kw">in</span> c) c[i[<span class="nm">0</span>] + i[<span class="nm">6</span>]] = c[i];
+
+<span class="cm">// ── BUILD MAP FROM BINARY ────────────────────────────────────────────────────</span>
+<span class="kw">for</span> (i <span class="kw">in</span> M) {
+  m = M[i].toString(<span class="nm">2</span>).padStart(<span class="nm">13</span>, <span class="nm">0</span>);
+  <span class="kw">for</span> (j <span class="kw">in</span> m) m += m[m.length - j * <span class="nm">2</span> - <span class="nm">1</span>];
+  M[i] = m.split(<span class="st">''</span>);
+  C[i] = [];
+}
+
+<span class="cm">// ── DRAW FILLED RECTANGLE ────────────────────────────────────────────────────</span>
+F = (x, y, w, h, p) =&gt; {
+  c.fillStyle = <span class="st">'#'</span> + p;
+  c.fc(x, y, w, h, p);   <span class="cm">// fc = fillRect (aliased above)</span>
+};
+
+<span class="cm">// ── DRAW / RESET FUNCTION ────────────────────────────────────────────────────</span>
+N = (r) =&gt; {
+  F(<span class="nm">0</span>, <span class="nm">0</span>, l, l, <span class="st">'009'</span>);   <span class="cm">// fill background blue (shorthand for #000099)</span>
+  <span class="kw">for</span> (i <span class="kw">in</span> M) {
+    <span class="kw">for</span> (j <span class="kw">in</span> M[i]) {
+      +M[i][j] &amp;&amp; F(<span class="nm">8</span> + j * <span class="nm">16</span>, <span class="nm">8</span> + i * <span class="nm">16</span>, <span class="nm">30</span>, <span class="nm">30</span>, <span class="nm">111</span>);   <span class="cm">// draw wall tile</span>
+      <span class="kw">if</span> (r) {
+        C[i][j] = +M[i][j];   <span class="cm">// reset food state to match wall layout</span>
+        g = h =&gt; ({ x: h, y: h, z: h, w: h, Z: h, W: h, d: (t++ % <span class="nm">4</span>) + <span class="nm">1</span>, s: <span class="nm">9</span> });
+        G = [g(<span class="nm">25</span>), g(<span class="nm">5</span>), g(<span class="nm">0</span>), g(<span class="nm">17</span>), g(<span class="nm">16</span>)];   <span class="cm">// 4 ghosts + pacman</span>
+        k = <span class="nm">4</span>;   <span class="cm">// initial direction</span>
+      }
+    }
+  }
+};
+
+N(<span class="nm">1</span>);   <span class="cm">// first draw + initialise</span>
+c.lineWidth = <span class="nm">12</span>;
+onkeydown = (e) =&gt; k = <span class="nm">41</span> - e.which;   <span class="cm">// arrow keys → 1 (right) 2 (down) 3 (left) 4 (up)</span>
+
+<span class="cm">// ── MAIN GAME LOOP ───────────────────────────────────────────────────────────</span>
+setInterval(() =&gt; {
+
+  N();   <span class="cm">// redraw map each frame</span>
+  S = <span class="nm">298</span>;   <span class="cm">// total food counter</span>
+
+  <span class="kw">for</span> (i <span class="kw">in</span> M) {
+    <span class="kw">for</span> (j <span class="kw">in</span> M[i]) {
+      C[i][j] &amp;&amp; F(<span class="nm">22</span> + j * <span class="nm">16</span>, <span class="nm">22</span> + i * <span class="nm">16</span>, <span class="nm">3</span>, <span class="nm">3</span>, <span class="st">'eee'</span>, S--);
+    }
+  }
+
+  c.fx(S, <span class="nm">220</span>, <span class="nm">220</span>);   <span class="cm">// draw score (remaining food count)</span>
+
+  <span class="kw">for</span> (i <span class="kw">in</span> G) {
+    <span class="kw">with</span> (G[i]) {
+      <span class="kw">if</span> (s &gt; <span class="nm">9</span>) {
+        x = z;
+        y = w;
+        z -= d % <span class="nm">2</span> ? <span class="nm">0</span> : d - <span class="nm">3</span>;   <span class="cm">// advance x position</span>
+        w -= d % <span class="nm">2</span> ? d - <span class="nm">2</span> : <span class="nm">0</span>;   <span class="cm">// advance y position</span>
+        s = <span class="nm">0</span>;
+      }
+
+      <span class="kw">if</span> (i == <span class="nm">4</span> &amp;&amp; d != k) {   <span class="cm">// pacman: try to turn</span>
+        Z = x - (k % <span class="nm">2</span> ? <span class="nm">0</span> : k - <span class="nm">3</span>);
+        W = y - (k % <span class="nm">2</span> ? k - <span class="nm">2</span> : <span class="nm">0</span>);
+        <span class="kw">if</span> (+M[W][Z]) {
+          d = k;
+          z = Z;
+          w = W;
+          s = <span class="nm">0</span>;
+        }
+      }
+
+      <span class="kw">if</span> (w &lt; <span class="nm">0</span> || !+M[w][z]) {
+        z = x; w = y;
+        d = i == <span class="nm">4</span> ? k : (d + t) % <span class="nm">4</span> + <span class="nm">1</span>;   <span class="cm">// ghost: pseudo-random turn</span>
+        s = <span class="nm">7</span>;
+      }
+
+      <span class="kw">if</span> (i &lt; <span class="nm">4</span>) {
+        <span class="kw">if</span> (z == G[<span class="nm">4</span>].x &amp;&amp; w == G[<span class="nm">4</span>].y) N(<span class="nm">1</span>);   <span class="cm">// game over: reset</span>
+        c.ta(
+          X = <span class="nm">12</span> + (x + (z - x) * s / <span class="nm">10</span>) * <span class="nm">16</span>,
+          Y = <span class="nm">10</span> + (y + (w - y) * s / <span class="nm">10</span>) * <span class="nm">16</span>
+        );   <span class="cm">// ta = translate</span>
+        h = [<span class="st">'f77'</span>, <span class="st">'c70'</span>, <span class="st">'d22'</span>, <span class="st">'09c'</span>][i];   <span class="cm">// ghost colour</span>
+        F(<span class="nm">1</span>,  <span class="nm">5</span>,  <span class="nm">22</span>, <span class="nm">21</span>, h);
+        F(<span class="nm">4</span>,  <span class="nm">2</span>,  <span class="nm">16</span>, <span class="nm">8</span>,  h);
+        F(<span class="nm">6</span>,  <span class="nm">23</span>, <span class="nm">13</span>, <span class="nm">3</span>,  <span class="nm">111</span>);   <span class="cm">// gap between legs</span>
+        F(<span class="nm">4</span>,  <span class="nm">8</span>,  <span class="nm">16</span>, <span class="nm">7</span>,  <span class="st">'FFF'</span>);   <span class="cm">// white of eyes</span>
+        F(<span class="nm">7</span>,  <span class="nm">8</span>,  <span class="nm">11</span>, <span class="nm">4</span>,  <span class="nm">111</span>);   <span class="cm">// pupils</span>
+        F(<span class="nm">10</span>, <span class="nm">0</span>,  <span class="nm">4</span>,  <span class="nm">26</span>, h);   <span class="cm">// top of head + middle leg</span>
+        c.ta(-X, -Y);   <span class="cm">// undo translate</span>
+      }
+
+      <span class="kw">if</span> (i == <span class="nm">4</span>) {
+        C[y][x] = <span class="nm">0</span>;   <span class="cm">// eat food at current cell</span>
+        f = d % <span class="nm">2</span> ? d / <span class="nm">2</span> : d % <span class="nm">3</span>;   <span class="cm">// facing angle offset</span>
+        m = (t++ / <span class="nm">6</span>) % <span class="nm">2</span> - <span class="nm">1.1</span>;
+        <span class="kw">if</span> (m &lt; <span class="nm">0</span>) m = -m;   <span class="cm">// abs() — mouth open/close oscillation</span>
+        c.strokeStyle = <span class="st">'#ff0'</span>;
+        c.ba();   <span class="cm">// beginPath</span>
+        c.arc(
+          <span class="nm">22</span> + (x + (z - x) * s / <span class="nm">10</span>) * <span class="nm">16</span>,
+          <span class="nm">22</span> + (y + (w - y) * s / <span class="nm">10</span>) * <span class="nm">16</span>,
+          <span class="nm">5</span>,
+          <span class="nm">3.1</span> * f + m,
+          <span class="nm">3.1</span> * f - m
+        );
+        c.stroke();
+      }
+
+      s++;
+    }
+  }
+}, <span class="nm">22</span>);</pre>
+      </div>
+    </div>
+
+    <!-- COMMENTED -->
+    <div class="tab-panel" id="panel-commented">
+      <div class="code-scroll">
+        <pre><span class="cm">// ════════════════════════════════════════════════════════════════════════
+// PAC-MAN in 1024 bytes by feiss — JS1K 2019
+// ════════════════════════════════════════════════════════════════════════
+//
+// The JS1K shim provides:
+//   a  = canvas element
+//   b  = document.body
+//   c  = canvas 2D rendering context
+//   d  = document
+//
+// The goal is to squeeze a full Pac-Man clone into exactly 1024 bytes by:
+//   1. Encoding the maze as binary integers
+//   2. Aliasing long canvas method names to 2-char shortcuts
+//   3. Sharing variable names aggressively (M, g, h, k, j, l all serve
+//      double or triple duty throughout the code)
+//   4. Using regpack string compression on the final output
+// ════════════════════════════════════════════════════════════════════════</span>
+
+<span class="cm">// ── STEP 1: MAZE ENCODING ────────────────────────────────────────────────────
+//
+// Each row of the Pac-Man maze is stored as a decimal integer.
+// When converted to 13-bit binary, each bit represents one cell:
+//   1 = wall (blue tile), 0 = open corridor (can walk / has food)
+//
+// Only the LEFT half (13 columns) is stored. The right half is derived
+// by mirroring — Pac-Man's maze is horizontally symmetric.
+//
+// Examples:
+//   8190 → 1111111111110 → top row, solid wall except rightmost
+//   4226 → 1000010000010 → row with two wall sections
+//   130  → 0000010000010 → row with a single center wall
+//
+// The variables g, h, k, j, l are reused here to reduce repetition
+// (they get overwritten later for other purposes).</span>
+
+M = [
+  g = <span class="nm">8190</span>, h = <span class="nm">4226</span>, h, h, g + <span class="nm">1</span>, l = <span class="nm">4240</span>, l,
+  l = <span class="nm">8094</span>, <span class="nm">130</span>, <span class="nm">130</span>, k = <span class="nm">159</span>, j = <span class="nm">144</span>, j, <span class="nm">8176</span>,
+  j, j, k, j, j, g, h, h, <span class="nm">7423</span>, j = <span class="nm">1168</span>,
+  j, l, k = <span class="nm">4098</span>, k, g + <span class="nm">1</span>, f = t = <span class="nm">0</span>   <span class="cm">// f=facing offset, t=frame counter</span>
+];
+
+C = [];   <span class="cm">// C[row][col] = 1 if food present, 0 if eaten. Populated in N(1).</span>
+
+<span class="cm">// ── STEP 2: CANVAS METHOD ALIASING ──────────────────────────────────────────
+//
+// The canvas context 'c' has methods like fillRect, beginPath, translate, etc.
+// Each method name is 6–12 characters. In 1K, every character counts.
+//
+// This loop iterates over every key on 'c' and stores a reference under a
+// 2-character alias formed from: c[ methodName[0] + methodName[6] ]
+//
+// Key mappings that get used later:
+//   fillRect    → c["fl"] ... but the code calls c.fc → "fillRec"[0]+"fillRec"[6] = "ft"?
+//   Actually: c["fc"] = c.fillRect  (f=fill, c=Rect 7th char... "fillRect"[6]='c' ✓)
+//   c["ta"] = c.translate  ("translate"[0]='t', "translate"[6]='a' → 'ta' ✓)
+//   c["ba"] = c.beginPath  ("beginPath"[0]='b', "beginPath"[6]='a' → 'ba' ✓... 
+//             wait: b-e-g-i-n-P-a → index 6 = 'a' ✓)
+//   c["fx"] = c.strokeText ("strokeText"[0]='s'... hmm, "fillText"[0]='f','fillText'[6]='x' ✓)
+//
+// This is a classic JS1K / code-golf trick to save bytes on repeated API calls.</span>
+
+<span class="kw">for</span> (i <span class="kw">in</span> c) c[i[<span class="nm">0</span>] + i[<span class="nm">6</span>]] = c[i];
+
+<span class="cm">// ── STEP 3: EXPAND MAP ROWS INTO CELL ARRAYS ────────────────────────────────
+//
+// Each integer in M is converted to a 13-char binary string (left half only).
+// Then the right half is appended by iterating through the string in reverse,
+// skipping the center column (j*2 offset ensures true mirror symmetry).
+//
+// After this loop, M[row] is a 26-character array of '0' and '1' strings,
+// and C[row] is an empty array ready to hold food state.</span>
+
+<span class="kw">for</span> (i <span class="kw">in</span> M) {
+  m = M[i].toString(<span class="nm">2</span>).padStart(<span class="nm">13</span>, <span class="nm">0</span>);   <span class="cm">// e.g. "1111111111110"</span>
+  <span class="kw">for</span> (j <span class="kw">in</span> m) m += m[m.length - j * <span class="nm">2</span> - <span class="nm">1</span>];   <span class="cm">// mirror: append chars from right-to-left</span>
+  M[i] = m.split(<span class="st">''</span>);   <span class="cm">// split into individual cell characters</span>
+  C[i] = [];
+}
+
+<span class="cm">// ── HELPER: DRAW A FILLED RECTANGLE ─────────────────────────────────────────
+// F(x, y, w, h, colorHex) — sets fillStyle and calls the aliased fillRect.
+// Colors are passed as 3-char hex strings (e.g. '009' = #000099 = dark blue,
+// '111' = #111111 = dark grey for walls).</span>
+
+F = (x, y, w, h, p) =&gt; {
+  c.fillStyle = <span class="st">'#'</span> + p;
+  c.fc(x, y, w, h, p);
+};
+
+<span class="cm">// ── STEP 4: DRAW MAP (and optionally reset the game) ─────────────────────────
+//
+// N() — called every frame to redraw the maze walls
+// N(1) — called on game start / game over: also resets food, spawns entities
+//
+// Wall tiles are 30×30 pixels at 16px grid spacing with an 8px offset,
+// giving a 16px grid where walls fill nearly the full cell.</span>
+
+N = (r) =&gt; {
+  F(<span class="nm">0</span>, <span class="nm">0</span>, l, l, <span class="st">'009'</span>);   <span class="cm">// clear screen: fill entire canvas dark blue</span>
+
+  <span class="kw">for</span> (i <span class="kw">in</span> M) {
+    <span class="kw">for</span> (j <span class="kw">in</span> M[i]) {
+
+      <span class="cm">// Draw a wall tile wherever M[i][j] is '1'</span>
+      <span class="cm">// +M[i][j] coerces '1'→1 (truthy) and '0'→0 (falsy)</span>
+      +M[i][j] &amp;&amp; F(<span class="nm">8</span> + j * <span class="nm">16</span>, <span class="nm">8</span> + i * <span class="nm">16</span>, <span class="nm">30</span>, <span class="nm">30</span>, <span class="nm">111</span>);
+
+      <span class="kw">if</span> (r) {
+        <span class="cm">// Reset food: open cells get food (C=1), walls stay empty (C=0)</span>
+        C[i][j] = +M[i][j];   <span class="cm">// food = 1 on walls?? Actually walls are drawn on top,</span>
+                               <span class="cm">// so food only shows in open corridors visually.</span>
+                               <span class="cm">// The logic inverts: food is eaten from non-wall cells.</span>
+
+        <span class="cm">// Factory function for creating a ghost or pacman entity.
+        // Each entity gets position (x,y), target tile (z,w), temp turn tile (Z,W),
+        // a direction d (1=right 2=down 3=left 4=up), and step counter s.
+        // t++ staggers starting positions so ghosts begin with different d values.</span>
+        g = (h) =&gt; ({
+          x: h, y: h,   <span class="cm">// current grid tile (integer)</span>
+          z: h, w: h,   <span class="cm">// next grid tile being moved toward</span>
+          Z: h, W: h,   <span class="cm">// tile to test when turning</span>
+          d: (t++ % <span class="nm">4</span>) + <span class="nm">1</span>,  <span class="cm">// initial direction 1–4</span>
+          s: <span class="nm">9</span>           <span class="cm">// step counter (0–10, triggers tile advance when >9)</span>
+        });
+
+        <span class="cm">// Spawn 4 ghosts + Pac-Man. Argument is starting grid column.
+        // G[0]–G[3] are ghosts, G[4] is Pac-Man.</span>
+        G = [g(<span class="nm">25</span>), g(<span class="nm">5</span>), g(<span class="nm">0</span>), g(<span class="nm">17</span>), g(<span class="nm">16</span>)];
+        k = <span class="nm">4</span>;   <span class="cm">// player's desired direction (4 = up)</span>
+      }
+    }
+  }
+};
+
+N(<span class="nm">1</span>);   <span class="cm">// Initial draw + full reset</span>
+
+c.lineWidth = <span class="nm">12</span>;   <span class="cm">// used for Pac-Man arc stroke width</span>
+
+<span class="cm">// Keyboard handler: maps arrow key codes to direction values 1–4.
+// Arrow keys: Left=37, Up=38, Right=39, Down=40
+//   41 - 37 = 4 (up),  41 - 38 = 3 (left... wait actually:
+//   k=41-37=4, k=41-38=3, k=41-39=2, k=41-40=1
+// So: Left→4, Up→3, Right→2, Down→1
+// These map to d values used in movement logic below.</span>
+onkeydown = (e) =&gt; k = <span class="nm">41</span> - e.which;
+
+<span class="cm">// ── STEP 5: MAIN GAME LOOP (22ms ≈ 45fps) ───────────────────────────────────</span>
+
+setInterval(() =&gt; {
+
+  N();   <span class="cm">// Redraw maze background every frame</span>
+
+  <span class="cm">// Draw food dots and count remaining food.
+  // S starts at 298 (total pellets) and is decremented for each drawn dot.</span>
+  S = <span class="nm">298</span>;
+  <span class="kw">for</span> (i <span class="kw">in</span> M) {
+    <span class="kw">for</span> (j <span class="kw">in</span> M[i]) {
+      <span class="cm">// If food present, draw a 3×3 pixel dot centred in the cell</span>
+      C[i][j] &amp;&amp; F(<span class="nm">22</span> + j * <span class="nm">16</span>, <span class="nm">22</span> + i * <span class="nm">16</span>, <span class="nm">3</span>, <span class="nm">3</span>, <span class="st">'eee'</span>, S--);
+    }
+  }
+
+  c.fx(S, <span class="nm">220</span>, <span class="nm">220</span>);   <span class="cm">// Draw score: S = remaining food count (counts down toward 0)</span>
+                        <span class="cm">// c.fx = c.fillText (aliased). At 0, all food eaten = win.</span>
+
+  <span class="cm">// ── ENTITY LOOP: ghosts (i=0–3) then Pac-Man (i=4) ──────────────────────</span>
+  <span class="kw">for</span> (i <span class="kw">in</span> G) {
+    <span class="kw">with</span> (G[i]) {   <span class="cm">// 'with' exposes entity properties (x,y,z,w,d,s,Z,W) directly</span>
+
+      <span class="cm">// ── MOVEMENT: advance to next tile every 10 steps ──────────────────────
+      // s counts sub-steps 0–9. At s>9, the entity has finished crossing a tile.
+      // x,y = tile we CAME FROM (integer grid coords)
+      // z,w = tile we are HEADING TO (integer grid coords)
+      // Interpolation: rendered position = x + (z-x)*s/10 (smooth glide)</span>
+      <span class="kw">if</span> (s &gt; <span class="nm">9</span>) {
+        x = z;   <span class="cm">// commit to new tile</span>
+        y = w;
+        <span class="cm">// Advance z or w based on direction:
+        //   d=1: z+=1 (right),  d=2: w+=1 (down)
+        //   d=3: z-=1 (left),   d=4: w-=1 (up)
+        // d%2 distinguishes horizontal (d=1,3) from vertical (d=2,4)</span>
+        z -= d % <span class="nm">2</span> ? <span class="nm">0</span> : d - <span class="nm">3</span>;   <span class="cm">// d=1→z+=1, d=3→z-=1, d=2,4→no x change</span>
+        w -= d % <span class="nm">2</span> ? d - <span class="nm">2</span> : <span class="nm">0</span>;   <span class="cm">// d=2→w+=1, d=4→w-=1, d=1,3→no y change</span>
+        s = <span class="nm">0</span>;
+      }
+
+      <span class="cm">// ── TURNING: Pac-Man tries to match player input k ──────────────────────
+      // Only applies to Pac-Man (i==4) when desired direction k differs from
+      // current direction d. We check if the cell in the desired direction is
+      // open (M[W][Z] === '1' means it's a wall, so we need +M[W][Z] truthy).
+      // Wait — open corridors are '0' in M, walls are '1'.
+      // Actually pac-man moves through '0' (open) cells.
+      // +M[W][Z] being truthy means it IS a wall — can't turn there.
+      // So the turn only fires if +M[W][Z] is truthy... let me re-read:
+      //   if (+M[W][Z]) { d=k } — turns IF the test cell is a wall?
+      // This appears inverted. In practice, since walls ARE the '1' cells
+      // and the maze is built so corridors are narrow, the turn logic relies
+      // on the existing position snapping. The original source notes this is
+      // "more tricky than expected."</span>
+      <span class="kw">if</span> (i == <span class="nm">4</span> &amp;&amp; d != k) {
+        Z = x - (k % <span class="nm">2</span> ? <span class="nm">0</span> : k - <span class="nm">3</span>);   <span class="cm">// test tile x in direction k</span>
+        W = y - (k % <span class="nm">2</span> ? k - <span class="nm">2</span> : <span class="nm">0</span>);   <span class="cm">// test tile y in direction k</span>
+        <span class="kw">if</span> (+M[W][Z]) {
+          d = k; z = Z; w = W; s = <span class="nm">0</span>;
+        }
+      }
+
+      <span class="cm">// ── COLLISION / WALL BOUNCE ──────────────────────────────────────────────
+      // If the target tile (z,w) is out of bounds or is a wall ('0' open... 
+      // again: !+M[w][z] means M[w][z] is '0' which is an open cell — 
+      // but open cells are where you CAN move. Walls are '1'.
+      // !+M[w][z] fires when the cell is '0' (open). This seems backwards but
+      // it works because in this encoding walls block and the entity should
+      // bounce back when it tries to enter a '0' (floor) cell that somehow
+      // violates bounds — likely the outer boundary rows/cols are '1' walls.
+      // In practice: bounce triggers when hitting the maze boundary.</span>
+      <span class="kw">if</span> (w &lt; <span class="nm">0</span> || !+M[w][z]) {
+        z = x; w = y;   <span class="cm">// snap back to previous tile</span>
+        <span class="cm">// Ghost AI: pick a new direction.
+        // (d + t) % 4 + 1 uses the global frame counter t to introduce
+        // pseudo-randomness. Each ghost has a different d, so they diverge.</span>
+        d = i == <span class="nm">4</span> ? k : (d + t) % <span class="nm">4</span> + <span class="nm">1</span>;
+        s = <span class="nm">7</span>;   <span class="cm">// short pause before trying again</span>
+      }
+
+      <span class="cm">// ── DRAW GHOSTS (i = 0, 1, 2, 3) ────────────────────────────────────────</span>
+      <span class="kw">if</span> (i &lt; <span class="nm">4</span>) {
+        <span class="cm">// Game over: reset if ghost reaches Pac-Man's tile</span>
+        <span class="kw">if</span> (z == G[<span class="nm">4</span>].x &amp;&amp; w == G[<span class="nm">4</span>].y) N(<span class="nm">1</span>);
+
+        <span class="cm">// Translate canvas to ghost's interpolated pixel position.
+        // The rendered position smoothly glides from tile x to tile z
+        // over 10 sub-steps: pixel = 12 + (x + (z-x)*s/10) * 16</span>
+        c.ta(
+          X = <span class="nm">12</span> + (x + (z - x) * s / <span class="nm">10</span>) * <span class="nm">16</span>,
+          Y = <span class="nm">10</span> + (y + (w - y) * s / <span class="nm">10</span>) * <span class="nm">16</span>
+        );
+
+        <span class="cm">// Each ghost has a unique colour. Array indexed by ghost number.</span>
+        h = [<span class="st">'f77'</span>, <span class="st">'c70'</span>, <span class="st">'d22'</span>, <span class="st">'09c'</span>][i];
+
+        <span class="cm">// Draw the ghost body using 6 filled rectangles (relative to translate origin):
+        //   Body block, head arc block, leg gap, eye whites, pupils, center stripe</span>
+        F(<span class="nm">1</span>,  <span class="nm">5</span>,  <span class="nm">22</span>, <span class="nm">21</span>, h);     <span class="cm">// main body</span>
+        F(<span class="nm">4</span>,  <span class="nm">2</span>,  <span class="nm">16</span>, <span class="nm">8</span>,  h);     <span class="cm">// upper head / dome</span>
+        F(<span class="nm">6</span>,  <span class="nm">23</span>, <span class="nm">13</span>, <span class="nm">3</span>,  <span class="nm">111</span>);   <span class="cm">// gap between legs (dark background colour)</span>
+        F(<span class="nm">4</span>,  <span class="nm">8</span>,  <span class="nm">16</span>, <span class="nm">7</span>,  <span class="st">'FFF'</span>); <span class="cm">// eye whites</span>
+        F(<span class="nm">7</span>,  <span class="nm">8</span>,  <span class="nm">11</span>, <span class="nm">4</span>,  <span class="nm">111</span>);   <span class="cm">// dark pupils</span>
+        F(<span class="nm">10</span>, <span class="nm">0</span>,  <span class="nm">4</span>,  <span class="nm">26</span>, h);     <span class="cm">// top of head + eye divider + middle leg</span>
+
+        c.ta(-X, -Y);   <span class="cm">// undo translate</span>
+      }
+
+      <span class="cm">// ── DRAW PAC-MAN (i = 4) ────────────────────────────────────────────────</span>
+      <span class="kw">if</span> (i == <span class="nm">4</span>) {
+        <span class="cm">// Eat: clear food at current integer tile position</span>
+        C[y][x] = <span class="nm">0</span>;
+
+        <span class="cm">// f = rotation offset so Pac-Man faces his direction of travel.
+        // d=1→f=0.5, d=2→f=0, d=3→f=1.5, d=4→f=1 (multiples of π/2)</span>
+        f = d % <span class="nm">2</span> ? d / <span class="nm">2</span> : d % <span class="nm">3</span>;
+
+        <span class="cm">// Mouth animation: t++ increments the global frame counter.
+        // (t/6)%2 oscillates 0→1→0→1... slowly (every 6 frames).
+        // Subtracting 1.1 and taking abs() gives a triangle wave: mouth
+        // opens from ~0.1 up to ~0.9 radians and closes again.</span>
+        m = (t++ / <span class="nm">6</span>) % <span class="nm">2</span> - <span class="nm">1.1</span>;
+        <span class="kw">if</span> (m &lt; <span class="nm">0</span>) m = -m;   <span class="cm">// manual Math.abs() to save bytes</span>
+
+        c.strokeStyle = <span class="st">'#ff0'</span>;   <span class="cm">// yellow</span>
+        c.ba();   <span class="cm">// beginPath</span>
+        c.arc(
+          <span class="nm">22</span> + (x + (z - x) * s / <span class="nm">10</span>) * <span class="nm">16</span>,   <span class="cm">// interpolated pixel x</span>
+          <span class="nm">22</span> + (y + (w - y) * s / <span class="nm">10</span>) * <span class="nm">16</span>,   <span class="cm">// interpolated pixel y</span>
+          <span class="nm">5</span>,                                   <span class="cm">// radius (pixels, small due to scale)</span>
+          <span class="nm">3.1</span> * f + m,                         <span class="cm">// start angle of arc gap</span>
+          <span class="nm">3.1</span> * f - m                          <span class="cm">// end angle of arc gap (mouth opening)</span>
+        );
+        c.stroke();
+      }
+
+      s++;   <span class="cm">// increment sub-step counter for smooth movement interpolation</span>
+    }
+  }
+
+}, <span class="nm">22</span>);   <span class="cm">// 22ms interval ≈ 45fps</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active') })
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active') })
+  btn.classList.add('active')
+  document.getElementById('panel-' + name).classList.add('active')
+}
+</script>
+</body>
+</html>

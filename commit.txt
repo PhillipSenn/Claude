@@ -1,0 +1,5 @@
+@SET userInput=(empty)
+@SET /P userInput=Message:
+git add .
+git commit -m"%userInput%"
+git push origin HEAD
