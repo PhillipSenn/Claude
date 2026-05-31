@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JS1K 2019 Entry #4122.20 — PAC-MAN by feiss</title>
+<title>JS1K 2019 Entry #4122.23 — PAC-MAN by feiss</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
 <style>
 body {
@@ -53,7 +53,7 @@ pre.source-pre {
 <body>
 
 <nav class="navbar navbar-dark bg-dark px-3" style="height:56px;">
-	<span class="navbar-brand mb-0 h1">JS1K 2019 Entry #4122.20 &mdash; PAC-MAN <small class="text-muted fs-6">by feiss &middot; 2019 &middot; 1024 bytes</small></span>
+	<span class="navbar-brand mb-0 h1">JS1K 2019 Entry #4122.23 &mdash; PAC-MAN <small class="text-muted fs-6">by feiss &middot; 2019 &middot; 1024 bytes</small></span>
 </nav>
 
 <div class="container-fluid p-0 full-height">
@@ -80,6 +80,9 @@ pre.source-pre {
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="tab-commented-btn" data-bs-toggle="tab" data-bs-target="#tab-commented" type="button" role="tab">Commented</button>
 				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="tab-html-btn" data-bs-toggle="tab" data-bs-target="#tab-html" type="button" role="tab">HTML</button>
+				</li>
 			</ul>
 
 			<div class="tab-content" style="height: calc(100% - 46px);">
@@ -90,7 +93,7 @@ pre.source-pre {
 
 						<div class="card mb-3">
 							<div class="card-header">
-								<strong>PAC-MAN</strong> &mdash; JS1K 2019 Entry #4122.20 &mdash; 1024 bytes
+								<strong>PAC-MAN</strong> &mdash; JS1K 2019 Entry #4122.23 &mdash; 1024 bytes
 							</div>
 							<div class="card-body">
 								<p>A fully playable Pac-Man clone squeezed into exactly 1,024 bytes of JavaScript &mdash; including the original map layout, ghost AI, mouth animation, and food counter. Use arrow keys to play.</p>
@@ -407,283 +410,331 @@ setInterval(gameTick, 22)
 							<button id="runBtnCommented" class="btn btn-outline-primary btn-sm" onclick="toggleRun('src-commented')">&#9654; Run</button>
 							<button class="btn btn-outline-secondary btn-sm" onclick="resetGame()">&#8635; Reset</button>
 						</div>
-						<pre id="src-commented" class="source-pre p-3 bg-dark text-light" style="flex:1; overflow:auto; height:auto; min-height:0; font-size:20px;">// JS1K 2019 #4122 - PAC-MAN by feiss
-// Commented version: every line explained
+						<div id="src-commented" class="p-3 bg-dark text-light" style="flex:1; overflow:auto; min-height:0; font-family:monospace; font-size:20px; white-space:pre-wrap;">
+<div class="text-muted">// JS1K 2019 #4122 - PAC-MAN by feiss</div>
+<div class="text-muted">// Commented version: every line explained</div>
 
-// Iterate over every property of the canvas context object c.
-// Build a 2-character shorthand alias from the 1st and 7th character of the name.
-// e.g. "fillRect"[0]+"fillRect"[6] = "f"+"c" = "fc", so c.fc = c.fillRect
-// e.g. "translate"[0]+"translate"[6] = "t"+"a" = "ta", so c.ta = c.translate
-// e.g. "beginPath"[0]+"beginPath"[6] = "b"+"a" = "ba", so c.ba = c.beginPath
-// e.g. "fillText"[0]+"fillText"[6] = "f"+"x" = "fx", so c.fx = c.fillText
+<div class="text-muted">/*
+ * Iterate over every property of the canvas context object c.
+ * Build a 2-character shorthand alias from the 1st and 7th character of the name.
+ * e.g. "fillRect"[0]+"fillRect"[6] = "f"+"c" = "fc", so c.fc = c.fillRect
+ * e.g. "translate"[0]+"translate"[6] = "t"+"a" = "ta", so c.ta = c.translate
+ * e.g. "beginPath"[0]+"beginPath"[6] = "b"+"a" = "ba", so c.ba = c.beginPath
+ * e.g. "fillText"[0]+"fillText"[6] = "f"+"x" = "fx", so c.fx = c.fillText
+ */
+</div>
 var methodName
 for (methodName in c) {
     c[methodName[0] + methodName[6]] = c[methodName]
 }
 
-// Each number encodes one row of the LEFT half of the 26-column maze as 13 binary bits.
-// 1 = wall tile (drawn as a blue block, and also the cell type entities move along)
-// 0 = open visual corridor (the gap between wall blocks; entities cannot enter)
-// Only 13 columns stored; the right 13 are built by mirroring at runtime.
+<div class="text-muted">/*
+ * Each number encodes one row of the LEFT half of the 26-column maze as 13 binary bits.
+ * 1 = wall tile (drawn as a blue block, and also the cell type entities move along)
+ * 0 = open visual corridor (the gap between wall blocks; entities cannot enter)
+ * Only 13 columns stored; the right 13 are built by mirroring at runtime.
+ */
+</div>
 var mazeRows = [
-    8190, 4226, 4226, 4226, 8191, 4240, 4240,  // rows 0-6
-    8094,  130,  130,  159,  144,  144, 8176,  // rows 7-13
-     144,  144,  159,  144,  144, 8190, 4226,  // rows 14-20
-    4226, 7423, 1168, 1168, 8094, 4098, 4098,  // rows 21-27
-    8191                                        // row 28
+    8190, 4226, 4226, 4226, 8191, 4240, 4240,<span class="text-muted">// rows 0-6</span>
+    8094,  130,  130,  159,  144,  144, 8176,<span class="text-muted">// rows 7-13</span>
+     144,  144,  159,  144,  144, 8190, 4226,<span class="text-muted">// rows 14-20</span>
+    4226, 7423, 1168, 1168, 8094, 4098, 4098,<span class="text-muted">// rows 21-27</span>
+    8191<span class="text-muted">// row 28</span>
 ]
 
-// foodGrid[row][col] holds whether a food pellet exists at that cell (1=yes, 0=eaten)
+<div class="text-muted">// foodGrid[row][col] holds whether a food pellet exists at that cell (1=yes, 0=eaten)</div>
 var foodGrid = []
 
-// frameCounter is incremented each time Pac-Man is drawn; drives mouth open/close animation
+<div class="text-muted">// frameCounter is incremented each time Pac-Man is drawn; drives mouth open/close animation</div>
 var frameCounter = 0
 
-// facingAngle rotates Pac-Man's arc so the mouth gap faces his direction of travel
+<div class="text-muted">// facingAngle rotates Pac-Man's arc so the mouth gap faces his direction of travel</div>
 var facingAngle = 0
 
-// entities[0..3] are the four ghosts; entities[4] is Pac-Man
+<div class="text-muted">// entities[0..3] are the four ghosts; entities[4] is Pac-Man</div>
 var entities
 
-// playerDirection is set by arrow keys: 1=down 2=right 3=up 4=left
+<div class="text-muted">// playerDirection is set by arrow keys: 1=down 2=right 3=up 4=left</div>
 var playerDirection
 
-// Convert each integer in mazeRows into a full 26-element array of '0'/'1' characters.
-// Wrapped in an IIFE so row/col/halfRow don't pollute the global scope.
+<div class="text-muted">// Convert each integer in mazeRows into a full 26-element array of '0'/'1' characters.</div>
+<div class="text-muted">// Wrapped in an IIFE so row/col/halfRow don't pollute the global scope.</div>
 ;(function buildMaze() {
     var row, col, halfRow
     for (row in mazeRows) {
-        // Convert the integer to a 13-character binary string (the left half)
+<div class="text-muted">// Convert the integer to a 13-character binary string (the left half)</div>
         halfRow = mazeRows[row].toString(2).padStart(13, 0)
-        // Mirror: iterate col 0..12, each time appending the symmetric character.
-        // halfRow.length - col*2 - 1 walks inward from the right end.
+<div class="text-muted">// Mirror: iterate col 0..12, each time appending the symmetric character.</div>
+<div class="text-muted">// halfRow.length - col*2 - 1 walks inward from the right end.</div>
         for (col in halfRow) {
             halfRow += halfRow[halfRow.length - col * 2 - 1]
         }
-        // Replace the integer with the 26-element character array
+<div class="text-muted">// Replace the integer with the 26-element character array</div>
         mazeRows[row] = halfRow.split('')
-        // Initialise the food grid row as an empty array (filled in drawScene)
+<div class="text-muted">// Initialise the food grid row as an empty array (filled in drawScene)</div>
         foodGrid[row] = []
     }
 }())
 
-// Draw a filled rectangle using the aliased fillRect (c.fc).
-// color is a 3-char hex shorthand: '009'=#000099 (blue bg), '111'=#111111 (wall)
+<div class="text-muted">// Draw a filled rectangle using the aliased fillRect (c.fc).</div>
+<div class="text-muted">// color is a 3-char hex shorthand: '009'=#000099 (blue bg), '111'=#111111 (wall)</div>
 function fillBlock(x, y, w, h, color) {
-    c.fillStyle = '#' + color   // set the fill colour
-    c.fc(x, y, w, h)             // c.fc = c.fillRect, draw the rectangle
+    c.fillStyle = '#' + color<span class="text-muted">// set the fill colour</span>
+    c.fc(x, y, w, h)<span class="text-muted">// c.fc = c.fillRect, draw the rectangle</span>
 }
 
-// drawScene() redraws the maze background every frame.
-// drawScene(true) also resets food and respawns all entities (game start / game over).
+<div class="text-muted">// drawScene() redraws the maze background every frame.</div>
+<div class="text-muted">// drawScene(true) also resets food and respawns all entities (game start / game over).</div>
 function drawScene(resetGame) {
     var row, col
-    fillBlock(0, 0, 500, 500, '009')  // fill entire canvas dark blue (clear frame)
+    fillBlock(0, 0, 500, 500, '009')<span class="text-muted">// fill entire canvas dark blue (clear frame)</span>
     for (row in mazeRows) {
         for (col in mazeRows[row]) {
-            // +mazeRows[row][col] coerces '1'-&gt;1 (truthy) and '0'-&gt;0 (falsy)
+<div class="text-muted">// +mazeRows[row][col] coerces '1'-&gt;1 (truthy) and '0'-&gt;0 (falsy)</div>
             if (+mazeRows[row][col]) {
-                // Draw a dark wall tile 30x30px; grid spacing is 16px with 8px margin
+<div class="text-muted">// Draw a dark wall tile 30x30px; grid spacing is 16px with 8px margin</div>
                 fillBlock(8 + col * 16, 8 + row * 16, 30, 30, '111')
             }
             if (resetGame) {
-                // Seed food: 1 on wall cells (which is where entities travel and eat)
+<div class="text-muted">// Seed food: 1 on wall cells (which is where entities travel and eat)</div>
                 foodGrid[row][col] = +mazeRows[row][col]
             }
         }
     }
     if (resetGame) {
         entities = [
-            makeEntity(25),   // ghost 1 - red
-            makeEntity(5),    // ghost 2 - orange
-            makeEntity(0),    // ghost 3 - dark red
-            makeEntity(17),   // ghost 4 - cyan
-            makeEntity(16)    // Pac-Man
+            makeEntity(25),<span class="text-muted">// ghost 1 - red</span>
+            makeEntity(5),<span class="text-muted">// ghost 2 - orange</span>
+            makeEntity(0),<span class="text-muted">// ghost 3 - dark red</span>
+            makeEntity(17),<span class="text-muted">// ghost 4 - cyan</span>
+            makeEntity(16)<span class="text-muted">// Pac-Man</span>
         ]
-        playerDirection = 4  // start moving up (direction 4 = up)
+        playerDirection = 4<span class="text-muted">// start moving up (direction 4 = up)</span>
     }
 }
 
-// Build one entity object. startPos sets col AND row to the same value
-// (a deliberate shortcut: entities start on wall cells and bounce to open positions).
-// direction cycles 1-4 using frameCounter so each entity starts facing differently.
-// step=9 means the very next tick (step+=1 -&gt; 10 &gt; 9) triggers the first tile advance.
+<div class="text-muted">/*
+ * Build one entity object. startPos sets col AND row to the same value
+ * (a deliberate shortcut: entities start on wall cells and bounce to open positions).
+ * direction cycles 1-4 using frameCounter so each entity starts facing differently.
+ * step=9 means the very next tick (step+=1 -&gt; 10 &gt; 9) triggers the first tile advance.
+ */
+</div>
 function makeEntity(startPos) {
     return {
-        col:       startPos,   // current grid column (integer)
-        row:       startPos,   // current grid row (integer)
-        nextCol:   startPos,   // target column being moved toward
-        nextRow:   startPos,   // target row being moved toward
-        turnCol:   startPos,   // lookahead column when testing a direction change
-        turnRow:   startPos,   // lookahead row when testing a direction change
-        direction: (frameCounter++ % 4) + 1,  // starting direction 1-4
-        step:      9           // sub-step counter; drives smooth interpolation
+        col:       startPos,<span class="text-muted">// current grid column (integer)</span>
+        row:       startPos,<span class="text-muted">// current grid row (integer)</span>
+        nextCol:   startPos,<span class="text-muted">// target column being moved toward</span>
+        nextRow:   startPos,<span class="text-muted">// target row being moved toward</span>
+        turnCol:   startPos,<span class="text-muted">// lookahead column when testing a direction change</span>
+        turnRow:   startPos,<span class="text-muted">// lookahead row when testing a direction change</span>
+        direction: (frameCounter++ % 4) + 1,<span class="text-muted">// starting direction 1-4</span>
+        step:      9<span class="text-muted">// sub-step counter; drives smooth interpolation</span>
     }
 }
 
-drawScene(true)   // first draw: build maze and spawn all entities
-c.lineWidth = 12  // stroke width for Pac-Man's arc (his body outline)
+drawScene(true)<span class="text-muted">// first draw: build maze and spawn all entities</span>
+c.lineWidth = 12<span class="text-muted">// stroke width for Pac-Man's arc (his body outline)</span>
 
-// Map arrow key codes to direction values 1-4.
-// Key codes: Left=37, Up=38, Right=39, Down=40
-// 41 - 37 = 4 (left), 41 - 38 = 3 (up), 41 - 39 = 2 (right), 41 - 40 = 1 (down)
+<div class="text-muted">/*
+ * Map arrow key codes to direction values 1-4.
+ * Key codes: Left=37, Up=38, Right=39, Down=40
+ * 41 - 37 = 4 (left), 41 - 38 = 3 (up), 41 - 39 = 2 (right), 41 - 40 = 1 (down)
+ */
+</div>
 onkeydown = function handleKey(event) {
     playerDirection = 41 - event.which
 }
 
-// Main game loop, called every 22ms (approx 45fps).
+<div class="text-muted">// Main game loop, called every 22ms (approx 45fps).</div>
 function gameTick() {
     var row, col, i, entity, ghostColor, pixelX, pixelY, mouthAngle
 
-    drawScene()  // repaint the maze walls (clears previous frame)
+    drawScene()<span class="text-muted">// repaint the maze walls (clears previous frame)</span>
 
-    // Draw food pellets and count how many remain.
-    // foodRemaining starts at 298 and decrements for each pellet drawn.
+<div class="text-muted">// Draw food pellets and count how many remain.</div>
+<div class="text-muted">// foodRemaining starts at 298 and decrements for each pellet drawn.</div>
     var foodRemaining = 298
     for (row in mazeRows) {
         for (col in mazeRows[row]) {
             if (foodGrid[row][col]) {
-                // Draw a 3x3 white dot centred in the cell
+<div class="text-muted">// Draw a 3x3 white dot centred in the cell</div>
                 fillBlock(22 + col * 16, 22 + row * 16, 3, 3, 'eee')
                 foodRemaining -= 1
             }
         }
     }
-    // c.fx = c.fillText; display score as remaining pellet count
+<div class="text-muted">// c.fx = c.fillText; display score as remaining pellet count</div>
     c.fx(foodRemaining, 220, 220)
 
     for (i in entities) {
         entity = entities[i]
 
-        // TILE ADVANCE: once step exceeds 9, the entity has crossed a full tile.
-        // Commit the move: current position becomes the target position.
-        // Then compute the NEXT target tile in the current direction.
-        //
-        // Direction encoding:
-        //   Odd directions  (1=down, 3=up)   change the row
-        //   Even directions (2=right, 4=left) change the column
-        //
-        // nextCol formula: nextCol -= (direction%2) ? 0 : direction-3
-        //   direction=2: nextCol -= (2-3) = nextCol += 1  (move right)
-        //   direction=4: nextCol -= (4-3) = nextCol -= 1  (move left)
-        //   direction=1 or 3: subtract 0   (column unchanged)
-        //
-        // nextRow formula: nextRow -= (direction%2) ? direction-2 : 0
-        //   direction=1: nextRow -= (1-2) = nextRow += 1  (move down)
-        //   direction=3: nextRow -= (3-2) = nextRow -= 1  (move up)
-        //   direction=2 or 4: subtract 0   (row unchanged)
+<div class="text-muted">/*
+ * TILE ADVANCE: once step exceeds 9, the entity has crossed a full tile.
+ * Commit the move: current position becomes the target position.
+ * Then compute the NEXT target tile in the current direction.
+ * 
+ * Direction encoding:
+ * Odd directions  (1=down, 3=up)   change the row
+ * Even directions (2=right, 4=left) change the column
+ * 
+ * nextCol formula: nextCol -= (direction%2) ? 0 : direction-3
+ * direction=2: nextCol -= (2-3) = nextCol += 1  (move right)
+ * direction=4: nextCol -= (4-3) = nextCol -= 1  (move left)
+ * direction=1 or 3: subtract 0   (column unchanged)
+ * 
+ * nextRow formula: nextRow -= (direction%2) ? direction-2 : 0
+ * direction=1: nextRow -= (1-2) = nextRow += 1  (move down)
+ * direction=3: nextRow -= (3-2) = nextRow -= 1  (move up)
+ * direction=2 or 4: subtract 0   (row unchanged)
+ */
+</div>
         if (entity.step &gt; 9) {
-            entity.col     = entity.nextCol              // commit column
-            entity.row     = entity.nextRow              // commit row
+            entity.col     = entity.nextCol<span class="text-muted">// commit column</span>
+            entity.row     = entity.nextRow<span class="text-muted">// commit row</span>
             entity.nextCol -= (entity.direction % 2) ? 0 : entity.direction - 3
             entity.nextRow -= (entity.direction % 2) ? entity.direction - 2 : 0
-            entity.step    = 0                           // reset sub-step counter
+            entity.step    = 0<span class="text-muted">// reset sub-step counter</span>
         }
 
-        // DIRECTION CHANGE (Pac-Man only, index 4):
-        // When the player presses a new direction, look one step ahead in that direction.
-        // If the lookahead cell is a wall cell (value '1', truthy), the turn is valid.
-        // Pac-Man can only move along wall cells; '0' cells are impassable gaps.
+<div class="text-muted">/*
+ * DIRECTION CHANGE (Pac-Man only, index 4):
+ * When the player presses a new direction, look one step ahead in that direction.
+ * If the lookahead cell is a wall cell (value '1', truthy), the turn is valid.
+ * Pac-Man can only move along wall cells; '0' cells are impassable gaps.
+ */
+</div>
         if (i == 4 &amp;&amp; entity.direction !== playerDirection) {
-            // Compute the lookahead tile using the same direction-to-delta formula
+<div class="text-muted">// Compute the lookahead tile using the same direction-to-delta formula</div>
             entity.turnCol = entity.col - ((playerDirection % 2) ? 0 : playerDirection - 3)
             entity.turnRow = entity.row - ((playerDirection % 2) ? playerDirection - 2 : 0)
-            // +mazeRows[turnRow][turnCol] is truthy (1) for wall cells = valid to enter
+<div class="text-muted">// +mazeRows[turnRow][turnCol] is truthy (1) for wall cells = valid to enter</div>
             if (+mazeRows[entity.turnRow][entity.turnCol]) {
-                entity.direction = playerDirection   // commit the new direction
-                entity.nextCol   = entity.turnCol   // move toward the lookahead tile
+                entity.direction = playerDirection<span class="text-muted">// commit the new direction</span>
+                entity.nextCol   = entity.turnCol<span class="text-muted">// move toward the lookahead tile</span>
                 entity.nextRow   = entity.turnRow
-                entity.step      = 0                // restart sub-step from zero
+                entity.step      = 0<span class="text-muted">// restart sub-step from zero</span>
             }
         }
 
-        // WALL COLLISION: if the next tile is out of bounds or is a '0' (gap) cell, bounce.
-        // entity.nextRow &lt; 0 catches the top boundary
-        // entity.nextRow &gt;= mazeRows.length catches the bottom boundary  
-        // !+mazeRows[nextRow][nextCol] fires when the cell value is '0' (open gap)
+<div class="text-muted">/*
+ * WALL COLLISION: if the next tile is out of bounds or is a '0' (gap) cell, bounce.
+ * entity.nextRow &lt; 0 catches the top boundary
+ * entity.nextRow &gt;= mazeRows.length catches the bottom boundary
+ * !+mazeRows[nextRow][nextCol] fires when the cell value is '0' (open gap)
+ */
+</div>
         if (entity.nextRow &lt; 0 || entity.nextRow &gt;= mazeRows.length || !+mazeRows[entity.nextRow][entity.nextCol]) {
-            entity.nextCol = entity.col   // snap target back to current position
+            entity.nextCol = entity.col<span class="text-muted">// snap target back to current position</span>
             entity.nextRow = entity.row
             if (i == 4) {
-                // Pac-Man: keep trying the player's desired direction
+<div class="text-muted">// Pac-Man: keep trying the player's desired direction</div>
                 entity.direction = playerDirection
             } else {
-                // Ghost AI: pick a new direction using frame counter for pseudo-randomness.
-                // (entity.direction + frameCounter) % 4 + 1 gives a value 1-4 that varies
-                // each time a ghost hits a wall, producing different turns per ghost.
+<div class="text-muted">/*
+ * Ghost AI: pick a new direction using frame counter for pseudo-randomness.
+ * (entity.direction + frameCounter) % 4 + 1 gives a value 1-4 that varies
+ * each time a ghost hits a wall, producing different turns per ghost.
+ */
+</div>
                 entity.direction = (entity.direction + frameCounter) % 4 + 1
             }
-            entity.step = 7   // short delay before attempting to move again
+            entity.step = 7<span class="text-muted">// short delay before attempting to move again</span>
         }
 
-        // DRAW GHOST (entities 0-3):
+<div class="text-muted">// DRAW GHOST (entities 0-3):</div>
         if (i &lt; 4) {
-            // Collision detection: if ghost target tile matches Pac-Man's current tile, reset
+<div class="text-muted">// Collision detection: if ghost target tile matches Pac-Man's current tile, reset</div>
             if (entity.nextCol === entities[4].col &amp;&amp; entity.nextRow === entities[4].row) {
-                drawScene(true)   // ghost caught Pac-Man: full game reset
+                drawScene(true)<span class="text-muted">// ghost caught Pac-Man: full game reset</span>
             }
 
-            // Smooth interpolated pixel position:
-            // rendered = currentTile + (targetTile - currentTile) * step/10
-            // At step=0: renders at currentTile. At step=9: nearly at targetTile.
+<div class="text-muted">/*
+ * Smooth interpolated pixel position:
+ * rendered = currentTile + (targetTile - currentTile) * step/10
+ * At step=0: renders at currentTile. At step=9: nearly at targetTile.
+ */
+</div>
             pixelX = 12 + (entity.col + (entity.nextCol - entity.col) * entity.step / 10) * 16
             pixelY = 10 + (entity.row + (entity.nextRow - entity.row) * entity.step / 10) * 16
 
-            c.ta(pixelX, pixelY)   // c.ta = c.translate; shift canvas origin to ghost
+            c.ta(pixelX, pixelY)<span class="text-muted">// c.ta = c.translate; shift canvas origin to ghost</span>
 
-            ghostColor = ['f77', 'c70', 'd22', '09c'][i]   // one colour per ghost
+            ghostColor = ['f77', 'c70', 'd22', '09c'][i]<span class="text-muted">// one colour per ghost</span>
 
-            // Ghost sprite built from 6 fillRect calls (all coords relative to translate):
-            fillBlock( 1,  5, 22, 21, ghostColor)  // main body block
-            fillBlock( 4,  2, 16,  8, ghostColor)  // head dome (rounded top)
-            fillBlock( 6, 23, 13,  3, '111')       // gap between the two legs
-            fillBlock( 4,  8, 16,  7, 'FFF')       // white eye area
-            fillBlock( 7,  8, 11,  4, '111')       // dark pupils inside eye whites
-            fillBlock(10,  0,  4, 26, ghostColor)  // vertical stripe: top + leg divider
+<div class="text-muted">// Ghost sprite built from 6 fillRect calls (all coords relative to translate):</div>
+            fillBlock( 1,  5, 22, 21, ghostColor)<span class="text-muted">// main body block</span>
+            fillBlock( 4,  2, 16,  8, ghostColor)<span class="text-muted">// head dome (rounded top)</span>
+            fillBlock( 6, 23, 13,  3, '111')<span class="text-muted">// gap between the two legs</span>
+            fillBlock( 4,  8, 16,  7, 'FFF')<span class="text-muted">// white eye area</span>
+            fillBlock( 7,  8, 11,  4, '111')<span class="text-muted">// dark pupils inside eye whites</span>
+            fillBlock(10,  0,  4, 26, ghostColor)<span class="text-muted">// vertical stripe: top + leg divider</span>
 
-            c.ta(-pixelX, -pixelY)   // undo the translate; restore canvas origin
+            c.ta(-pixelX, -pixelY)<span class="text-muted">// undo the translate; restore canvas origin</span>
         }
 
-        // DRAW PAC-MAN (entity index 4):
+<div class="text-muted">// DRAW PAC-MAN (entity index 4):</div>
         if (i == 4) {
-            // Remove food pellet at Pac-Man's current integer tile position
+<div class="text-muted">// Remove food pellet at Pac-Man's current integer tile position</div>
             foodGrid[entity.row][entity.col] = 0
 
-            // Compute rotation so the mouth gap faces direction of travel.
-            // Maps direction 1-4 to multiples of ~pi/2 (using 3.1 as approximation of pi):
-            //   direction=1: 1/2 = 0.5   direction=2: 2%3 = 2   (wrong; should be 0)
-            //   direction=3: 3/2 = 1.5   direction=4: 4%3 = 1
-            // The formula is a byte-saving trick; imprecise but visually acceptable.
+<div class="text-muted">/*
+ * Compute rotation so the mouth gap faces direction of travel.
+ * Maps direction 1-4 to multiples of ~pi/2 (using 3.1 as approximation of pi):
+ * direction=1: 1/2 = 0.5   direction=2: 2%3 = 2   (wrong; should be 0)
+ * direction=3: 3/2 = 1.5   direction=4: 4%3 = 1
+ * The formula is a byte-saving trick; imprecise but visually acceptable.
+ */
+</div>
             facingAngle = (entity.direction % 2) ? entity.direction / 2 : entity.direction % 3
 
-            // Triangle-wave mouth animation without Math.sin:
-            // (frameCounter/6)%2 oscillates 0-&gt;1-&gt;0 slowly (period=12 frames)
-            // Subtract 1.1 -&gt; range -1.1 to +0.9; take abs -&gt; range 0.1 to 1.1
-            // Result: mouthAngle smoothly opens and closes each ~12 frames
+<div class="text-muted">/*
+ * Triangle-wave mouth animation without Math.sin:
+ * (frameCounter/6)%2 oscillates 0-&gt;1-&gt;0 slowly (period=12 frames)
+ * Subtract 1.1 -&gt; range -1.1 to +0.9; take abs -&gt; range 0.1 to 1.1
+ * Result: mouthAngle smoothly opens and closes each ~12 frames
+ */
+</div>
             mouthAngle = (frameCounter++ / 6) % 2 - 1.1
             if (mouthAngle &lt; 0) {
-                mouthAngle = -mouthAngle   // manual Math.abs() to save bytes
+                mouthAngle = -mouthAngle<span class="text-muted">// manual Math.abs() to save bytes</span>
             }
 
-            // Interpolated pixel position (same formula as ghosts)
+<div class="text-muted">// Interpolated pixel position (same formula as ghosts)</div>
             pixelX = 22 + (entity.col + (entity.nextCol - entity.col) * entity.step / 10) * 16
             pixelY = 22 + (entity.row + (entity.nextRow - entity.row) * entity.step / 10) * 16
 
-            c.strokeStyle = '#ff0'  // bright yellow stroke colour
-            c.ba()                   // c.ba = c.beginPath; start a new path
-            // Draw an arc with a wedge-shaped gap (the mouth):
-            //   startAngle = 3.1 * facingAngle + mouthAngle  (one jaw)
-            //   endAngle   = 3.1 * facingAngle - mouthAngle  (other jaw)
-            //   The gap width is 2 * mouthAngle radians, centred on facingAngle * pi
+            c.strokeStyle = '#ff0'<span class="text-muted">// bright yellow stroke colour</span>
+            c.ba()<span class="text-muted">// c.ba = c.beginPath; start a new path</span>
+<div class="text-muted">/*
+ * Draw an arc with a wedge-shaped gap (the mouth):
+ * startAngle = 3.1 * facingAngle + mouthAngle  (one jaw)
+ * endAngle   = 3.1 * facingAngle - mouthAngle  (other jaw)
+ * The gap width is 2 * mouthAngle radians, centred on facingAngle * pi
+ */
+</div>
             c.arc(pixelX, pixelY, 5, 3.1 * facingAngle + mouthAngle, 3.1 * facingAngle - mouthAngle)
-            c.stroke()   // render the arc outline
+            c.stroke()<span class="text-muted">// render the arc outline</span>
         }
 
-        entity.step += 1   // advance sub-step; at step=10 the next tile advance triggers
+        entity.step += 1<span class="text-muted">// advance sub-step; at step=10 the next tile advance triggers</span>
     }
 }
 
-setInterval(gameTick, 22)   // start the game loop: 22ms interval = approx 45fps</pre>
+setInterval(gameTick, 22)<span class="text-muted">// start the game loop: 22ms interval = approx 45fps</span>
+</div>
+					</div>
+				</div>
+
+				<!-- HTML TAB -->
+				<div class="tab-pane fade" id="tab-html" role="tabpanel" style="height:100%; overflow:hidden;">
+					<div style="display:flex; flex-direction:column; height:100%;">
+						<div class="p-2 border-bottom text-muted" style="font-size:13px;">
+							The full HTML document injected into the iframe — including the JS1K shim and the game source.
+						</div>
+						<pre id="html-viewer" class="source-pre p-3 bg-dark text-light" style="flex:1; overflow:auto; height:auto; min-height:0; font-size:20px;"></pre>
 					</div>
 				</div>
 
@@ -811,6 +862,51 @@ function resetGame() {
 }
 
 // Switching to About tab resets; other tab switches leave iframe alone
+function showHtmlSource() {
+	var shimOnly = [
+		'<!DOCTYPE html>',
+		'<html>',
+		'<head>',
+		'<meta charset="UTF-8">',
+		'<style>body { margin: 0; overflow: hidden; background: #000 }</style>',
+		'</head>',
+		'<body>',
+		'<canvas id="c" width="500" height="500"></canvas>',
+		'<script>',
+		'var a = document.getElementById("c")',
+		'var c = a.getContext("2d")',
+		'var b = document.body',
+		'var d = document',
+		'<' + '/script>',
+		'<!-- game source injected here - see other tabs -->',
+		'</body>',
+		'</html>'
+	]
+	document.getElementById('html-viewer').textContent = shimOnly.join('\n')
+}
+
+function buildHtmlDoc(code) {
+	var interceptor = ''
+	var parts = [
+		'<!DOCTYPE html><html><head><meta charset="UTF-8">',
+		'<style>body{margin:0;overflow:hidden;background:#000}</style>',
+		'</head><body>',
+		'<canvas id="c" width="500" height="500"></canvas>',
+		'<script>',
+		'var a = document.getElementById("c")',
+		'var c = a.getContext("2d")',
+		'var b = document.body',
+		'var d = document',
+		interceptor,
+		'<' + '/script>',
+		'<script>',
+		code,
+		'<' + '/script>',
+		'</body></html>'
+	]
+	return parts.join('\n')
+}
+
 document.getElementById('codeTabs').addEventListener('shown.bs.tab', function onTabShown(e) {
 	var target = e.target.getAttribute('data-bs-target')
 	if (target === '#tab-about') {
@@ -818,6 +914,9 @@ document.getElementById('codeTabs').addEventListener('shown.bs.tab', function on
 	}
 	if (target === '#tab-original' || target === '#tab-expanded' || target === '#tab-commented') {
 		if (isRunning) { resetGame() }
+	}
+	if (target === '#tab-html') {
+		showHtmlSource()
 	}
 })
 
