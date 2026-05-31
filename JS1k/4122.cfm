@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JS1K 2019 Entry #4122.34 — PAC-MAN by feiss</title>
+<title>JS1K 2019 Entry #4122.35 — PAC-MAN by feiss</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
 <style>
 body {
@@ -54,7 +54,7 @@ pre.source-pre {
 <body>
 
 <nav class="navbar navbar-dark bg-dark px-3" style="height:56px;">
-	<span class="navbar-brand mb-0 h1">JS1K 2019 Entry #4122.34 &mdash; PAC-MAN <small class="text-muted fs-6">by feiss &middot; 2019 &middot; 1024 bytes</small></span>
+	<span class="navbar-brand mb-0 h1">JS1K 2019 Entry #4122.35 &mdash; PAC-MAN <small class="text-muted fs-6">by feiss &middot; 2019 &middot; 1024 bytes</small></span>
 </nav>
 
 <div class="container-fluid p-0 full-height">
@@ -73,7 +73,7 @@ pre.source-pre {
 					<button class="nav-link active" id="tab-about-btn" data-bs-toggle="tab" data-bs-target="#tab-about" type="button" role="tab">About</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="tab-original-btn" data-bs-toggle="tab" data-bs-target="#tab-original" type="button" role="tab">Original</button>
+					<button class="nav-link" id="tab-original-btn" data-bs-toggle="tab" data-bs-target="#tab-original" type="button" role="tab">Source</button>
 				</li>
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="tab-expanded-btn" data-bs-toggle="tab" data-bs-target="#tab-expanded" type="button" role="tab">Expanded</button>
@@ -94,7 +94,7 @@ pre.source-pre {
 
 						<div class="card mb-3">
 							<div class="card-header">
-								<strong>PAC-MAN</strong> &mdash; JS1K 2019 Entry #4122.34 &mdash; 1024 bytes
+								<strong>PAC-MAN</strong> &mdash; JS1K 2019 Entry #4122.35 &mdash; 1024 bytes
 							</div>
 							<div class="card-body">
 								<p>A fully playable Pac-Man clone squeezed into exactly 1,024 bytes of JavaScript &mdash; including the original map layout, ghost AI, mouth animation, and food counter. Use arrow keys to play.</p>
@@ -135,30 +135,35 @@ pre.source-pre {
 						<button id="runBtn" class="btn btn-outline-primary btn-sm" onclick="toggleRun('src-original')">&#9654; Run</button>
 						<button class="btn btn-outline-secondary btn-sm" onclick="resetGame()">&#8635; Reset</button>
 					</div>
-					<pre id="src-original" class="source-pre p-3 bg-dark text-light" style="flex:1; overflow:auto; height:auto; min-height:0; font-size:20px;">M=[g=8190, h=4226, h, h, g+1, l=4240, l,
+					<pre id="src-original" class="source-pre p-3 bg-dark text-light" style="flex:1; overflow:auto; height:auto; min-height:0; font-size:20px;">//b.style.background = "#000";
+// map
+M=[g=8190, h=4226, h, h, g+1, l=4240, l,
   l=8094, 130, 130, k=159, j=144, j, 8176,
   j, j, k, j, j, g, h, h, 7423, j=1168,
-  j, l, k=4098, k, g+1, f=t=0 ]
-C=[]
+  j, l, k=4098, k, g+1, f=t=0 ];
+C=[];
 
+// canvas trick
 for(i in c) c[i[0]+i[6]] = c[i]
-
 for(i in M) {
-  m = M[i].toString(2).padStart(13,0)
-  for(j in m) m+=m[m.length-j*2-1]
-  M[i] = m.split('')
+  // convert map numbers to binary
+  m = M[i].toString(2).padStart(13,0);
+  // duplicate and flip to build right half
+  for(j in m) m+=m[m.length-j*2-1];
+  M[i] = m.split('');
   C[i] = []
 }
-
-F = (x,y,w,h,p)=&gt;{ c.fillStyle='#'+p; c.fc(x,y,w,h,p) }
-
-N = r=&gt;{
+F = (x,y,w,h,p)=>{ c.fillStyle='#'+p;c.fc(x,y,w,h,p) }
+N = r=>{
+  //fill all in blue
   F(0,0,l,l,'009')
   for(i in M) for(j in M[i]){
-    +M[i][j] &amp;&amp; F(8+j*16, 8+i*16, 30, 30, 111)
+    +M[i][j] && F(8+j*16, 8+i*16, 30, 30,111);
     if (r) {
-      C[i][j] = +M[i][j]
-      g=h=&gt;({x:h,y:h,z:h,w:h,Z:h,W:h,d:(t++%4)+1,s:9})
+      // reset map
+      C[i][j] = +M[i][j];
+      g=h=>({x:h,y:h,z:h,w:h,Z:h,W:h,d:(t++%4)+1,s:9})
+      // 4 ghosts and pacman
       G=[g(25),g(5),g(0),g(17),g(16)]
       k=4
     }
@@ -166,64 +171,72 @@ N = r=&gt;{
 }
 
 N(1)
-c.lineWidth= 12
+c.lineWidth= 12;
 
-onkeydown=e=&gt;k=41-e.which
-
-setInterval(()=&gt;{
+onkeydown=e=>k=41-e.which; // &lt;4 ^3 &gt;2 v1 .0
+setInterval(()=>{
+  // draw map
   N()
-  S = 298
+  // draw food
+  S = 298;
   for(i in M) for(j in M[i]){
-    C[i][j] &amp;&amp; F(22+j*16, 22+i*16, 3, 3, 'eee', S--)
+   // if there's food in this cell, paint it and decrement counter
+   C[i][j] &amp;&amp; F(22+j*16, 22+i*16, 3, 3, 'eee', S--);
   }
-  c.fx(S,220,220)
+  // draw score
+  c.fx(S,220,220);
   for(i in G) with(G[i]){
     if (s&gt;9){
-      x = z
-      y = w
-      z -= d%2?0:d-3
-      w -= d%2?d-2:0
-      s = 0
+      x = z;
+      y = w;
+      z -= d%2?0:d-3; // advance x
+      w -= d%2?d-2:0; // advance y
+      s = 0 // restart microstep counter
     }
+    // pacman turning in intersections
     if (i == 4 &amp;&amp; d != k){
-      Z = x - (k%2?0:k-3)
-      W = y - (k%2?k-2:0)
+      Z = x - (k%2?0:k-3);
+      W = y - (k%2?k-2:0);
       if(+M[W][Z]){
-        d = k
-        z = Z
-        w = W
+        d = k;
+        z = Z;
+        w = W;
         s = 0
       }
     }
     if(w&lt;0 || !+M[w][z]){
-      z = x
-      w = y
-      d = i==4?k:(d+t)%4+1
+      z = x; w = y; // restore prev position
+      d = i==4?k:(d+t)%4+1; // pseudo-random turn. This is all the AI there is :P
       s = 7
     }
     if(i&lt;4) {
+      // game over
       if (z==G[4].x &amp;&amp; w==G[4].y) N(1)
-      c.ta(X=12 + (x + (z - x)*s/10) * 16, Y=10 + (y + (w - y)*s/10) * 16)
+      // draw ghosts
+      c.ta(X=12 + (x + (z - x)*s/10) * 16, Y=10 + (y + (w - y)*s/10) * 16);
+      //select color
       h=['f77','c70','d22','09c'][i]
-      F(1,5,22,21,h)
-      F(4,2,16,8,h)
-      F(6,23,13,3,111)
-      F(4,8,16,7,'FFF')
-      F(7,8,11,4,111)
-      F(10,0,4,26,h)
-      c.ta(-X,-Y)
+      // body
+      F(1,5,22,21,h);
+      F(4,2,16,8,h);
+      F(6,23,13,3,111); // gap between legs
+      F(4,8,16,7,'FFF'); //white of eyes
+      F(7,8,11,4,111); // pupils
+      F(10,0,4,26,h); // top of head + eyes separation + middle leg
+      c.ta(-X,-Y);
     }
-    if(i==4) {
-      C[y][x] = 0
-      f = d%2?d/2:d%3
-      m = (t++/6)%2-1.1
-      if(m&lt;0) m=-m
-      c.strokeStyle='#ff0'
-      c.ba()
-      c.arc(22 + (x + (z - x)*s/10) * 16, 22 + (y + (w - y)*s/10) * 16, 5, 3.1*f+m, 3.1*f-m)
-      c.stroke()
+    if(i==4) { // draw pacman
+      // eat
+      C[y][x] = 0;
+      f = d%2?d/2:d%3;
+      m = (t++/6)%2-1.1; // mouth animation
+      if(m&lt;0) m=-m; // abs
+      c.strokeStyle='#ff0';
+      c.ba();
+      c.arc(22 + (x + (z - x)*s/10) * 16, 22 + (y + (w - y)*s/10) * 16, 5, 3.1*f+m, 3.1*f-m);
+      c.stroke();
     }
-    s++
+    s++;
   }
 }, 22)</pre>
 					</div>
