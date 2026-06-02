@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JS1K 4159 - i feel fine</title>
+  <style>* { margin: 0; padding: 0; background: #000; } canvas { display: block; }</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+  var b = document.body
+  var c = document.getElementById('c')
+  var a = c
+  c.width = c.height = 512
+  var g = c.getContext('webgl') || c.getContext('experimental-webgl')
+
+  function compileShader(type, src) {
+    var shader = g.createShader(type)
+    g.shaderSource(shader, src)
+    g.compileShader(shader)
+    if (!g.getShaderParameter(shader, g.COMPILE_STATUS)) {
+      console.error('Shader compile error:', g.getShaderInfoLog(shader))
+      console.error('Source:', src)
+      return null
+    }
+    return shader
+  }
+
+  var vertSrc = `attribute vec2 p;
+varying vec2 u;
+void main(){
+  gl_Position = vec4(u = p - 1., 0, 1);
+}`
+
+  var fragSrc = `precision highp float;
+varying vec2 u;
+uniform float T;
+#define rt vec2(sin(3.+T),cos(3.+T))
+
+float bo(vec3 p) {
+  p = abs(p - .5 * vec3(rt, 1));
+  return max(max(p.x, p.y), p.z) - .1;
+}
+
+float s(vec3 p) {
+  vec3 g = fract(vec3(p.xy, T + p.z) * 0.47) - .5;
+  g = smoothstep(0.3, 1., 25. * g * g);
+  float t = .25 * (5. - max(
+    2.5 * (cos(p.x) * sin(T + p.z)) + length(g) + abs(p.x),
+    length(g) + abs(1. - p.y)
+  ));
+  return min(t, bo(p));
+}
+
+void main() {
+  vec3 d = normalize(vec3(u, 1)), o = vec3(0, 0, -1);
+  vec3 c, p, n;
+  float t, h;
+  float e = .002;
+  for (int i = 0; i < 100; i++) {
+    p = o + d * t;
+    p.xy = cos(.05 * T) * p.xy + sin(.05 * t) * vec2(p.y, -p.x);
+    h = s(p);
+    t += h;
+    if (h < e) {
+      vec2 e = vec2(-e, e);
+      n = normalize(
+        e.yxx * s(p + e.yxx) +
+        e.xxy * s(p + e.xxy) +
+        e.xyx * s(p + e.xyx) +
+        e.yyy * s(p + e.yyy)
+      );
+      float l = max(dot(normalize(vec3(1, -rt) - p), n), 0.);
+      c = (-abs(d.x * .2) + vec3(.5, l, l)) - (t * .05);
+      if (bo(p) == h) c = l - vec3(0, .5, 1), t = 0.;
+    }
+  }
+  gl_FragColor = vec4(c, 1);
+}`
+
+  var vert = compileShader(g.VERTEX_SHADER, vertSrc)
+  var frag = compileShader(g.FRAGMENT_SHADER, fragSrc)
+
+  var P = g.createProgram()
+  g.attachShader(P, vert)
+  g.attachShader(P, frag)
+  g.linkProgram(P)
+
+  if (!g.getProgramParameter(P, g.LINK_STATUS)) {
+    console.error('Link error:', g.getProgramInfoLog(P))
+  }
+
+  g.useProgram(P)
+
+  var buf = g.createBuffer()
+  g.bindBuffer(g.ARRAY_BUFFER, buf)
+  g.bufferData(g.ARRAY_BUFFER, Int8Array.of(0, 0, 0, 6, 6, 0), g.STATIC_DRAW)
+
+  var loc = g.getAttribLocation(P, 'p')
+  g.enableVertexAttribArray(loc)
+  g.vertexAttribPointer(loc, 2, g.BYTE, false, 0, 0)
+
+  var T = 0
+  setInterval(function tick() {
+    g.uniform1f(g.getUniformLocation(P, 'T'), T++ * .05)
+    g.drawArrays(g.TRIANGLES, 0, 3)
+  }, 16)
+</script>
+</body>
+</html>

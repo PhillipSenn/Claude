@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootstrap 5.3 — Complete Reference</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.css" rel="stylesheet">
+<style>
+  :root {
+    --bs-body-font-size: .9rem;
+  }
+  body { padding-top: 0; }
+  .ref-header {
+    background: #212529;
+    color: #fff;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  .ref-header h1 { font-size: 1.8rem; margin: 0; font-weight: 300; letter-spacing: .03em; }
+  .ref-header small { color: #adb5bd; font-size: .8rem; }
+  .section-label {
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #6c757d;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: .25rem;
+    margin-bottom: 1.25rem;
+    margin-top: 2.5rem;
+  }
+  .ref-section { margin-bottom: 3rem; }
+  .example-block {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: .375rem;
+    padding: 1.25rem;
+    margin-bottom: .75rem;
+  }
+  .example-block + .example-block { margin-top: -.25rem; }
+  code.cls {
+    background: #e9ecef;
+    color: #d63384;
+    padding: .1rem .35rem;
+    border-radius: .2rem;
+    font-size: .8em;
+  }
+  .prop-table { font-size: .82rem; }
+  .prop-table td:first-child { white-space: nowrap; }
+  .toc { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: .375rem; padding: 1rem 1.25rem; }
+  .toc a { color: #0d6efd; text-decoration: none; font-size: .82rem; line-height: 1.8; }
+  .toc a:hover { text-decoration: underline; }
+  h2 { font-size: 1.3rem; font-weight: 600; color: #212529; }
+  h3 { font-size: 1.05rem; font-weight: 600; color: #343a40; }
+  h4 { font-size: .9rem; font-weight: 700; color: #495057; text-transform: uppercase; letter-spacing: .05em; }
+  pre { background: #212529; color: #f8f9fa; border-radius: .375rem; padding: 1rem; font-size: .78rem; overflow-x: auto; }
+  .swatch { display: inline-block; width: 1.1em; height: 1.1em; border-radius: .2em; vertical-align: middle; border: 1px solid rgba(0,0,0,.1); }
+</style>
+</head>
+<body>
+
+<div class="ref-header">
+  <div class="container-xl">
+    <h1>Bootstrap 5.3 &mdash; Complete Reference</h1>
+    <small>All major classes, utilities, and components &mdash; use Ctrl+F to find anything</small>
+  </div>
+</div>
+
+<div class="container-xl">
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc mb-5">
+  <div class="row">
+    <div class="col-md-3">
+      <strong style="font-size:.8rem;">Layout</strong><br>
+      <a href="#breakpoints">Breakpoints</a><br>
+      <a href="#containers">Containers</a><br>
+      <a href="#grid">Grid System</a><br>
+      <a href="#columns">Columns</a><br>
+      <a href="#gutters">Gutters</a><br>
+      <a href="#flexbox">Flexbox</a>
+    </div>
+    <div class="col-md-3">
+      <strong style="font-size:.8rem;">Content</strong><br>
+      <a href="#typography">Typography</a><br>
+      <a href="#display-headings">Display Headings</a><br>
+      <a href="#text-utilities">Text Utilities</a><br>
+      <a href="#images">Images</a><br>
+      <a href="#tables">Tables</a><br>
+      <a href="#figures">Figures</a>
+    </div>
+    <div class="col-md-3">
+      <strong style="font-size:.8rem;">Forms</strong><br>
+      <a href="#form-controls">Form Controls</a><br>
+      <a href="#select">Select</a><br>
+      <a href="#checks-radios">Checks &amp; Radios</a><br>
+      <a href="#range">Range</a><br>
+      <a href="#input-group">Input Groups</a><br>
+      <a href="#floating-labels">Floating Labels</a><br>
+      <a href="#validation">Validation</a>
+    </div>
+    <div class="col-md-3">
+      <strong style="font-size:.8rem;">Components &amp; Utilities</strong><br>
+      <a href="#alerts">Alerts</a><br>
+      <a href="#badges">Badges</a><br>
+      <a href="#buttons">Buttons</a><br>
+      <a href="#button-group">Button Groups</a><br>
+      <a href="#cards">Cards</a><br>
+      <a href="#carousel">Carousel</a><br>
+      <a href="#collapse">Collapse</a><br>
+      <a href="#dropdowns">Dropdowns</a><br>
+      <a href="#list-group">List Group</a><br>
+      <a href="#modal">Modal</a><br>
+      <a href="#navbar">Navbar</a><br>
+      <a href="#navs-tabs">Navs &amp; Tabs</a><br>
+      <a href="#offcanvas">Offcanvas</a><br>
+      <a href="#pagination">Pagination</a><br>
+      <a href="#popovers">Popovers</a><br>
+      <a href="#progress">Progress</a><br>
+      <a href="#scrollspy">Scrollspy</a><br>
+      <a href="#spinners">Spinners</a><br>
+      <a href="#toasts">Toasts</a><br>
+      <a href="#tooltips">Tooltips</a><br>
+      <a href="#spacing">Spacing</a><br>
+      <a href="#sizing">Sizing</a><br>
+      <a href="#display">Display</a><br>
+      <a href="#position">Position</a><br>
+      <a href="#borders">Borders</a><br>
+      <a href="#shadows">Shadows</a><br>
+      <a href="#colors-bg">Colors &amp; Backgrounds</a><br>
+      <a href="#overflow">Overflow</a><br>
+      <a href="#visibility">Visibility</a><br>
+      <a href="#zindex">Z-index</a><br>
+      <a href="#js-api">JavaScript API</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ LAYOUT ═══════════════════════ -->
+<div class="section-label">Layout</div>
+
+<div id="breakpoints" class="ref-section">
+  <h2>Breakpoints</h2>
+  <table class="table table-sm table-bordered prop-table">
+    <thead class="table-dark"><tr><th>Name</th><th>Infix</th><th>Min-width</th><th>Max-width</th></tr></thead>
+    <tbody>
+      <tr><td>Extra small</td><td><em>none</em></td><td>&lt; 576px</td><td>575.98px</td></tr>
+      <tr><td>Small</td><td><code>sm</code></td><td>≥ 576px</td><td>767.98px</td></tr>
+      <tr><td>Medium</td><td><code>md</code></td><td>≥ 768px</td><td>991.98px</td></tr>
+      <tr><td>Large</td><td><code>lg</code></td><td>≥ 992px</td><td>1199.98px</td></tr>
+      <tr><td>Extra large</td><td><code>xl</code></td><td>≥ 1200px</td><td>1399.98px</td></tr>
+      <tr><td>Extra extra large</td><td><code>xxl</code></td><td>≥ 1400px</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p class="text-muted small">Use breakpoint infixes with classes like <code class="cls">col-md-6</code>, <code class="cls">d-lg-none</code>, <code class="cls">mt-sm-3</code>, etc.</p>
+</div>
+
+<div id="containers" class="ref-section">
+  <h2>Containers</h2>
+  <table class="table table-sm table-bordered prop-table">
+    <thead class="table-dark"><tr><th>Class</th><th>xs</th><th>sm</th><th>md</th><th>lg</th><th>xl</th><th>xxl</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.container</code></td><td>100%</td><td>540px</td><td>720px</td><td>960px</td><td>1140px</td><td>1320px</td></tr>
+      <tr><td><code class="cls">.container-sm</code></td><td>100%</td><td>540px</td><td>720px</td><td>960px</td><td>1140px</td><td>1320px</td></tr>
+      <tr><td><code class="cls">.container-md</code></td><td>100%</td><td>100%</td><td>720px</td><td>960px</td><td>1140px</td><td>1320px</td></tr>
+      <tr><td><code class="cls">.container-lg</code></td><td>100%</td><td>100%</td><td>100%</td><td>960px</td><td>1140px</td><td>1320px</td></tr>
+      <tr><td><code class="cls">.container-xl</code></td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>1140px</td><td>1320px</td></tr>
+      <tr><td><code class="cls">.container-xxl</code></td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>1320px</td></tr>
+      <tr><td><code class="cls">.container-fluid</code></td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>100%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="grid" class="ref-section">
+  <h2>Grid System</h2>
+  <p>12-column grid using flexbox. Wrap columns in <code class="cls">.row</code> inside a container.</p>
+  <div class="example-block">
+    <div class="row g-2 text-center mb-2">
+      <div class="col"><div class="bg-primary text-white p-2 rounded">col</div></div>
+      <div class="col"><div class="bg-primary text-white p-2 rounded">col</div></div>
+      <div class="col"><div class="bg-primary text-white p-2 rounded">col</div></div>
+    </div>
+    <div class="row g-2 text-center mb-2">
+      <div class="col-4"><div class="bg-info text-white p-2 rounded">col-4</div></div>
+      <div class="col-8"><div class="bg-info text-white p-2 rounded">col-8</div></div>
+    </div>
+    <div class="row g-2 text-center">
+      <div class="col-sm-6 col-md-4"><div class="bg-success text-white p-2 rounded">col-sm-6 col-md-4</div></div>
+      <div class="col-sm-6 col-md-4"><div class="bg-success text-white p-2 rounded">col-sm-6 col-md-4</div></div>
+      <div class="col-sm-12 col-md-4"><div class="bg-success text-white p-2 rounded">col-sm-12 col-md-4</div></div>
+    </div>
+  </div>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class pattern</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.col</code></td><td>Auto-width, equal columns</td></tr>
+      <tr><td><code class="cls">.col-{1–12}</code></td><td>Explicit column width</td></tr>
+      <tr><td><code class="cls">.col-{bp}-{1–12}</code></td><td>Responsive column width</td></tr>
+      <tr><td><code class="cls">.col-auto</code></td><td>Fit content width</td></tr>
+      <tr><td><code class="cls">.row-cols-{n}</code></td><td>Set number of cols per row</td></tr>
+      <tr><td><code class="cls">.row-cols-{bp}-{n}</code></td><td>Responsive cols per row</td></tr>
+      <tr><td><code class="cls">.offset-{n}</code></td><td>Offset column by n</td></tr>
+      <tr><td><code class="cls">.offset-{bp}-{n}</code></td><td>Responsive offset</td></tr>
+      <tr><td><code class="cls">.order-{0–5}</code> / <code class="cls">.order-first</code> / <code class="cls">.order-last</code></td><td>Column ordering</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="gutters" class="ref-section">
+  <h2>Gutters</h2>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.g-{0–5}</code></td><td>Both axis gutters</td></tr>
+      <tr><td><code class="cls">.gx-{0–5}</code></td><td>Horizontal gutters</td></tr>
+      <tr><td><code class="cls">.gy-{0–5}</code></td><td>Vertical gutters</td></tr>
+      <tr><td><code class="cls">.g-{bp}-{0–5}</code></td><td>Responsive gutters</td></tr>
+    </tbody>
+  </table>
+  <p class="text-muted small">Gutter sizes: 0=0, 1=.25rem, 2=.5rem, 3=1rem, 4=1.5rem, 5=3rem</p>
+</div>
+
+<div id="flexbox" class="ref-section">
+  <h2>Flexbox Utilities</h2>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>CSS</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.d-flex</code></td><td>display: flex</td></tr>
+      <tr><td><code class="cls">.d-inline-flex</code></td><td>display: inline-flex</td></tr>
+      <tr><td><code class="cls">.flex-row</code> / <code class="cls">.flex-row-reverse</code></td><td>flex-direction: row / row-reverse</td></tr>
+      <tr><td><code class="cls">.flex-column</code> / <code class="cls">.flex-column-reverse</code></td><td>flex-direction: column / column-reverse</td></tr>
+      <tr><td><code class="cls">.flex-wrap</code> / <code class="cls">.flex-nowrap</code> / <code class="cls">.flex-wrap-reverse</code></td><td>flex-wrap values</td></tr>
+      <tr><td><code class="cls">.flex-fill</code></td><td>flex: 1 1 auto</td></tr>
+      <tr><td><code class="cls">.flex-grow-0</code> / <code class="cls">.flex-grow-1</code></td><td>flex-grow</td></tr>
+      <tr><td><code class="cls">.flex-shrink-0</code> / <code class="cls">.flex-shrink-1</code></td><td>flex-shrink</td></tr>
+      <tr><td><code class="cls">.justify-content-start/end/center/between/around/evenly</code></td><td>justify-content</td></tr>
+      <tr><td><code class="cls">.align-items-start/end/center/baseline/stretch</code></td><td>align-items</td></tr>
+      <tr><td><code class="cls">.align-self-start/end/center/baseline/stretch/auto</code></td><td>align-self</td></tr>
+      <tr><td><code class="cls">.align-content-start/end/center/between/around/stretch</code></td><td>align-content</td></tr>
+      <tr><td><code class="cls">.order-{0–5}</code> / <code class="cls">.order-first</code> / <code class="cls">.order-last</code></td><td>order</td></tr>
+      <tr><td><code class="cls">.gap-{0–5}</code> / <code class="cls">.row-gap-{0–5}</code> / <code class="cls">.column-gap-{0–5}</code></td><td>gap / row-gap / column-gap</td></tr>
+    </tbody>
+  </table>
+  <p class="text-muted small">All flex utilities support responsive infixes, e.g. <code class="cls">.justify-content-md-center</code></p>
+</div>
+
+<!-- ═══════════════════════ CONTENT ═══════════════════════ -->
+<div class="section-label">Content</div>
+
+<div id="typography" class="ref-section">
+  <h2>Typography</h2>
+  <div class="example-block">
+    <h1>h1. Heading <small class="text-muted">small muted</small></h1>
+    <h2>h2. Heading</h2>
+    <h3>h3. Heading</h3>
+    <h4>h4. Heading</h4>
+    <h5>h5. Heading</h5>
+    <h6>h6. Heading</h6>
+  </div>
+  <div class="example-block">
+    <p class="lead">Lead paragraph — stands out with <code class="cls">.lead</code></p>
+    <p>Normal paragraph with <mark>highlight</mark>, <del>deleted text</del>, <ins>inserted text</ins>, <strong>bold</strong>, <em>italic</em>, <abbr title="HyperText Markup Language">HTML</abbr>, <cite>citation</cite>, <kbd>Ctrl+S</kbd>, <code>inline code</code>, <samp>sample output</samp>.</p>
+    <p class="text-decoration-underline">Underlined.</p>
+    <p class="text-decoration-line-through">Strikethrough.</p>
+    <p><small>Small text using &lt;small&gt; or .small class</small></p>
+    <blockquote class="blockquote">
+      <p>A quote looks like this.</p>
+      <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+    </blockquote>
+  </div>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.h1</code>–<code class="cls">.h6</code></td><td>Apply heading styles to any element</td></tr>
+      <tr><td><code class="cls">.lead</code></td><td>Larger, lighter paragraph</td></tr>
+      <tr><td><code class="cls">.small</code></td><td>80% font size</td></tr>
+      <tr><td><code class="cls">.mark</code></td><td>Highlight background</td></tr>
+      <tr><td><code class="cls">.text-muted</code></td><td>Muted text color</td></tr>
+      <tr><td><code class="cls">.text-truncate</code></td><td>Truncate with ellipsis (requires overflow hidden)</td></tr>
+      <tr><td><code class="cls">.text-break</code></td><td>Break long words</td></tr>
+      <tr><td><code class="cls">.font-monospace</code></td><td>Monospace font family</td></tr>
+      <tr><td><code class="cls">.fw-bold</code> / <code class="cls">.fw-semibold</code> / <code class="cls">.fw-normal</code> / <code class="cls">.fw-light</code></td><td>font-weight 700 / 600 / 400 / 300</td></tr>
+      <tr><td><code class="cls">.fst-italic</code> / <code class="cls">.fst-normal</code></td><td>font-style</td></tr>
+      <tr><td><code class="cls">.lh-1</code> / <code class="cls">.lh-sm</code> / <code class="cls">.lh-base</code> / <code class="cls">.lh-lg</code></td><td>line-height: 1 / 1.25 / 1.5 / 2</td></tr>
+      <tr><td><code class="cls">.fs-1</code>–<code class="cls">.fs-6</code></td><td>Font size (maps to h1–h6 sizes)</td></tr>
+      <tr><td><code class="cls">.text-decoration-none/underline/line-through</code></td><td>text-decoration</td></tr>
+      <tr><td><code class="cls">.text-lowercase</code> / <code class="cls">.text-uppercase</code> / <code class="cls">.text-capitalize</code></td><td>text-transform</td></tr>
+      <tr><td><code class="cls">.text-wrap</code> / <code class="cls">.text-nowrap</code></td><td>white-space: normal / nowrap</td></tr>
+      <tr><td><code class="cls">.text-start</code> / <code class="cls">.text-center</code> / <code class="cls">.text-end</code></td><td>text-align (support breakpoint infixes)</td></tr>
+      <tr><td><code class="cls">.text-reset</code></td><td>Inherit parent color</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="display-headings" class="ref-section">
+  <h2>Display Headings</h2>
+  <div class="example-block">
+    <p class="display-1">Display 1</p>
+    <p class="display-2">Display 2</p>
+    <p class="display-3">Display 3</p>
+    <p class="display-4">Display 4</p>
+    <p class="display-5">Display 5</p>
+    <p class="display-6">Display 6</p>
+  </div>
+  <p class="text-muted small">Classes: <code class="cls">.display-1</code> through <code class="cls">.display-6</code></p>
+</div>
+
+<div id="images" class="ref-section">
+  <h2>Images</h2>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.img-fluid</code></td><td>max-width: 100%; height: auto — responsive image</td></tr>
+      <tr><td><code class="cls">.img-thumbnail</code></td><td>Rounded border, padding, white bg</td></tr>
+      <tr><td><code class="cls">.rounded</code></td><td>Rounded corners</td></tr>
+      <tr><td><code class="cls">.rounded-circle</code></td><td>Circular crop</td></tr>
+      <tr><td><code class="cls">.float-start</code> / <code class="cls">.float-end</code></td><td>Float image left/right</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="tables" class="ref-section">
+  <h2>Tables</h2>
+  <div class="example-block">
+    <table class="table table-bordered table-hover table-striped table-sm">
+      <thead class="table-dark">
+        <tr><th>#</th><th>Name</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Alice</td><td><span class="badge bg-success">Active</span></td></tr>
+        <tr class="table-warning"><td>2</td><td>Bob</td><td><span class="badge bg-warning text-dark">Pending</span></td></tr>
+        <tr><td>3</td><td>Carol</td><td><span class="badge bg-danger">Inactive</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.table</code></td><td>Base table (required)</td></tr>
+      <tr><td><code class="cls">.table-striped</code></td><td>Zebra-striped rows</td></tr>
+      <tr><td><code class="cls">.table-striped-columns</code></td><td>Zebra-striped columns</td></tr>
+      <tr><td><code class="cls">.table-hover</code></td><td>Hover row highlight</td></tr>
+      <tr><td><code class="cls">.table-bordered</code></td><td>Borders on all sides</td></tr>
+      <tr><td><code class="cls">.table-borderless</code></td><td>No borders</td></tr>
+      <tr><td><code class="cls">.table-sm</code></td><td>Half padding</td></tr>
+      <tr><td><code class="cls">.table-responsive</code></td><td>Horizontal scroll wrapper</td></tr>
+      <tr><td><code class="cls">.table-responsive-{bp}</code></td><td>Responsive scroll below breakpoint</td></tr>
+      <tr><td><code class="cls">.table-{color}</code></td><td>Contextual color on &lt;table&gt;, &lt;tr&gt;, &lt;th&gt;, &lt;td&gt;</td></tr>
+      <tr><td><code class="cls">.table-dark</code> / <code class="cls">.table-light</code></td><td>Dark/light table variant</td></tr>
+      <tr><td><code class="cls">.caption-top</code></td><td>Move &lt;caption&gt; to top</td></tr>
+    </tbody>
+  </table>
+  <p class="text-muted small">Contextual colors for rows/cells: <code class="cls">.table-primary</code> <code class="cls">.table-secondary</code> <code class="cls">.table-success</code> <code class="cls">.table-danger</code> <code class="cls">.table-warning</code> <code class="cls">.table-info</code> <code class="cls">.table-light</code> <code class="cls">.table-dark</code></p>
+</div>
+
+<div id="figures" class="ref-section">
+  <h2>Figures</h2>
+  <pre>&lt;figure class="figure"&gt;
+  &lt;img src="..." class="figure-img img-fluid rounded" alt="..."&gt;
+  &lt;figcaption class="figure-caption text-end"&gt;Caption here.&lt;/figcaption&gt;
+&lt;/figure&gt;</pre>
+</div>
+
+<!-- ═══════════════════════ FORMS ═══════════════════════ -->
+<div class="section-label">Forms</div>
+
+<div id="form-controls" class="ref-section">
+  <h2>Form Controls</h2>
+  <div class="example-block">
+    <div class="mb-3">
+      <label class="form-label">Email address</label>
+      <input type="email" class="form-control" placeholder="name@example.com">
+      <div class="form-text">We'll never share your email.</div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Large input</label>
+      <input type="text" class="form-control form-control-lg" placeholder="Large">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Small input</label>
+      <input type="text" class="form-control form-control-sm" placeholder="Small">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Textarea</label>
+      <textarea class="form-control" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Plaintext (readonly)</label>
+      <input type="text" readonly class="form-control-plaintext" value="email@example.com">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Disabled</label>
+      <input type="text" class="form-control" disabled placeholder="Disabled input">
+    </div>
+  </div>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.form-label</code></td><td>Label styling (margin-bottom)</td></tr>
+      <tr><td><code class="cls">.form-control</code></td><td>Text input, textarea, file input styling</td></tr>
+      <tr><td><code class="cls">.form-control-lg</code> / <code class="cls">.form-control-sm</code></td><td>Large/small size modifier</td></tr>
+      <tr><td><code class="cls">.form-control-plaintext</code></td><td>Readonly plain text, no border/bg</td></tr>
+      <tr><td><code class="cls">.form-text</code></td><td>Help text below input</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="select" class="ref-section">
+  <h2>Select</h2>
+  <div class="example-block">
+    <div class="mb-3">
+      <select class="form-select"><option>Choose...</option><option>One</option><option>Two</option></select>
+    </div>
+    <div class="mb-3">
+      <select class="form-select form-select-lg"><option>Large</option></select>
+    </div>
+    <div class="mb-3">
+      <select class="form-select form-select-sm"><option>Small</option></select>
+    </div>
+    <select class="form-select" multiple size="3"><option>Multi 1</option><option>Multi 2</option><option>Multi 3</option></select>
+  </div>
+  <p class="text-muted small">Classes: <code class="cls">.form-select</code>, <code class="cls">.form-select-lg</code>, <code class="cls">.form-select-sm</code></p>
+</div>
+
+<div id="checks-radios" class="ref-section">
+  <h2>Checks &amp; Radios</h2>
+  <div class="example-block">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="cb1" checked>
+      <label class="form-check-label" for="cb1">Checked checkbox</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="cb2">
+      <label class="form-check-label" for="cb2">Unchecked</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="cb3" disabled>
+      <label class="form-check-label" for="cb3">Disabled</label>
+    </div>
+    <hr>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="r1" id="r1" checked>
+      <label class="form-check-label" for="r1">Radio 1</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="r1" id="r2">
+      <label class="form-check-label" for="r2">Radio 2</label>
+    </div>
+    <hr>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="sw1" checked>
+      <label class="form-check-label" for="sw1">Toggle switch (checked)</label>
+    </div>
+    <hr>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" id="i1">
+      <label class="form-check-label" for="i1">Inline 1</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" id="i2">
+      <label class="form-check-label" for="i2">Inline 2</label>
+    </div>
+  </div>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.form-check</code></td><td>Wrapper for checkbox/radio</td></tr>
+      <tr><td><code class="cls">.form-check-input</code></td><td>The input element</td></tr>
+      <tr><td><code class="cls">.form-check-label</code></td><td>The label element</td></tr>
+      <tr><td><code class="cls">.form-check-inline</code></td><td>Inline (side-by-side)</td></tr>
+      <tr><td><code class="cls">.form-switch</code></td><td>Toggle switch style (add to .form-check wrapper)</td></tr>
+      <tr><td><code class="cls">.btn-check</code></td><td>Visually hidden input for button-style toggle</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="range" class="ref-section">
+  <h2>Range</h2>
+  <div class="example-block">
+    <label class="form-label">Range input</label>
+    <input type="range" class="form-range" min="0" max="5" step="0.5" value="2.5">
+  </div>
+  <p class="text-muted small">Class: <code class="cls">.form-range</code></p>
+</div>
+
+<div id="input-group" class="ref-section">
+  <h2>Input Groups</h2>
+  <div class="example-block">
+    <div class="input-group mb-3">
+      <span class="input-group-text">@</span>
+      <input type="text" class="form-control" placeholder="Username">
+    </div>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Amount">
+      <span class="input-group-text">.00</span>
+      <span class="input-group-text">USD</span>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text">$</span>
+      <input type="text" class="form-control" placeholder="Amount">
+      <button class="btn btn-outline-secondary">Go</button>
+    </div>
+    <div class="input-group input-group-lg mb-3">
+      <span class="input-group-text">Large</span>
+      <input type="text" class="form-control">
+    </div>
+    <div class="input-group input-group-sm">
+      <span class="input-group-text">Small</span>
+      <input type="text" class="form-control">
+    </div>
+  </div>
+  <p class="text-muted small">Wrapper: <code class="cls">.input-group</code> — Sizes: <code class="cls">.input-group-sm</code> / <code class="cls">.input-group-lg</code> — Addon: <code class="cls">.input-group-text</code></p>
+</div>
+
+<div id="floating-labels" class="ref-section">
+  <h2>Floating Labels</h2>
+  <div class="example-block">
+    <div class="form-floating mb-3">
+      <input type="email" class="form-control" id="fl1" placeholder="name@example.com">
+      <label for="fl1">Email address</label>
+    </div>
+    <div class="form-floating mb-3">
+      <select class="form-select" id="fl2">
+        <option>Open this select menu</option>
+        <option value="1">One</option>
+      </select>
+      <label for="fl2">Works with selects</label>
+    </div>
+  </div>
+  <p class="text-muted small">Wrapper: <code class="cls">.form-floating</code> — The <code>placeholder</code> attribute is required on the input.</p>
+</div>
+
+<div id="validation" class="ref-section">
+  <h2>Validation</h2>
+  <div class="example-block">
+    <div class="mb-3">
+      <label class="form-label">Valid</label>
+      <input type="text" class="form-control is-valid" value="Looks good!">
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Invalid</label>
+      <input type="text" class="form-control is-invalid" value="Wrong!">
+      <div class="invalid-feedback">Please provide a valid value.</div>
+    </div>
+    <div class="form-check mb-3">
+      <input class="form-check-input is-invalid" type="checkbox" id="vchk">
+      <label class="form-check-label" for="vchk">Agree to terms</label>
+      <div class="invalid-feedback">Must agree!</div>
+    </div>
+  </div>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class / Attribute</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.is-valid</code> / <code class="cls">.is-invalid</code></td><td>Manual validation state on input</td></tr>
+      <tr><td><code class="cls">.valid-feedback</code> / <code class="cls">.invalid-feedback</code></td><td>Shown message block</td></tr>
+      <tr><td><code class="cls">.valid-tooltip</code> / <code class="cls">.invalid-tooltip</code></td><td>Tooltip-style feedback (parent needs position:relative)</td></tr>
+      <tr><td><code class="cls">.was-validated</code> on &lt;form&gt;</td><td>Browser native validation display</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════ COMPONENTS ═══════════════════════ -->
+<div class="section-label">Components</div>
+
+<div id="alerts" class="ref-section">
+  <h2>Alerts</h2>
+  <div class="example-block">
+    <div class="alert alert-primary" role="alert">Primary alert</div>
+    <div class="alert alert-secondary" role="alert">Secondary alert</div>
+    <div class="alert alert-success" role="alert">Success alert</div>
+    <div class="alert alert-danger" role="alert">Danger alert</div>
+    <div class="alert alert-warning" role="alert">Warning alert</div>
+    <div class="alert alert-info" role="alert">Info alert</div>
+    <div class="alert alert-light" role="alert">Light alert</div>
+    <div class="alert alert-dark" role="alert">Dark alert</div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Dismissible!</strong> Click the &times; to close.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div class="alert alert-info">
+      Alert with <a href="#" class="alert-link">a link</a> inside.
+    </div>
+  </div>
+  <p class="text-muted small">Base: <code class="cls">.alert .alert-{color}</code> — Dismissible: add <code class="cls">.alert-dismissible .fade .show</code> and <code>data-bs-dismiss="alert"</code> on button — Link: <code class="cls">.alert-link</code></p>
+</div>
+
+<div id="badges" class="ref-section">
+  <h2>Badges</h2>
+  <div class="example-block">
+    <span class="badge bg-primary">Primary</span>
+    <span class="badge bg-secondary">Secondary</span>
+    <span class="badge bg-success">Success</span>
+    <span class="badge bg-danger">Danger</span>
+    <span class="badge bg-warning text-dark">Warning</span>
+    <span class="badge bg-info text-dark">Info</span>
+    <span class="badge bg-light text-dark">Light</span>
+    <span class="badge bg-dark">Dark</span>
+    <br><br>
+    <span class="badge rounded-pill bg-primary">Pill Primary</span>
+    <span class="badge rounded-pill bg-success">Pill Success</span>
+    <br><br>
+    <button type="button" class="btn btn-primary">
+      Notifications <span class="badge bg-secondary">4</span>
+    </button>
+  </div>
+  <p class="text-muted small">Base: <code class="cls">.badge .bg-{color}</code> — Pill: add <code class="cls">.rounded-pill</code></p>
+</div>
+
+<div id="buttons" class="ref-section">
+  <h2>Buttons</h2>
+  <div class="example-block">
+    <button class="btn btn-primary">Primary</button>
+    <button class="btn btn-secondary">Secondary</button>
+    <button class="btn btn-success">Success</button>
+    <button class="btn btn-danger">Danger</button>
+    <button class="btn btn-warning">Warning</button>
+    <button class="btn btn-info">Info</button>
+    <button class="btn btn-light">Light</button>
+    <button class="btn btn-dark">Dark</button>
+    <button class="btn btn-link">Link</button>
+    <br><br>
+    <button class="btn btn-outline-primary">Outline Primary</button>
+    <button class="btn btn-outline-secondary">Outline Secondary</button>
+    <button class="btn btn-outline-success">Outline Success</button>
+    <button class="btn btn-outline-danger">Outline Danger</button>
+    <button class="btn btn-outline-warning">Outline Warning</button>
+    <button class="btn btn-outline-info">Outline Info</button>
+    <br><br>
+    <button class="btn btn-primary btn-lg">Large</button>
+    <button class="btn btn-primary">Default</button>
+    <button class="btn btn-primary btn-sm">Small</button>
+    <br><br>
+    <button class="btn btn-primary w-100 mb-1">Block (w-100)</button>
+    <button class="btn btn-primary" disabled>Disabled</button>
+    <a class="btn btn-secondary" role="button">Link button</a>
+  </div>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.btn</code></td><td>Base button (required)</td></tr>
+      <tr><td><code class="cls">.btn-{color}</code></td><td>Solid filled button</td></tr>
+      <tr><td><code class="cls">.btn-outline-{color}</code></td><td>Outline button</td></tr>
+      <tr><td><code class="cls">.btn-lg</code> / <code class="cls">.btn-sm</code></td><td>Size variants</td></tr>
+      <tr><td><code class="cls">.active</code></td><td>Active/pressed state</td></tr>
+      <tr><td><code>disabled</code> attribute</td><td>Disabled state</td></tr>
+      <tr><td><code class="cls">.btn-close</code></td><td>× close button (no text)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="button-group" class="ref-section">
+  <h2>Button Groups</h2>
+  <div class="example-block">
+    <div class="btn-group mb-2" role="group">
+      <button class="btn btn-primary">Left</button>
+      <button class="btn btn-primary">Middle</button>
+      <button class="btn btn-primary">Right</button>
+    </div>
+    <br>
+    <div class="btn-group-vertical" role="group">
+      <button class="btn btn-outline-secondary">Top</button>
+      <button class="btn btn-outline-secondary">Middle</button>
+      <button class="btn btn-outline-secondary">Bottom</button>
+    </div>
+    &nbsp;
+    <div class="btn-group btn-group-lg" role="group">
+      <button class="btn btn-outline-primary">Large</button>
+      <button class="btn btn-outline-primary">Group</button>
+    </div>
+    &nbsp;
+    <div class="btn-group btn-group-sm" role="group">
+      <button class="btn btn-outline-dark">Small</button>
+      <button class="btn btn-outline-dark">Group</button>
+    </div>
+  </div>
+  <p class="text-muted small">Wrappers: <code class="cls">.btn-group</code> / <code class="cls">.btn-group-vertical</code> — Sizes: <code class="cls">.btn-group-sm</code> / <code class="cls">.btn-group-lg</code></p>
+</div>
+
+<div id="cards" class="ref-section">
+  <h2>Cards</h2>
+  <div class="example-block">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">Card Header</div>
+          <div class="card-body">
+            <h5 class="card-title">Card Title</h5>
+            <h6 class="card-subtitle text-muted mb-2">Card Subtitle</h6>
+            <p class="card-text">Some quick example text.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+          <div class="card-footer text-muted">Card Footer</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-bg-primary">
+          <div class="card-body">
+            <h5 class="card-title">Primary Card</h5>
+            <p class="card-text">With text-bg-primary utility.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-success">
+          <div class="card-body">
+            <h5 class="card-title text-success">Border Colored</h5>
+            <p class="card-text">border-success class.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="card-text">Card with <strong>list group</strong> inside:</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Item 1</li>
+        <li class="list-group-item">Item 2</li>
+      </ul>
+    </div>
+  </div>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.card</code></td><td>Card container</td></tr>
+      <tr><td><code class="cls">.card-body</code></td><td>Main content area (padding)</td></tr>
+      <tr><td><code class="cls">.card-title</code> / <code class="cls">.card-subtitle</code></td><td>Title/subtitle inside card-body</td></tr>
+      <tr><td><code class="cls">.card-text</code></td><td>Paragraph inside card-body</td></tr>
+      <tr><td><code class="cls">.card-link</code></td><td>Link inside card-body</td></tr>
+      <tr><td><code class="cls">.card-header</code> / <code class="cls">.card-footer</code></td><td>Top/bottom sections</td></tr>
+      <tr><td><code class="cls">.card-img-top</code> / <code class="cls">.card-img-bottom</code></td><td>Image cap</td></tr>
+      <tr><td><code class="cls">.card-img-overlay</code></td><td>Position content over image</td></tr>
+      <tr><td><code class="cls">.text-bg-{color}</code></td><td>Colored card with appropriate text</td></tr>
+      <tr><td><code class="cls">.card-group</code></td><td>Flush/joined card group</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="carousel" class="ref-section">
+  <h2>Carousel</h2>
+  <div class="example-block">
+    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="bg-primary text-white text-center p-5 rounded">Slide 1</div>
+        </div>
+        <div class="carousel-item">
+          <div class="bg-success text-white text-center p-5 rounded">Slide 2</div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Class / Attribute</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.carousel .slide</code></td><td>Outer wrapper; .slide enables animation</td></tr>
+      <tr><td><code class="cls">.carousel-inner</code></td><td>Slides wrapper</td></tr>
+      <tr><td><code class="cls">.carousel-item</code></td><td>Individual slide; first needs .active</td></tr>
+      <tr><td><code class="cls">.carousel-indicators</code></td><td>Dot indicators</td></tr>
+      <tr><td><code class="cls">.carousel-control-prev/next</code></td><td>Arrow controls</td></tr>
+      <tr><td><code class="cls">.carousel-control-prev/next-icon</code></td><td>SVG arrow icon</td></tr>
+      <tr><td><code class="cls">.carousel-caption</code></td><td>Text overlay on slide</td></tr>
+      <tr><td><code class="cls">.carousel-fade</code></td><td>Fade instead of slide transition</td></tr>
+      <tr><td><code>data-bs-ride="carousel"</code></td><td>Auto-play on load</td></tr>
+      <tr><td><code>data-bs-interval="{ms}"</code></td><td>Per-item interval (default 5000)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="collapse" class="ref-section">
+  <h2>Collapse</h2>
+  <div class="example-block">
+    <a class="btn btn-primary mb-2" data-bs-toggle="collapse" href="#collapseDemo" role="button">
+      Toggle via link
+    </a>
+    <button class="btn btn-secondary mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDemo">
+      Toggle via button
+    </button>
+    <div class="collapse show" id="collapseDemo">
+      <div class="card card-body">
+        Collapsible content. Starts shown (.show).
+      </div>
+    </div>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Attribute / Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code>data-bs-toggle="collapse"</code></td><td>On the trigger element</td></tr>
+      <tr><td><code>data-bs-target="#id"</code></td><td>Target element (button)</td></tr>
+      <tr><td><code>href="#id"</code></td><td>Target element (link)</td></tr>
+      <tr><td><code class="cls">.collapse</code></td><td>On the collapsible element</td></tr>
+      <tr><td><code class="cls">.show</code></td><td>Initially expanded</td></tr>
+      <tr><td><code class="cls">.collapsing</code></td><td>Added during transition (auto)</td></tr>
+      <tr><td><code class="cls">.accordion</code></td><td>Accordion wrapper</td></tr>
+      <tr><td><code class="cls">.accordion-item / .accordion-header / .accordion-button / .accordion-body</code></td><td>Accordion parts</td></tr>
+      <tr><td><code>data-bs-parent="#accordionId"</code></td><td>Close others when one opens</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="dropdowns" class="ref-section">
+  <h2>Dropdowns</h2>
+  <div class="example-block">
+    <div class="dropdown me-2 d-inline-block">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        Dropdown
+      </button>
+      <ul class="dropdown-menu">
+        <li><h6 class="dropdown-header">Section</h6></li>
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item active" href="#">Active item</a></li>
+        <li><a class="dropdown-item disabled" href="#">Disabled item</a></li>
+      </ul>
+    </div>
+    <div class="dropup d-inline-block me-2">
+      <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">Dropup</button>
+      <ul class="dropdown-menu"><li><a class="dropdown-item" href="#">Item</a></li></ul>
+    </div>
+    <div class="dropstart d-inline-block me-2">
+      <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">Dropstart</button>
+      <ul class="dropdown-menu"><li><a class="dropdown-item" href="#">Item</a></li></ul>
+    </div>
+    <div class="dropend d-inline-block">
+      <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">Dropend</button>
+      <ul class="dropdown-menu"><li><a class="dropdown-item" href="#">Item</a></li></ul>
+    </div>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Class / Attribute</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.dropdown</code></td><td>Wrapper (position:relative)</td></tr>
+      <tr><td><code class="cls">.dropup / .dropstart / .dropend</code></td><td>Direction variant on wrapper</td></tr>
+      <tr><td><code class="cls">.dropdown-toggle</code></td><td>Add caret to trigger button</td></tr>
+      <tr><td><code>data-bs-toggle="dropdown"</code></td><td>On trigger button</td></tr>
+      <tr><td><code class="cls">.dropdown-menu</code></td><td>The &lt;ul&gt; menu</td></tr>
+      <tr><td><code class="cls">.dropdown-menu-end</code></td><td>Right-align the menu</td></tr>
+      <tr><td><code class="cls">.dropdown-menu-{bp}-start/end</code></td><td>Responsive alignment</td></tr>
+      <tr><td><code class="cls">.dropdown-item</code></td><td>Menu items (a or button)</td></tr>
+      <tr><td><code class="cls">.dropdown-header</code></td><td>Non-interactive heading</td></tr>
+      <tr><td><code class="cls">.dropdown-divider</code></td><td>Horizontal rule separator</td></tr>
+      <tr><td><code class="cls">.active / .disabled</code></td><td>Item states</td></tr>
+      <tr><td><code class="cls">.dropdown-item-text</code></td><td>Plain non-interactive text</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="list-group" class="ref-section">
+  <h2>List Group</h2>
+  <div class="example-block">
+    <ul class="list-group mb-3" style="max-width:300px">
+      <li class="list-group-item active">Active item</li>
+      <li class="list-group-item">Normal item</li>
+      <li class="list-group-item disabled">Disabled item</li>
+      <li class="list-group-item list-group-item-action">Actionable (hover)</li>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        With badge <span class="badge bg-primary rounded-pill">14</span>
+      </li>
+    </ul>
+    <div class="list-group mb-3" style="max-width:300px">
+      <a href="#" class="list-group-item list-group-item-action active">Link item (active)</a>
+      <a href="#" class="list-group-item list-group-item-action">Link item</a>
+    </div>
+    <ul class="list-group list-group-horizontal">
+      <li class="list-group-item">Horizontal</li>
+      <li class="list-group-item">List</li>
+      <li class="list-group-item">Group</li>
+    </ul>
+    <br>
+    <p class="text-muted small">Contextual colors:</p>
+    <ul class="list-group" style="max-width:300px">
+      <li class="list-group-item list-group-item-primary">Primary</li>
+      <li class="list-group-item list-group-item-success">Success</li>
+      <li class="list-group-item list-group-item-danger">Danger</li>
+      <li class="list-group-item list-group-item-warning">Warning</li>
+    </ul>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.list-group</code></td><td>Wrapper (ul or div)</td></tr>
+      <tr><td><code class="cls">.list-group-item</code></td><td>Each item</td></tr>
+      <tr><td><code class="cls">.list-group-item-action</code></td><td>Hover/focus states for a/button</td></tr>
+      <tr><td><code class="cls">.list-group-flush</code></td><td>Remove border-radius and outer borders</td></tr>
+      <tr><td><code class="cls">.list-group-numbered</code></td><td>Auto-numbered with CSS counters</td></tr>
+      <tr><td><code class="cls">.list-group-horizontal</code></td><td>Horizontal layout</td></tr>
+      <tr><td><code class="cls">.list-group-horizontal-{bp}</code></td><td>Responsive horizontal</td></tr>
+      <tr><td><code class="cls">.list-group-item-{color}</code></td><td>Contextual color</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="modal" class="ref-section">
+  <h2>Modal</h2>
+  <div class="example-block">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Launch modal
+    </button>
+    <div class="modal fade" id="exampleModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal Title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            Modal body content goes here.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Class / Attribute</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code>data-bs-toggle="modal"</code> + <code>data-bs-target="#id"</code></td><td>Trigger button</td></tr>
+      <tr><td><code class="cls">.modal .fade</code></td><td>Modal wrapper; .fade enables animation</td></tr>
+      <tr><td><code class="cls">.modal-dialog</code></td><td>Sizing/centering wrapper</td></tr>
+      <tr><td><code class="cls">.modal-dialog-centered</code></td><td>Vertically centered</td></tr>
+      <tr><td><code class="cls">.modal-dialog-scrollable</code></td><td>Scrollable body</td></tr>
+      <tr><td><code class="cls">.modal-sm / .modal-lg / .modal-xl</code></td><td>Size variants (add to .modal-dialog)</td></tr>
+      <tr><td><code class="cls">.modal-fullscreen</code></td><td>Full screen modal</td></tr>
+      <tr><td><code class="cls">.modal-fullscreen-{bp}-down</code></td><td>Full screen below breakpoint</td></tr>
+      <tr><td><code class="cls">.modal-content</code></td><td>White rounded box</td></tr>
+      <tr><td><code class="cls">.modal-header / .modal-body / .modal-footer</code></td><td>Sections</td></tr>
+      <tr><td><code class="cls">.modal-title</code></td><td>Title in header</td></tr>
+      <tr><td><code>data-bs-dismiss="modal"</code></td><td>Close button</td></tr>
+      <tr><td><code>data-bs-backdrop="static"</code></td><td>Prevent backdrop close</td></tr>
+    </tbody>
+  </table>
+  <h4 class="mt-2">JS API</h4>
+  <pre>var myModal = new bootstrap.Modal(document.getElementById('myModal'))
+myModal.show()
+myModal.hide()
+myModal.toggle()
+myModal.dispose()
+// Events: show.bs.modal, shown.bs.modal, hide.bs.modal, hidden.bs.modal</pre>
+</div>
+
+<div id="navbar" class="ref-section">
+  <h2>Navbar</h2>
+  <div class="example-block">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark rounded">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Brand</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navDemo">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navDemo">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Dropdown</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link disabled" href="#">Disabled</a></li>
+          </ul>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.navbar</code></td><td>Base navbar</td></tr>
+      <tr><td><code class="cls">.navbar-expand-{bp}</code></td><td>Expand at breakpoint (collapse below)</td></tr>
+      <tr><td><code class="cls">.navbar-dark</code></td><td>Light text/icons for dark backgrounds</td></tr>
+      <tr><td><code class="cls">.navbar-light</code></td><td>Dark text/icons for light backgrounds</td></tr>
+      <tr><td><code class="cls">.navbar-brand</code></td><td>Logo/brand link</td></tr>
+      <tr><td><code class="cls">.navbar-toggler</code></td><td>Hamburger toggle button</td></tr>
+      <tr><td><code class="cls">.navbar-toggler-icon</code></td><td>Hamburger icon inside toggler</td></tr>
+      <tr><td><code class="cls">.navbar-collapse</code></td><td>Collapsible content wrapper</td></tr>
+      <tr><td><code class="cls">.navbar-nav</code></td><td>&lt;ul&gt; nav links container</td></tr>
+      <tr><td><code class="cls">.nav-item / .nav-link</code></td><td>li / a inside navbar-nav</td></tr>
+      <tr><td><code class="cls">.navbar-text</code></td><td>Plain text in navbar</td></tr>
+      <tr><td><code class="cls">.sticky-top</code></td><td>Sticky positioning</td></tr>
+      <tr><td><code class="cls">.fixed-top / .fixed-bottom</code></td><td>Fixed position</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="navs-tabs" class="ref-section">
+  <h2>Navs &amp; Tabs</h2>
+  <div class="example-block">
+    <ul class="nav mb-3">
+      <li class="nav-item"><a class="nav-link active" href="#">Active</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+      <li class="nav-item"><a class="nav-link disabled" href="#">Disabled</a></li>
+    </ul>
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item"><a class="nav-link active" href="#">Tabs Active</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Tab 2</a></li>
+    </ul>
+    <ul class="nav nav-pills mb-3">
+      <li class="nav-item"><a class="nav-link active" href="#">Pills Active</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Pill 2</a></li>
+    </ul>
+    <ul class="nav nav-pills nav-fill mb-3">
+      <li class="nav-item"><a class="nav-link active" href="#">Fill 1</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Fill 2</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Fill 3</a></li>
+    </ul>
+    <ul class="nav nav-pills nav-justified">
+      <li class="nav-item"><a class="nav-link active" href="#">Justified 1</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Justified 2</a></li>
+    </ul>
+    <br>
+    <p class="text-muted small">Tabs with tabpanel:</p>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">Tab 1</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Tab 2</button>
+      </li>
+    </ul>
+    <div class="tab-content border border-top-0 p-3">
+      <div class="tab-pane fade show active" id="tab1" role="tabpanel">Tab 1 content here.</div>
+      <div class="tab-pane fade" id="tab2" role="tabpanel">Tab 2 content here.</div>
+    </div>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.nav</code></td><td>Base nav (ul or div)</td></tr>
+      <tr><td><code class="cls">.nav-tabs</code></td><td>Tabbed style</td></tr>
+      <tr><td><code class="cls">.nav-pills</code></td><td>Pill style</td></tr>
+      <tr><td><code class="cls">.nav-underline</code></td><td>Underline style (v5.3+)</td></tr>
+      <tr><td><code class="cls">.nav-fill</code></td><td>Fill available space proportionally</td></tr>
+      <tr><td><code class="cls">.nav-justified</code></td><td>Fill with equal widths</td></tr>
+      <tr><td><code class="cls">.nav-item / .nav-link</code></td><td>li / a inside .nav</td></tr>
+      <tr><td><code>data-bs-toggle="tab"</code></td><td>Enable tab switching</td></tr>
+      <tr><td><code class="cls">.tab-content / .tab-pane</code></td><td>Tabpanel wrapper and panels</td></tr>
+      <tr><td><code class="cls">.fade .show .active</code></td><td>Add to tab-pane for transitions</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="offcanvas" class="ref-section">
+  <h2>Offcanvas</h2>
+  <div class="example-block">
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDemo">
+      Toggle offcanvas
+    </button>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasDemo">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Offcanvas Title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        Content here. Slides in from the left.
+      </div>
+    </div>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.offcanvas</code></td><td>Offcanvas container</td></tr>
+      <tr><td><code class="cls">.offcanvas-start</code></td><td>Slide from left</td></tr>
+      <tr><td><code class="cls">.offcanvas-end</code></td><td>Slide from right</td></tr>
+      <tr><td><code class="cls">.offcanvas-top</code></td><td>Slide from top</td></tr>
+      <tr><td><code class="cls">.offcanvas-bottom</code></td><td>Slide from bottom</td></tr>
+      <tr><td><code class="cls">.offcanvas-header / .offcanvas-title / .offcanvas-body</code></td><td>Structural parts</td></tr>
+      <tr><td><code>data-bs-toggle="offcanvas"</code></td><td>On trigger</td></tr>
+      <tr><td><code>data-bs-scroll="true"</code></td><td>Allow body scroll when open</td></tr>
+      <tr><td><code>data-bs-backdrop="false"</code></td><td>Disable backdrop</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="pagination" class="ref-section">
+  <h2>Pagination</h2>
+  <div class="example-block">
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">»</a></li>
+      </ul>
+    </nav>
+    <nav>
+      <ul class="pagination pagination-lg">
+        <li class="page-item"><a class="page-link" href="#">Large Pagination</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+      </ul>
+    </nav>
+    <nav>
+      <ul class="pagination pagination-sm justify-content-center">
+        <li class="page-item"><a class="page-link" href="#">Small Centered</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+      </ul>
+    </nav>
+  </div>
+  <p class="text-muted small">Wrapper: <code class="cls">.pagination</code> — Item: <code class="cls">.page-item</code> — Link: <code class="cls">.page-link</code> — States: <code class="cls">.active</code> / <code class="cls">.disabled</code> — Sizes: <code class="cls">.pagination-sm</code> / <code class="cls">.pagination-lg</code></p>
+</div>
+
+<div id="popovers" class="ref-section">
+  <h2>Popovers</h2>
+  <div class="example-block">
+    <button type="button" class="btn btn-secondary" data-bs-toggle="popover" data-bs-placement="top"
+      data-bs-title="Popover title" data-bs-content="Popover body content is here." onclick="bootstrap.Popover.getOrCreateInstance(this).toggle()">
+      Click me (popover)
+    </button>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Attribute</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code>data-bs-toggle="popover"</code></td><td>Enable popover</td></tr>
+      <tr><td><code>data-bs-title="..."</code></td><td>Popover header</td></tr>
+      <tr><td><code>data-bs-content="..."</code></td><td>Popover body</td></tr>
+      <tr><td><code>data-bs-placement="top/bottom/left/right"</code></td><td>Direction</td></tr>
+      <tr><td><code>data-bs-trigger="hover focus click"</code></td><td>Trigger type(s)</td></tr>
+      <tr><td><code>data-bs-html="true"</code></td><td>Allow HTML in content</td></tr>
+    </tbody>
+  </table>
+  <h4 class="mt-2">JS init (required)</h4>
+  <pre>var popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+var popoverList = [...popoverTriggerList].map(function(el) { return new bootstrap.Popover(el) })</pre>
+</div>
+
+<div id="progress" class="ref-section">
+  <h2>Progress</h2>
+  <div class="example-block">
+    <div class="progress mb-2">
+      <div class="progress-bar" style="width:25%">25%</div>
+    </div>
+    <div class="progress mb-2" style="height:20px">
+      <div class="progress-bar bg-success progress-bar-striped" style="width:50%">50%</div>
+    </div>
+    <div class="progress mb-2">
+      <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" style="width:75%">75%</div>
+    </div>
+    <div class="progress mb-2">
+      <div class="progress-bar bg-info" style="width:20%"></div>
+      <div class="progress-bar bg-success" style="width:30%"></div>
+      <div class="progress-bar bg-warning" style="width:15%"></div>
+    </div>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.progress</code></td><td>Outer track; set height with style</td></tr>
+      <tr><td><code class="cls">.progress-bar</code></td><td>The fill; set width with style</td></tr>
+      <tr><td><code class="cls">.progress-bar-striped</code></td><td>Stripe pattern</td></tr>
+      <tr><td><code class="cls">.progress-bar-animated</code></td><td>Animated stripes</td></tr>
+      <tr><td><code class="cls">.bg-{color}</code></td><td>Bar color</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="scrollspy" class="ref-section">
+  <h2>Scrollspy</h2>
+  <pre>&lt;!-- On scrollable container: --&gt;
+&lt;body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="70" data-bs-smooth-scroll="true"&gt;
+
+&lt;!-- Or on a div: --&gt;
+&lt;div data-bs-spy="scroll" data-bs-target="#list-example" style="height:200px; overflow-y:scroll"&gt;
+  &lt;h4 id="s1"&gt;Section 1&lt;/h4&gt;...
+&lt;/div&gt;
+
+&lt;!-- Nav must have href matching the section IDs --&gt;
+&lt;nav id="list-example"&gt;
+  &lt;a class="nav-link" href="#s1"&gt;Section 1&lt;/a&gt;
+&lt;/nav&gt;</pre>
+  <p class="text-muted small">Attributes: <code>data-bs-spy="scroll"</code> on target, <code>data-bs-target="#navId"</code>, <code>data-bs-offset</code> (px), <code>data-bs-smooth-scroll="true"</code></p>
+</div>
+
+<div id="spinners" class="ref-section">
+  <h2>Spinners</h2>
+  <div class="example-block">
+    <div class="spinner-border text-primary me-2" role="status"><span class="visually-hidden">Loading...</span></div>
+    <div class="spinner-border text-success me-2" role="status"></div>
+    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+    <div class="spinner-grow text-danger me-2" role="status"></div>
+    <div class="spinner-grow text-warning spinner-grow-sm me-2" role="status"></div>
+    <br><br>
+    <button class="btn btn-primary" disabled>
+      <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+      Loading...
+    </button>
+  </div>
+  <p class="text-muted small">Border spinner: <code class="cls">.spinner-border</code> — Grow spinner: <code class="cls">.spinner-grow</code> — Sizes: <code class="cls">.spinner-border-sm</code> / <code class="cls">.spinner-grow-sm</code> — Colors via <code class="cls">.text-{color}</code></p>
+</div>
+
+<div id="toasts" class="ref-section">
+  <h2>Toasts</h2>
+  <pre>&lt;div class="toast-container position-fixed bottom-0 end-0 p-3"&gt;
+  &lt;div id="myToast" class="toast" role="alert"&gt;
+    &lt;div class="toast-header"&gt;
+      &lt;strong class="me-auto"&gt;Title&lt;/strong&gt;
+      &lt;small&gt;Just now&lt;/small&gt;
+      &lt;button type="button" class="btn-close" data-bs-dismiss="toast"&gt;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="toast-body"&gt;Message here.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+  <pre>var toastEl = document.getElementById('myToast')
+var toast = new bootstrap.Toast(toastEl)
+toast.show()
+// Options: autohide (true), delay (5000ms)
+// data-bs-autohide="false" to keep open</pre>
+</div>
+
+<div id="tooltips" class="ref-section">
+  <h2>Tooltips</h2>
+  <div class="example-block">
+    <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
+      data-bs-title="Top tooltip" id="tooltipDemo">Hover me (after JS init)</button>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Attribute</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code>data-bs-toggle="tooltip"</code></td><td>Mark element</td></tr>
+      <tr><td><code>data-bs-title="..."</code></td><td>Tooltip text</td></tr>
+      <tr><td><code>data-bs-placement="top/bottom/left/right/auto"</code></td><td>Direction</td></tr>
+      <tr><td><code>data-bs-html="true"</code></td><td>HTML in tooltip</td></tr>
+      <tr><td><code>data-bs-trigger="hover focus"</code></td><td>Trigger event(s)</td></tr>
+    </tbody>
+  </table>
+  <h4 class="mt-2">JS init (required)</h4>
+  <pre>var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+var tooltipList = [...tooltipTriggerList].map(function(el) { return new bootstrap.Tooltip(el) })</pre>
+</div>
+
+<!-- ═══════════════════════ UTILITIES ═══════════════════════ -->
+<div class="section-label">Utilities</div>
+
+<div id="spacing" class="ref-section">
+  <h2>Spacing (Margin &amp; Padding)</h2>
+  <p>Format: <code class="cls">.{property}{sides}-{size}</code> — responsive: <code class="cls">.{property}{sides}-{bp}-{size}</code></p>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Property</th><th>Sides</th><th>Size</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>m</code> = margin<br><code>p</code> = padding</td>
+        <td>
+          <em>blank</em> = all<br>
+          <code>t</code> = top<br>
+          <code>b</code> = bottom<br>
+          <code>s</code> = start (left)<br>
+          <code>e</code> = end (right)<br>
+          <code>x</code> = horizontal<br>
+          <code>y</code> = vertical
+        </td>
+        <td>
+          <code>0</code> = 0<br>
+          <code>1</code> = .25rem<br>
+          <code>2</code> = .5rem<br>
+          <code>3</code> = 1rem<br>
+          <code>4</code> = 1.5rem<br>
+          <code>5</code> = 3rem<br>
+          <code>auto</code> = auto (margin only)
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="text-muted small">Examples: <code class="cls">.mt-3</code> (margin-top 1rem), <code class="cls">.px-2</code> (padding-left/right .5rem), <code class="cls">.mx-auto</code> (center block), <code class="cls">.ms-md-4</code> (responsive margin-start)</p>
+</div>
+
+<div id="sizing" class="ref-section">
+  <h2>Sizing</h2>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>CSS</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.w-25 / .w-50 / .w-75 / .w-100</code></td><td>width: 25% / 50% / 75% / 100%</td></tr>
+      <tr><td><code class="cls">.w-auto</code></td><td>width: auto</td></tr>
+      <tr><td><code class="cls">.mw-100</code></td><td>max-width: 100%</td></tr>
+      <tr><td><code class="cls">.vw-100</code></td><td>width: 100vw</td></tr>
+      <tr><td><code class="cls">.min-vw-100</code></td><td>min-width: 100vw</td></tr>
+      <tr><td><code class="cls">.h-25 / .h-50 / .h-75 / .h-100</code></td><td>height: 25% / 50% / 75% / 100%</td></tr>
+      <tr><td><code class="cls">.h-auto</code></td><td>height: auto</td></tr>
+      <tr><td><code class="cls">.mh-100</code></td><td>max-height: 100%</td></tr>
+      <tr><td><code class="cls">.vh-100</code></td><td>height: 100vh</td></tr>
+      <tr><td><code class="cls">.min-vh-100</code></td><td>min-height: 100vh</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="display" class="ref-section">
+  <h2>Display</h2>
+  <p>Format: <code class="cls">.d-{value}</code> or <code class="cls">.d-{bp}-{value}</code></p>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>CSS</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.d-none</code></td><td>display: none</td></tr>
+      <tr><td><code class="cls">.d-inline</code></td><td>display: inline</td></tr>
+      <tr><td><code class="cls">.d-inline-block</code></td><td>display: inline-block</td></tr>
+      <tr><td><code class="cls">.d-block</code></td><td>display: block</td></tr>
+      <tr><td><code class="cls">.d-grid</code></td><td>display: grid</td></tr>
+      <tr><td><code class="cls">.d-inline-grid</code></td><td>display: inline-grid</td></tr>
+      <tr><td><code class="cls">.d-table</code></td><td>display: table</td></tr>
+      <tr><td><code class="cls">.d-table-cell</code></td><td>display: table-cell</td></tr>
+      <tr><td><code class="cls">.d-table-row</code></td><td>display: table-row</td></tr>
+      <tr><td><code class="cls">.d-flex</code></td><td>display: flex</td></tr>
+      <tr><td><code class="cls">.d-inline-flex</code></td><td>display: inline-flex</td></tr>
+      <tr><td><code class="cls">.d-print-{value}</code></td><td>Print-only display value</td></tr>
+    </tbody>
+  </table>
+  <p class="text-muted small">Hide at breakpoint: <code class="cls">.d-none .d-md-block</code> (hidden below md) — Show only at sm: <code class="cls">.d-sm-block .d-md-none</code></p>
+</div>
+
+<div id="position" class="ref-section">
+  <h2>Position</h2>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>CSS</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.position-static</code></td><td>position: static</td></tr>
+      <tr><td><code class="cls">.position-relative</code></td><td>position: relative</td></tr>
+      <tr><td><code class="cls">.position-absolute</code></td><td>position: absolute</td></tr>
+      <tr><td><code class="cls">.position-fixed</code></td><td>position: fixed</td></tr>
+      <tr><td><code class="cls">.position-sticky</code></td><td>position: sticky</td></tr>
+      <tr><td><code class="cls">.sticky-top / .sticky-bottom</code></td><td>sticky top/bottom with top:0/bottom:0</td></tr>
+      <tr><td><code class="cls">.sticky-{bp}-top/bottom</code></td><td>Responsive sticky</td></tr>
+      <tr><td><code class="cls">.fixed-top / .fixed-bottom</code></td><td>Fixed at top/bottom of viewport</td></tr>
+      <tr><td><code class="cls">.top-0 / .top-50 / .top-100</code></td><td>top: 0 / 50% / 100%</td></tr>
+      <tr><td><code class="cls">.bottom-0 / .bottom-50 / .bottom-100</code></td><td>bottom</td></tr>
+      <tr><td><code class="cls">.start-0 / .start-50 / .start-100</code></td><td>left (LTR) / right (RTL)</td></tr>
+      <tr><td><code class="cls">.end-0 / .end-50 / .end-100</code></td><td>right (LTR) / left (RTL)</td></tr>
+      <tr><td><code class="cls">.translate-middle</code></td><td>transform: translate(-50%, -50%)</td></tr>
+      <tr><td><code class="cls">.translate-middle-x / .translate-middle-y</code></td><td>X or Y only</td></tr>
+    </tbody>
+  </table>
+  <p class="text-muted small">Centering trick: <code class="cls">.position-absolute .top-50 .start-50 .translate-middle</code></p>
+</div>
+
+<div id="borders" class="ref-section">
+  <h2>Borders</h2>
+  <div class="example-block">
+    <span class="border p-2 me-1">border</span>
+    <span class="border border-primary p-2 me-1">border-primary</span>
+    <span class="border border-success p-2 me-1">border-success</span>
+    <span class="border border-danger p-2 me-1">border-danger</span>
+    <span class="border border-0 p-2 me-1 bg-light">border-0</span>
+    <br><br>
+    <span class="border-top p-2 me-2">border-top</span>
+    <span class="border-end p-2 me-2">border-end</span>
+    <span class="border-bottom p-2 me-2">border-bottom</span>
+    <span class="border-start p-2 me-2">border-start</span>
+    <br><br>
+    <span class="border border-2 p-2 me-1">border-2</span>
+    <span class="border border-3 p-2 me-1">border-3</span>
+    <span class="border border-4 p-2 me-1">border-4</span>
+    <span class="border border-5 p-2 me-1">border-5</span>
+    <br><br>
+    <span class="rounded p-2 bg-light border me-1">rounded</span>
+    <span class="rounded-0 p-2 bg-light border me-1">rounded-0</span>
+    <span class="rounded-1 p-2 bg-light border me-1">rounded-1</span>
+    <span class="rounded-2 p-2 bg-light border me-1">rounded-2</span>
+    <span class="rounded-3 p-2 bg-light border me-1">rounded-3</span>
+    <span class="rounded-4 p-2 bg-light border me-1">rounded-4</span>
+    <span class="rounded-5 p-2 bg-light border me-1">rounded-5</span>
+    <span class="rounded-circle p-2 bg-light border me-1">circle</span>
+    <span class="rounded-pill px-3 py-1 bg-light border">pill</span>
+    <br><br>
+    <span class="rounded-top p-2 bg-light border me-1">rounded-top</span>
+    <span class="rounded-bottom p-2 bg-light border me-1">rounded-bottom</span>
+    <span class="rounded-start p-2 bg-light border me-1">rounded-start</span>
+    <span class="rounded-end p-2 bg-light border me-1">rounded-end</span>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.border</code></td><td>Add 1px border all sides</td></tr>
+      <tr><td><code class="cls">.border-{0–5}</code></td><td>Border width</td></tr>
+      <tr><td><code class="cls">.border-{color}</code></td><td>Border color</td></tr>
+      <tr><td><code class="cls">.border-top/end/bottom/start</code></td><td>Single side border on</td></tr>
+      <tr><td><code class="cls">.border-top-0/end-0/bottom-0/start-0</code></td><td>Single side border off</td></tr>
+      <tr><td><code class="cls">.border-opacity-{10/25/50/75/100}</code></td><td>Border opacity</td></tr>
+      <tr><td><code class="cls">.rounded</code></td><td>Default border-radius</td></tr>
+      <tr><td><code class="cls">.rounded-{0–5}</code></td><td>Border-radius scale</td></tr>
+      <tr><td><code class="cls">.rounded-circle</code></td><td>50% border-radius</td></tr>
+      <tr><td><code class="cls">.rounded-pill</code></td><td>Pill shape (50rem radius)</td></tr>
+      <tr><td><code class="cls">.rounded-top/end/bottom/start</code></td><td>One side rounded</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="shadows" class="ref-section">
+  <h2>Shadows</h2>
+  <div class="example-block">
+    <div class="shadow-none bg-light border p-3 mb-2 rounded">shadow-none</div>
+    <div class="shadow-sm p-3 mb-2 rounded bg-white">shadow-sm</div>
+    <div class="shadow p-3 mb-2 rounded bg-white">shadow (default)</div>
+    <div class="shadow-lg p-3 mb-2 rounded bg-white">shadow-lg</div>
+  </div>
+  <p class="text-muted small">Classes: <code class="cls">.shadow-none</code> / <code class="cls">.shadow-sm</code> / <code class="cls">.shadow</code> / <code class="cls">.shadow-lg</code></p>
+</div>
+
+<div id="colors-bg" class="ref-section">
+  <h2>Colors &amp; Backgrounds</h2>
+  <div class="example-block">
+    <p class="text-primary">text-primary</p>
+    <p class="text-secondary">text-secondary</p>
+    <p class="text-success">text-success</p>
+    <p class="text-danger">text-danger</p>
+    <p class="text-warning">text-warning</p>
+    <p class="text-info">text-info</p>
+    <p class="text-body">text-body</p>
+    <p class="text-muted">text-muted</p>
+    <p class="text-black">text-black</p>
+    <p class="text-white bg-dark d-inline-block px-1">text-white</p>
+    <br><br>
+    <div class="bg-primary text-white p-2 mb-1 rounded">bg-primary</div>
+    <div class="bg-secondary text-white p-2 mb-1 rounded">bg-secondary</div>
+    <div class="bg-success text-white p-2 mb-1 rounded">bg-success</div>
+    <div class="bg-danger text-white p-2 mb-1 rounded">bg-danger</div>
+    <div class="bg-warning text-dark p-2 mb-1 rounded">bg-warning</div>
+    <div class="bg-info text-dark p-2 mb-1 rounded">bg-info</div>
+    <div class="bg-light text-dark p-2 mb-1 rounded">bg-light</div>
+    <div class="bg-dark text-white p-2 mb-1 rounded">bg-dark</div>
+    <div class="bg-body p-2 mb-1 rounded border">bg-body</div>
+    <div class="bg-transparent p-2 mb-1 rounded border">bg-transparent</div>
+    <br>
+    <div class="text-bg-primary p-2 mb-1 rounded">text-bg-primary (auto contrast)</div>
+    <div class="text-bg-success p-2 mb-1 rounded">text-bg-success</div>
+    <div class="text-bg-danger p-2 mb-1 rounded">text-bg-danger</div>
+    <div class="text-bg-warning p-2 mb-1 rounded">text-bg-warning</div>
+    <br>
+    <div class="bg-primary bg-opacity-75 text-white p-2 mb-1 rounded">bg-opacity-75</div>
+    <div class="bg-primary bg-opacity-50 text-white p-2 mb-1 rounded">bg-opacity-50</div>
+    <div class="bg-primary bg-opacity-25 p-2 mb-1 rounded">bg-opacity-25</div>
+    <div class="bg-primary bg-opacity-10 p-2 mb-1 rounded">bg-opacity-10</div>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-light"><tr><th>Class pattern</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.text-{color}</code></td><td>Text color (primary/secondary/success/danger/warning/info/light/dark/body/muted/white/black/white-50/black-50)</td></tr>
+      <tr><td><code class="cls">.text-opacity-{25/50/75/100}</code></td><td>Text opacity</td></tr>
+      <tr><td><code class="cls">.bg-{color}</code></td><td>Background color</td></tr>
+      <tr><td><code class="cls">.bg-opacity-{10/25/50/75/100}</code></td><td>Background opacity</td></tr>
+      <tr><td><code class="cls">.bg-gradient</code></td><td>Add gradient to bg color</td></tr>
+      <tr><td><code class="cls">.text-bg-{color}</code></td><td>Background + auto-contrast text color</td></tr>
+      <tr><td><code class="cls">.link-{color}</code></td><td>Color a link + hover state</td></tr>
+      <tr><td><code class="cls">.link-opacity-{10/25/50/75/100}</code></td><td>Link opacity</td></tr>
+      <tr><td><code class="cls">.link-underline-{color}</code></td><td>Underline color only</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="overflow" class="ref-section">
+  <h2>Overflow</h2>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>CSS</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.overflow-auto</code></td><td>overflow: auto</td></tr>
+      <tr><td><code class="cls">.overflow-hidden</code></td><td>overflow: hidden</td></tr>
+      <tr><td><code class="cls">.overflow-visible</code></td><td>overflow: visible</td></tr>
+      <tr><td><code class="cls">.overflow-scroll</code></td><td>overflow: scroll</td></tr>
+      <tr><td><code class="cls">.overflow-x-auto/hidden/visible/scroll</code></td><td>overflow-x</td></tr>
+      <tr><td><code class="cls">.overflow-y-auto/hidden/visible/scroll</code></td><td>overflow-y</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="visibility" class="ref-section">
+  <h2>Visibility &amp; Accessibility</h2>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.visible</code></td><td>visibility: visible</td></tr>
+      <tr><td><code class="cls">.invisible</code></td><td>visibility: hidden (still takes space)</td></tr>
+      <tr><td><code class="cls">.d-none</code></td><td>display: none (no space)</td></tr>
+      <tr><td><code class="cls">.visually-hidden</code></td><td>Hidden visually but available to screen readers</td></tr>
+      <tr><td><code class="cls">.visually-hidden-focusable</code></td><td>Hidden until focused (skip nav)</td></tr>
+      <tr><td><code class="cls">.stretched-link</code></td><td>Make containing block clickable (extend link)</td></tr>
+      <tr><td><code class="cls">.clearfix</code></td><td>Clearfix float hack</td></tr>
+      <tr><td><code class="cls">.float-start / .float-end / .float-none</code></td><td>Float utilities (support bp infixes)</td></tr>
+      <tr><td><code class="cls">.pe-none / .pe-auto</code></td><td>pointer-events: none / auto</td></tr>
+      <tr><td><code class="cls">.user-select-none/all/auto</code></td><td>user-select</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="zindex" class="ref-section">
+  <h2>Z-index</h2>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>z-index</th><th>Use case</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.z-n1</code></td><td>-1</td><td>Behind content</td></tr>
+      <tr><td><code class="cls">.z-0</code></td><td>0</td><td></td></tr>
+      <tr><td><code class="cls">.z-1</code></td><td>1</td><td>Slightly above</td></tr>
+      <tr><td><code class="cls">.z-2</code></td><td>2</td><td></td></tr>
+      <tr><td><code class="cls">.z-3</code></td><td>3</td><td></td></tr>
+      <tr><td>CSS var <code>--bs-zindex-dropdown</code></td><td>1000</td><td>Dropdowns</td></tr>
+      <tr><td>CSS var <code>--bs-zindex-sticky</code></td><td>1020</td><td>Sticky elements</td></tr>
+      <tr><td>CSS var <code>--bs-zindex-fixed</code></td><td>1030</td><td>Fixed navbars</td></tr>
+      <tr><td>CSS var <code>--bs-zindex-offcanvas-backdrop</code></td><td>1040</td><td>Offcanvas backdrop</td></tr>
+      <tr><td>CSS var <code>--bs-zindex-offcanvas</code></td><td>1045</td><td>Offcanvas</td></tr>
+      <tr><td>CSS var <code>--bs-zindex-modal-backdrop</code></td><td>1050</td><td>Modal backdrop</td></tr>
+      <tr><td>CSS var <code>--bs-zindex-modal</code></td><td>1055</td><td>Modal</td></tr>
+      <tr><td>CSS var <code>--bs-zindex-popover</code></td><td>1070</td><td>Popovers</td></tr>
+      <tr><td>CSS var <code>--bs-zindex-tooltip</code></td><td>1080</td><td>Tooltips</td></tr>
+      <tr><td>CSS var <code>--bs-zindex-toast</code></td><td>1090</td><td>Toasts</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════ JS API ═══════════════════════ -->
+<div class="section-label">JavaScript API</div>
+
+<div id="js-api" class="ref-section">
+  <h2>JavaScript API — Common Patterns</h2>
+  <h3>CDN include</h3>
+  <pre>&lt;!-- Bundle (includes Popper) --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.js"&gt;&lt;/script&gt;
+
+&lt;!-- Separate: Popper first, then Bootstrap --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.js"&gt;&lt;/script&gt;</pre>
+
+  <h3>Universal patterns</h3>
+  <pre>// Instantiate
+var myComponent = new bootstrap.Modal(el, options)
+
+// Get existing instance (returns null if none)
+var instance = bootstrap.Modal.getInstance(el)
+
+// Get or create
+var instance = bootstrap.Modal.getOrCreateInstance(el)
+
+// Dispose
+instance.dispose()</pre>
+
+  <h3>Component — Options &amp; Events</h3>
+  <table class="table table-sm prop-table">
+    <thead class="table-dark"><tr><th>Component</th><th>Key Options</th><th>Key Events</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Modal</strong></td>
+        <td>backdrop (bool/static), keyboard, focus</td>
+        <td>show.bs.modal, shown.bs.modal, hide.bs.modal, hidden.bs.modal</td>
+      </tr>
+      <tr>
+        <td><strong>Collapse</strong></td>
+        <td>parent, toggle</td>
+        <td>show.bs.collapse, shown.bs.collapse, hide.bs.collapse, hidden.bs.collapse</td>
+      </tr>
+      <tr>
+        <td><strong>Dropdown</strong></td>
+        <td>autoClose (true/false/inside/outside), boundary, display, offset, popperConfig</td>
+        <td>show.bs.dropdown, shown.bs.dropdown, hide.bs.dropdown, hidden.bs.dropdown</td>
+      </tr>
+      <tr>
+        <td><strong>Tooltip</strong></td>
+        <td>animation, container, delay, html, placement, selector, title, trigger, offset</td>
+        <td>show.bs.tooltip, shown.bs.tooltip, hide.bs.tooltip, hidden.bs.tooltip</td>
+      </tr>
+      <tr>
+        <td><strong>Popover</strong></td>
+        <td>Same as tooltip + content, sanitize, allowList</td>
+        <td>show.bs.popover, shown.bs.popover, hide.bs.popover, hidden.bs.popover</td>
+      </tr>
+      <tr>
+        <td><strong>Toast</strong></td>
+        <td>animation, autohide (true), delay (5000)</td>
+        <td>show.bs.toast, shown.bs.toast, hide.bs.toast, hidden.bs.toast</td>
+      </tr>
+      <tr>
+        <td><strong>Carousel</strong></td>
+        <td>interval (5000), keyboard, pause (hover), ride (false/carousel), touch, wrap</td>
+        <td>slide.bs.carousel, slid.bs.carousel</td>
+      </tr>
+      <tr>
+        <td><strong>Offcanvas</strong></td>
+        <td>backdrop (true/false/static), keyboard, scroll</td>
+        <td>show.bs.offcanvas, shown.bs.offcanvas, hide.bs.offcanvas, hidden.bs.offcanvas</td>
+      </tr>
+      <tr>
+        <td><strong>Tab</strong></td>
+        <td>—</td>
+        <td>show.bs.tab, shown.bs.tab, hide.bs.tab, hidden.bs.tab</td>
+      </tr>
+      <tr>
+        <td><strong>Alert</strong></td>
+        <td>—</td>
+        <td>close.bs.alert, closed.bs.alert</td>
+      </tr>
+      <tr>
+        <td><strong>Scrollspy</strong></td>
+        <td>offset, method (auto/offset/position), rootMargin, smoothScroll, threshold, target</td>
+        <td>activate.bs.scrollspy</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Event listener pattern</h3>
+  <pre>var myModalEl = document.getElementById('myModal')
+myModalEl.addEventListener('shown.bs.modal', function(event) {
+  // do something when fully shown
+})
+
+// Event object for carousel has: direction, relatedTarget, from, to
+var myCarouselEl = document.getElementById('myCarousel')
+myCarouselEl.addEventListener('slid.bs.carousel', function(event) {
+  console.log(event.to)
+})</pre>
+
+  <h3>data-bs-* attribute reference</h3>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Attribute</th><th>Equivalent JS option</th></tr></thead>
+    <tbody>
+      <tr><td><code>data-bs-toggle="modal"</code></td><td>Triggers Modal.show()</td></tr>
+      <tr><td><code>data-bs-dismiss="modal|alert|offcanvas"</code></td><td>Triggers hide()</td></tr>
+      <tr><td><code>data-bs-target="#id"</code></td><td>target option</td></tr>
+      <tr><td><code>data-bs-interval="3000"</code></td><td>Carousel interval option</td></tr>
+      <tr><td><code>data-bs-ride="carousel"</code></td><td>Carousel ride option</td></tr>
+      <tr><td><code>data-bs-backdrop="static"</code></td><td>Modal backdrop option</td></tr>
+      <tr><td><code>data-bs-keyboard="false"</code></td><td>Modal keyboard option</td></tr>
+      <tr><td><code>data-bs-config='{...}'</code></td><td>JSON options object (v5.2+)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-5 mb-4 text-center text-muted small border-top pt-3">
+  Bootstrap 5.3 Reference &mdash; <a href="https://getbootstrap.com/docs/5.3/" target="_blank">Official Docs</a>
+</div>
+
+</div><!-- /container -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.js"></script>
+<script>
+  var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  tooltipTriggerList.forEach(function(el) { new bootstrap.Tooltip(el) })
+
+  var popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+  popoverTriggerList.forEach(function(el) { new bootstrap.Popover(el) })
+</script>
+</body>
+</html>
