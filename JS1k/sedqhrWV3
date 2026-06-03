@@ -709,7 +709,7 @@ setInterval(gameTick, 22)<span class="text-muted">// start the game loop: 22ms i
 	</div>
 </div>
 
-<script src="/Inc/js/bootstrap.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.js"></script>
 <script>
 var isRunning = false
 var activeSourceId = 'src-original'

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JS1K 2019 Entry #4159 — i feel fine by Alexander Timoshenko</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet" href="/Inc/css/bootstrap.css">
 <style>
 body {
   font-size: 20px;
@@ -432,7 +432,7 @@ setInterval(function tick() {
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.js"></script>
+<script src="/Inc/js/bootstrap.js"></script>
 <script>
 var VERSION = '20'
 

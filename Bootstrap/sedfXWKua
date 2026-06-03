@@ -128,6 +128,7 @@
       <a href="#borders">Borders</a><br>
       <a href="#shadows">Shadows</a><br>
       <a href="#colors-bg">Colors &amp; Backgrounds</a><br>
+      <a href="#subtle-colors">Subtle Colors (5.3)</a><br>
       <a href="#overflow">Overflow</a><br>
       <a href="#visibility">Visibility</a><br>
       <a href="#zindex">Z-index</a><br>
@@ -1460,6 +1461,89 @@ var tooltipList = [...tooltipTriggerList].map(function(el) { return new bootstra
       <tr><td><code class="cls">.link-underline-{color}</code></td><td>Underline color only</td></tr>
     </tbody>
   </table>
+</div>
+
+<div id="subtle-colors" class="ref-section">
+  <h2>Subtle Colors <small class="text-muted fs-6 fw-normal">Bootstrap 5.3+</small></h2>
+  <p>Each theme color now has three paired utilities: a <strong>subtle background</strong>, an <strong>emphasis text</strong> color, and a <strong>subtle border</strong>. These adapt automatically in light and dark mode via CSS variables.</p>
+  <div class="example-block">
+    <div class="row g-2">
+      <div class="col-md-4"><div class="p-2 rounded bg-primary-subtle border border-primary-subtle"><span class="text-primary-emphasis fw-semibold">primary</span> subtle</div></div>
+      <div class="col-md-4"><div class="p-2 rounded bg-secondary-subtle border border-secondary-subtle"><span class="text-secondary-emphasis fw-semibold">secondary</span> subtle</div></div>
+      <div class="col-md-4"><div class="p-2 rounded bg-success-subtle border border-success-subtle"><span class="text-success-emphasis fw-semibold">success</span> subtle</div></div>
+      <div class="col-md-4"><div class="p-2 rounded bg-danger-subtle border border-danger-subtle"><span class="text-danger-emphasis fw-semibold">danger</span> subtle</div></div>
+      <div class="col-md-4"><div class="p-2 rounded bg-warning-subtle border border-warning-subtle"><span class="text-warning-emphasis fw-semibold">warning</span> subtle</div></div>
+      <div class="col-md-4"><div class="p-2 rounded bg-info-subtle border border-info-subtle"><span class="text-info-emphasis fw-semibold">info</span> subtle</div></div>
+      <div class="col-md-4"><div class="p-2 rounded bg-light-subtle border border-light-subtle"><span class="text-light-emphasis fw-semibold">light</span> subtle</div></div>
+      <div class="col-md-4"><div class="p-2 rounded bg-dark-subtle border border-dark-subtle"><span class="text-dark-emphasis fw-semibold">dark</span> subtle</div></div>
+    </div>
+  </div>
+  <table class="table table-sm prop-table mt-2">
+    <thead class="table-dark"><tr><th>Class pattern</th><th>CSS variable</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.bg-{color}-subtle</code></td><td><code>--bs-{color}-bg-subtle</code></td><td>Very light tinted background, adapts dark mode</td></tr>
+      <tr><td><code class="cls">.text-{color}-emphasis</code></td><td><code>--bs-{color}-text-emphasis</code></td><td>Dark/saturated text, readable on subtle bg</td></tr>
+      <tr><td><code class="cls">.border-{color}-subtle</code></td><td><code>--bs-{color}-border-subtle</code></td><td>Soft tinted border</td></tr>
+    </tbody>
+  </table>
+  <p class="text-muted small">Colors: <code>primary secondary success danger warning info light dark</code></p>
+
+  <h3 class="mt-3">Typical usage — alert-style callout without the .alert component</h3>
+  <div class="example-block">
+    <div class="p-3 rounded bg-success-subtle border border-success-subtle text-success-emphasis mb-2">
+      <strong>Done!</strong> Your changes have been saved successfully.
+    </div>
+    <div class="p-3 rounded bg-danger-subtle border border-danger-subtle text-danger-emphasis mb-2">
+      <strong>Error!</strong> Something went wrong. Please try again.
+    </div>
+    <div class="p-3 rounded bg-warning-subtle border border-warning-subtle text-warning-emphasis mb-2">
+      <strong>Heads up!</strong> This action cannot be undone.
+    </div>
+    <div class="p-3 rounded bg-info-subtle border border-info-subtle text-info-emphasis">
+      <strong>Note:</strong> This feature is in beta.
+    </div>
+  </div>
+  <pre>&lt;div class="p-3 rounded bg-success-subtle border border-success-subtle text-success-emphasis"&gt;
+  &lt;strong&gt;Done!&lt;/strong&gt; Your changes have been saved.
+&lt;/div&gt;</pre>
+
+  <h3 class="mt-3">Also new in 5.3 — body color tiers &amp; secondary/tertiary backgrounds</h3>
+  <div class="example-block">
+    <p class="text-body">text-body (default)</p>
+    <p class="text-body-secondary">text-body-secondary (muted replacement)</p>
+    <p class="text-body-tertiary">text-body-tertiary (extra muted)</p>
+    <p class="text-body-emphasis">text-body-emphasis (strong/high contrast)</p>
+    <div class="p-2 bg-body rounded border mb-1">bg-body</div>
+    <div class="p-2 bg-body-secondary rounded border mb-1">bg-body-secondary</div>
+    <div class="p-2 bg-body-tertiary rounded border mb-1">bg-body-tertiary</div>
+  </div>
+  <table class="table table-sm prop-table">
+    <thead class="table-light"><tr><th>Class</th><th>CSS variable</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code class="cls">.text-body</code></td><td><code>--bs-body-color</code></td><td>Default body text color</td></tr>
+      <tr><td><code class="cls">.text-body-secondary</code></td><td><code>--bs-secondary-color</code></td><td>Muted (replaces .text-muted in 5.3)</td></tr>
+      <tr><td><code class="cls">.text-body-tertiary</code></td><td><code>--bs-tertiary-color</code></td><td>Extra muted</td></tr>
+      <tr><td><code class="cls">.text-body-emphasis</code></td><td><code>--bs-emphasis-color</code></td><td>High contrast (near black / near white in dark)</td></tr>
+      <tr><td><code class="cls">.bg-body</code></td><td><code>--bs-body-bg</code></td><td>Page background</td></tr>
+      <tr><td><code class="cls">.bg-body-secondary</code></td><td><code>--bs-secondary-bg</code></td><td>Slightly offset surface</td></tr>
+      <tr><td><code class="cls">.bg-body-tertiary</code></td><td><code>--bs-tertiary-bg</code></td><td>Further offset surface (e.g. sidebar bg)</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="mt-3">Dark mode</h3>
+  <p>All subtle and body-tier utilities automatically invert in dark mode. Enable dark mode by adding <code>data-bs-theme="dark"</code> to <code>&lt;html&gt;</code> or any container element.</p>
+  <pre>&lt;!-- Whole page dark --&gt;
+&lt;html data-bs-theme="dark"&gt;
+
+&lt;!-- Scoped dark section --&gt;
+&lt;div data-bs-theme="dark" class="p-4 bg-body-tertiary rounded"&gt;
+  &lt;div class="p-3 bg-primary-subtle border border-primary-subtle text-primary-emphasis rounded"&gt;
+    This block uses dark-mode subtle colors.
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Force light inside a dark page --&gt;
+&lt;div data-bs-theme="light"&gt;...&lt;/div&gt;</pre>
 </div>
 
 <div id="overflow" class="ref-section">

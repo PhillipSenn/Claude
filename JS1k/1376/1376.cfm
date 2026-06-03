@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JS1K 2013 Entry #1376 — Color Factors by Pablo Caro</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet" href="/Inc/css/bootstrap.css">
 <style>
 body {
   font-size: 20px;
@@ -373,7 +373,7 @@ _='<span class="text-muted">\x1c</span>m<span class="text-muted">\x1d</span>ginN
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.js"></script>
+<script src="/Inc/js/bootstrap.js"></script>
 <script>
 var VERSION = '10'
 

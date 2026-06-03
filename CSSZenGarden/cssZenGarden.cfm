@@ -6,7 +6,7 @@
   <title>CSS Zen Garden Design Cards</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.css" rel="stylesheet">
+  <link rel="stylesheet" href="/Inc/css/bootstrap.css">
   <link href="cssZenGarden.css" rel="stylesheet">
 </head>
 <body>
@@ -19,7 +19,7 @@
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3" id="zg-grid"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.js"></script>
+<script src="/Inc/js/bootstrap.js"></script>
 <script src="/Inc/js/post_json.js"></script>
 <script src="cssZenGarden.js"></script>
 

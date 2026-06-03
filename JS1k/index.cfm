@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JS1K All Entries</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="/Inc/css/bootstrap.css">
 <style>
 td.num { white-space: nowrap; font-variant-numeric: tabular-nums; }
 td.desc { font-size: 0.85em; color: #666; }
