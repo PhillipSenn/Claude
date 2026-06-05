@@ -1,0 +1,136 @@
+body {
+  background: #0f0f1a;
+  color: #e8e8f0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+/*  padding: 20px 10px; */
+}
+
+h1 {
+  color: #c8d8ff;
+  letter-spacing: 2px;
+  font-size: 1.6rem;
+}
+
+.subtitle {
+  color: #7880a0;
+  font-size: 0.85rem;
+  margin-bottom: 24px;
+}
+
+#table-wrap {
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+#periodic-table {
+  display: grid;
+  grid-template-columns: repeat(18, 58px);
+  grid-template-rows: repeat(7, 58px) 18px repeat(2, 58px);
+  gap: 3px;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+.element {
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 3px;
+  cursor: default;
+  transition: opacity 0.18s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  border: 1px solid rgba(0,0,0,0.25);
+}
+
+.elem-num {
+  font-size: 8px;
+  color: rgba(0,0,0,0.6);
+  align-self: flex-start;
+  line-height: 1;
+  margin-bottom: 1px;
+}
+
+.elem-sym {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #1a1a2e;
+}
+
+.elem-name {
+  font-size: 6.5px;
+  line-height: 1;
+  color: rgba(0,0,0,0.65);
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 0 2px;
+}
+
+.element.dimmed {
+  opacity: 0.12;
+}
+
+.element.highlighted {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(255,255,255,0.5), 0 0 4px rgba(255,255,255,0.8);
+  z-index: 10;
+  border-color: rgba(255,255,255,0.6);
+}
+
+.placeholder {
+  border: 2px dashed rgba(0,0,0,0.3) !important;
+}
+
+.placeholder .elem-sym {
+  font-size: 13px;
+  color: rgba(0,0,0,0.55);
+}
+
+.placeholder .elem-name {
+  font-size: 6px;
+}
+
+/* Legend */
+#legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin: 24px auto 8px;
+  width: fit-content;
+  max-width: 1100px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: #b0b8d0;
+  cursor: default;
+  transition: color 0.18s ease, transform 0.15s ease;
+}
+
+.legend-item.dimmed {
+  opacity: 0.2;
+}
+
+.legend-item.highlighted {
+  color: #ffffff;
+  transform: scale(1.1);
+  font-weight: bold;
+}
+
+.legend-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.3);
+  flex-shrink: 0;
+}
+
