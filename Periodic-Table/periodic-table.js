@@ -1,6 +1,6 @@
 // "You're waiting for a train. A train that will take you far away." — Inception
 var app = {}
-app.version = 2
+app.version = 5
 
 document.getElementById('app-version').innerHTML = '&bull; v' + app.version
 
@@ -220,6 +220,38 @@ function each_category(key, cat) {
   $('#legend').append($item)
 }
 
+var discovered = {}
+var totalCategories = Object.keys(categories).length
+var pointsEach = Math.floor(100 / totalCategories)
+
+function highlightCategory(cat) {
+  $('.element').addClass('dimmed')
+  $('.element[data-cat="' + cat + '"]').removeClass('dimmed').addClass('highlighted')
+  $('.legend-item').addClass('dimmed')
+  $('.legend-item[data-cat="' + cat + '"]').removeClass('dimmed').addClass('highlighted')
+}
+
+function clearHighlights() {
+  $('.element').removeClass('dimmed highlighted')
+  $('.legend-item').removeClass('dimmed highlighted')
+}
+
+function discoverCategory(cat) {
+  if (discovered[cat]) return
+  discovered[cat] = true
+  var count = Object.keys(discovered).length
+  var pct = count === totalCategories ? 100 : count * pointsEach
+  var $bar = $('#discovery-bar')
+  $bar.css('width', pct + '%').attr('aria-valuenow', pct).text(pct + '%')
+  if (pct === 100) {
+    $bar.removeClass('progress-bar-striped progress-bar-animated').addClass('bg-success')
+    $('#progress-label').text('You discovered all ' + totalCategories + ' categories!')
+  } else {
+    var remaining = totalCategories - count
+    $('#progress-label').text(count + ' of ' + totalCategories + ' categories discovered — ' + remaining + ' to go')
+  }
+}
+
 $(document).on('mouseenter', '.element', element_mouseenter)
 $(document).on('mouseleave', '.element', element_mouseleave)
 $(document).on('mouseenter', '.legend-item', legend_mouseenter)
@@ -227,28 +259,22 @@ $(document).on('mouseleave', '.legend-item', legend_mouseleave)
 
 function element_mouseenter() {
   var cat = $(this).data('cat')
-  $('.element').addClass('dimmed')
-  $('.element[data-cat="' + cat + '"]').removeClass('dimmed').addClass('highlighted')
-  $('.legend-item').addClass('dimmed')
-  $('.legend-item[data-cat="' + cat + '"]').removeClass('dimmed').addClass('highlighted')
+  highlightCategory(cat)
+  discoverCategory(cat)
 }
 
 function element_mouseleave() {
-  $('.element').removeClass('dimmed highlighted')
-  $('.legend-item').removeClass('dimmed highlighted')
+  clearHighlights()
 }
 
 function legend_mouseenter() {
   var cat = $(this).data('cat')
-  $('.element').addClass('dimmed')
-  $('.element[data-cat="' + cat + '"]').removeClass('dimmed').addClass('highlighted')
-  $('.legend-item').addClass('dimmed')
-  $('.legend-item[data-cat="' + cat + '"]').removeClass('dimmed').addClass('highlighted')
+  highlightCategory(cat)
+  discoverCategory(cat)
 }
 
 function legend_mouseleave() {
-  $('.element').removeClass('dimmed highlighted')
-  $('.legend-item').removeClass('dimmed highlighted')
+  clearHighlights()
 }
 
 $(function() {
