@@ -1,12 +1,6 @@
 <cfinclude template="/Inc/header.cfm">
 
-<div class="container mt-4">
-
-	<div class="row mb-3">
-		<div class="col-12">
-			<h1>Where To Eat <small id="app-version" class="text-muted"></small></h1>
-		</div>
-	</div>
+<div class="container">
 
 	<div id="status" class="alert alert-info">Loading Google Maps&hellip;</div>
 
@@ -25,6 +19,7 @@
 						<h4 id="restaurant-name" class="mb-0"></h4>
 					</div>
 					<div class="card-body">
+						<p id="summary" class="lead d-none"></p>
 						<div id="photos" class="row g-2"></div>
 					</div>
 					<div class="card-footer" id="info"></div>
@@ -37,6 +32,10 @@
 					</div>
 					<div class="card-body">
 						<p id="distance" class="mb-0"></p>
+						<details id="hours" class="d-none mt-2">
+							<summary>Hours</summary>
+							<ul id="hours-list" class="list-unstyled small mb-0 mt-1"></ul>
+						</details>
 					</div>
 					<div class="card-footer" id="address"></div>
 				</div>
@@ -46,6 +45,8 @@
 	</div>
 
 </div>
+<a class="nav-link active">Where to eat</a>
+<a class="nav-item" id="app-version"></a>
 
-<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDANepu-lH6R_zOf5llZgr9XBQojEGfFSQ&v=weekly&libraries=places&callback=init_map"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcqJkSPe3OL4BD2Eqr5hSMd1P3ICxcRuU&v=weekly&libraries=places&callback=init_map"></script>
 <cfinclude template="/Inc/footer.cfm">

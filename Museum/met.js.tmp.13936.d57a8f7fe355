@@ -1,0 +1,180 @@
+app.version = 3
+document.getElementById('app-version').textContent = 'v' + app.version
+
+app.artPage = parseInt(new URLSearchParams(window.location.search).get('page'), 10) || 1
+app.artTotal = 0
+app.ids = []
+app.viewed = JSON.parse(localStorage.getItem('metViewed')) || []
+app.rangeCursor = 1
+app.paintings = {}
+app.searchMaxAge = 24 * 60 * 60 * 1000
+app.apiUrl = 'https://collectionapi.metmuseum.org/public/collection/v1'
+app.attributes = [
+	['Artist', 'artistDisplayName'],
+	['Artist Bio', 'artistDisplayBio'],
+	['Title', 'title'],
+	['Culture', 'culture'],
+	['Date', 'objectDate'],
+	['Medium', 'medium'],
+	['Dimensions', 'dimensions'],
+	['Classification', 'classification'],
+	['Credit Line', 'creditLine'],
+	['Accession Number', 'accessionNumber'],
+	['Department', 'department'],
+	['Gallery', 'GalleryNumber']
+]
+
+$(document).on('click', '.btn-previous', btn_previous)
+$(document).on('click', '.btn-next', btn_next)
+$(document).on('click', '.btn-range', btn_range)
+
+getSearch()
+
+function btn_previous() {
+	if (app.artPage > 1) {
+		app.artPage = app.artPage - 1
+		getPainting()
+	}
+}
+
+function btn_next() {
+	if (app.artPage < app.artTotal) {
+		app.artPage = app.artPage + 1
+		window.scrollTo(0, 0)
+		getPainting()
+	}
+}
+
+function btn_range() {
+	var self = $(this)
+	var result = parseInt(self.attr('data-page'), 10)
+	if (result !== app.artPage) {
+		app.artPage = result
+		window.scrollTo(0, 0)
+		getPainting()
+	}
+}
+
+function markViewed(page) {
+	var i = 0
+	while (i < app.viewed.length && app.viewed[i][1] + 1 < page) {
+		i = i + 1
+	}
+	if (i === app.viewed.length || page < app.viewed[i][0] - 1) {
+		app.viewed.splice(i, 0, [page, page])
+	} else {
+		if (page < app.viewed[i][0]) {
+			app.viewed[i][0] = page
+		}
+		if (page > app.viewed[i][1]) {
+			app.viewed[i][1] = page
+		}
+		while (i + 1 < app.viewed.length && app.viewed[i][1] + 1 >= app.viewed[i + 1][0]) {
+			app.viewed[i][1] = Math.max(app.viewed[i][1], app.viewed[i + 1][1])
+			app.viewed.splice(i + 1, 1)
+		}
+	}
+	localStorage.setItem('metViewed', JSON.stringify(app.viewed))
+}
+
+function renderRanges() {
+	app.rangeCursor = 1
+	$('#painting-ranges').empty()
+	$.each(app.viewed, each_viewedRange)
+	if (app.rangeCursor <= app.artTotal) {
+		appendRange(app.rangeCursor, app.artTotal, false)
+	}
+}
+
+function each_viewedRange(index, range) {
+	if (range[0] > app.artTotal) {
+		return
+	}
+	if (app.rangeCursor < range[0]) {
+		appendRange(app.rangeCursor, range[0] - 1, false)
+	}
+	appendRange(range[0], Math.min(range[1], app.artTotal), true)
+	app.rangeCursor = range[1] + 1
+}
+
+function appendRange(start, end, viewed) {
+	var label = start === end ? start.toLocaleString() : start.toLocaleString() + '-' + end.toLocaleString()
+	$('#painting-ranges').append(
+		$('<button type="button">')
+			.addClass(viewed ? 'btn btn-sm bg-success-subtle btn-range' : 'btn btn-sm btn-range')
+			.attr('data-page', start)
+			.text(label)
+	)
+}
+
+function getSearch() {
+	var result = JSON.parse(localStorage.getItem('metSearch'))
+	if (result && Date.now() - result.when < app.searchMaxAge) {
+		app.ids = result.ids
+		app.artTotal = result.total
+		startBrowsing()
+		return
+	}
+	var data = {
+		q: 'painting',
+		hasImages: true,
+		medium: 'Paintings'
+	}
+	$.getJSON(app.apiUrl + '/search', data, getSearch_response)
+}
+
+function getSearch_response(response) {
+	app.ids = response.objectIDs
+	app.artTotal = response.total
+	try {
+		localStorage.setItem('metSearch', JSON.stringify({ids: app.ids, total: app.artTotal, when: Date.now()}))
+	} catch (e) {
+		// localStorage full: skip caching
+	}
+	startBrowsing()
+}
+
+function startBrowsing() {
+	if (app.artPage > app.artTotal) {
+		app.artPage = 1
+	}
+	getPainting()
+}
+
+function getPainting() {
+	$('#painting-title').text('Loading…')
+	$('.btn-previous,.btn-next').prop('disabled', true)
+	history.replaceState(null, '', '?page=' + app.artPage)
+	$.getJSON(app.apiUrl + '/objects/' + app.ids[app.artPage - 1], getPainting_response)
+}
+
+function getPainting_response(response) {
+	var result = response
+	app.painting = result
+	$('#painting-title').empty().append($('<a target="_blank">').attr('href', result.objectURL).text(result.title))
+	if (result.primaryImageSmall || result.primaryImage) {
+		$('#painting-image').attr('src', result.primaryImageSmall || result.primaryImage).attr('alt', result.title).show()
+	} else {
+		$('#painting-image').hide()
+	}
+	$('#painting-attributes').empty()
+	$.each(app.attributes, each_attribute)
+	$('#painting-counter').text(app.artPage.toLocaleString() + ' of ' + app.artTotal.toLocaleString())
+	$('.btn-previous').prop('disabled', app.artPage <= 1)
+	$('.btn-next').prop('disabled', app.artPage >= app.artTotal)
+	markViewed(app.artPage)
+	renderRanges()
+}
+
+function each_attribute(index, attribute) {
+	var label = attribute[0]
+	var result = app.painting[attribute[1]]
+	if (result) {
+		$('#painting-attributes').append($('<dt class="col-sm-3">').text(label))
+		if (label === 'Artist' && app.painting.artistWikidata_URL) {
+			$('#painting-attributes').append($('<dd class="col-sm-9">').append($('<a target="_blank">').attr('href', app.painting.artistWikidata_URL).text(result)))
+		} else {
+			$('#painting-attributes').append($('<dd class="col-sm-9">').text(result))
+		}
+	}
+}

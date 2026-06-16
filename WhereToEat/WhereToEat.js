@@ -1,4 +1,4 @@
-app.version = 2
+app.version = 3
 document.getElementById('app-version').textContent = 'v' + app.version
 
 // Where To Eat: geolocates you, finds the nearest restaurants (sorted by
@@ -50,7 +50,7 @@ function geoError(error) {
 function searchNearby() {
 	showStatus('Searching for nearby restaurants&hellip;', 'info')
 	var param = {}
-	param.fields = ['id', 'displayName', 'location', 'formattedAddress', 'rating', 'userRatingCount', 'priceLevel', 'nationalPhoneNumber', 'websiteURI', 'googleMapsURI', 'photos']
+	param.fields = ['id', 'displayName', 'location', 'formattedAddress', 'rating', 'userRatingCount', 'priceLevel', 'nationalPhoneNumber', 'websiteURI', 'googleMapsURI', 'photos', 'editorialSummary', 'regularOpeningHours']
 	param.locationRestriction = {}
 	param.locationRestriction.center = app.origin
 	param.locationRestriction.radius = 8000
@@ -82,9 +82,33 @@ function showRestaurant() {
 	$('#prev-btn').prop('disabled', app.index === 0)
 	$('#next-btn').prop('disabled', app.index === app.places.length - 1)
 	renderName(place)
+	renderSummary(place)
 	renderPhotos(place)
 	renderInfo(place)
 	renderLocation(place)
+	renderHours(place)
+}
+
+function renderSummary(place) {
+	if (place.editorialSummary) {
+		$('#summary').text(place.editorialSummary).removeClass('d-none')
+	} else {
+		$('#summary').text('').addClass('d-none')
+	}
+}
+
+function renderHours(place) {
+	$('#hours-list').empty()
+	if (place.regularOpeningHours && place.regularOpeningHours.weekdayDescriptions) {
+		$.each(place.regularOpeningHours.weekdayDescriptions, each_weekday)
+		$('#hours').removeClass('d-none')
+	} else {
+		$('#hours').addClass('d-none')
+	}
+}
+
+function each_weekday(i, description) {
+	$('#hours-list').append($('<li>').text(description))
 }
 
 function renderName(place) {
