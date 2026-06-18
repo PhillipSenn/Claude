@@ -6,21 +6,21 @@ include '/Inc/header.cfm'
 <cfoutput>
 <div class="row">
 	<div class="col-xl-4">
-		<div class="card h-100">
+		<div class="card">
 			<div class="card-header bg-success-subtle">
 				The New York Times
 			</div>
 		</div>
 	</div>
 	<div class="col-xl-4">
-		<div class="card h-100">
+		<div class="card">
 			<div class="card-header bg-primary-subtle">
 				John
 			</div>
 		</div>
 	</div>
 	<div class="col-xl-4">
-		<div class="card h-100">
+		<div class="card">
 			<div class="card-header bg-info-subtle">
 				Classroom responses
 			</div>
@@ -29,21 +29,21 @@ include '/Inc/header.cfm'
 </div>
 <div class="row">
 	<div class="col-xl-4">
-		<div class="card h-100">
+		<div class="card">
 			<div class="card-body">
 				With the school year ending, all over the country educators and parents are taking stock of the drastic shift caused by artficial intelligence in the classroom.
 			</div>
 		</div>
 	</div>
 	<div class="col-xl-4">
-		<div class="card h-100">
+		<div class="card">
 			<div class="card-body">
 				<textarea name="yourThought" autofocus></textarea>
 			</div>
 		</div>
 	</div>
 	<div class="col-xl-4">
-		<div class="card h-100">
+		<div class="card">
 			<div class="card-body">
 				<table class="responses">
 					<thead>
@@ -84,14 +84,14 @@ include '/Inc/header.cfm'
 </div>
 <div class="row">
 	<div class="col-xl-4">
-		<div class="card h-100">
+		<div class="card">
 			<div class="card-body">
-				Today, Natasha Singer, a technology reporter, discusses the year that reshaped American classrooms and how one dedicated teacher helped his students chart their own path into an uncertain future.
+				Today, Natasha Singer, a technology reporter, discusses the year that reshaped American classrooms and how one dedicated teacher helped his students chart their own path into an uncertain future.</p>
 			</div>
 		</div>
 	</div>
 	<div class="col-xl-4">
-		<div class="card h-100">
+		<div class="card">
 			<div class="card-body">
 				<textarea name="yourThought"></textarea>
 			</div>
@@ -100,7 +100,7 @@ include '/Inc/header.cfm'
 </div>
 <div class="row">
 	<div class="col-xl-4">
-		<div class="card h-100">
+		<div class="card">
 			<div class="card-body">
 				<p>On Today’s Episode</p>
 				<p>Natasha Singer, a technology reporter for The New York Times.</p>
@@ -111,7 +111,7 @@ include '/Inc/header.cfm'
 		</div>
 	</div>
 	<div class="col-xl-4">
-		<div class="card h-100">
+		<div class="card">
 			<div class="card-body">
 				<textarea name="yourThought"></textarea>
 			</div>
@@ -119,7 +119,7 @@ include '/Inc/header.cfm'
 	</div>
 
 	<div class="col-xl-4">
-		<div class="card h-100">
+		<div class="card">
 			<div class="card-body">
 				<table class="responses">
 					<tbody>
