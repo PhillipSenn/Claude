@@ -46,17 +46,7 @@ include '/Inc/header.cfm'
 		<div class="card h-100">
 			<div class="card-body">
 				<table class="responses">
-					<thead>
-						<tr>
-							<th>A</th>
-							<th>B</th>
-							<th>C</th>
-							<th>D</th>
-							<th>E</th>
-							<th>F</th>
-							<th>G</th>
-						</tr>
-					</thead>
+					
 					<tbody>
 						<tr>
 							<td title="Caleb">
@@ -77,8 +67,8 @@ include '/Inc/header.cfm'
 						
 					</tbody>
 				</table>
+				<p class="response"></p>
 			</div>
-			<div class="card-footer"></div>
 		</div>
 	</div>
 </div>
@@ -140,8 +130,8 @@ include '/Inc/header.cfm'
 						
 					</tbody>
 				</table>
+				<p class="response"></p>
 			</div>
-			<div class="card-footer"></div>
 		</div>
 	</div>
 
