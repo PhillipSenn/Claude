@@ -1,0 +1,28 @@
+/* reading.css */
+
+#reading-passage {
+	white-space: pre-wrap;
+}
+
+.reading-cursor-word {
+	white-space: nowrap;
+}
+
+.reading-cursor {
+	display: inline-block;
+	width: 4px;
+	height: 1em;
+	vertical-align: -0.15em;
+	background-color: #0d6efd;
+	animation: reading-blink 1s step-start infinite;
+}
+
+.reading-cursor.reading-cursor-error {
+	background-color: #dc3545;
+	animation: none;
+}
+
+@keyframes reading-blink {
+	0%, 50% { opacity: 1; }
+	50.01%, 100% { opacity: 0; }
+}

@@ -8,7 +8,9 @@ include '/Inc/header.cfm'
 	<div class="col-xl-4">
 		<div class="card h-100">
 			<div class="card-header bg-success-subtle">
-				The New York Times
+				<a class="text-body" href="https://www.nytimes.com/2026/06/17/podcasts/the-daily/battle-over-ai-in-school.html">
+				The Battle Over A.I. in the Classroom
+				</a>
 			</div>
 		</div>
 	</div>
@@ -58,7 +60,7 @@ include '/Inc/header.cfm'
 							</td>
 							<td></td>
 							<td title="Jakob">
-								<span class="bi bi-patch-exclamation text-primary"
+								<span class="bi bi-magic text-info"
 								data-response="typo: artficial"></span>
 							</td>
 							<td></td>
@@ -92,11 +94,12 @@ include '/Inc/header.cfm'
 	<div class="col-xl-4">
 		<div class="card h-100">
 			<div class="card-body">
-				<p>On Today’s Episode</p>
-				<p>Natasha Singer, a technology reporter for The New York Times.</p>
-				<img src="https://static01.nyt.com/images/2026/06/17/multimedia/17DAILY-AISchool-02-jmvp/17DAILY-AISchool-02-jmvp-superJumbo.jpg" class="img-fluid">
-				<p>A teacher leans over a desk to assist high school students who are working on laptops and writing in notebooks in a classroom setting.</p>
-				<p>This teacher in Newark developed chatbots for his U.S. history classes to help his students hone their argumentative writing.Credit...Juan Arredondo for The New York Times</p>
+				<figure>
+					<a href="https://static01.nyt.com/images/2026/06/17/multimedia/17DAILY-AISchool-02-jmvp/17DAILY-AISchool-02-jmvp-superJumbo.jpg">
+						<img alt="A teacher leans over a desk to assist high school students who are working on laptops and writing in notebooks in a classroom setting." src="https://static01.nyt.com/images/2026/06/17/multimedia/17DAILY-AISchool-02-jmvp/17DAILY-AISchool-02-jmvp-superJumbo.jpg" class="figure-img img-fluid">
+					</a>
+					<figcaption>This teacher in Newark developed chatbots for his U.S. history classes to help his students hone their argumentative writing.Credit...Juan Arredondo for The New York Times</figcaption>
+				</figure>
 			</div>
 		</div>
 	</div>
@@ -119,13 +122,15 @@ include '/Inc/header.cfm'
 							<td></td>
 							<td title="Bob">
 								<span class="bi bi-patch-question-fill text-danger"
-								data-response="What about xyz?"></span>
+								data-response="What if they didn't bring their laptop to class that day?"></span>
 							</td>
 							<td></td>
 							<td>
 							</td>
 							<td></td>
-							<td></td>
+							<td title="Artimus">
+								<i class="bi bi-exclamation-octagon-fill text-warning" data-response="Dude's using a pen and paper on top of his laptop."></i>
+							</td>
 						</tr>
 						
 					</tbody>
@@ -137,7 +142,8 @@ include '/Inc/header.cfm'
 
 </div>
 <a class="nav-link active" href="#request.script_name#">Transcript</a>
-<div class="nav-item" id="version">&bull; v</div>
+<div class="nav-item">&bull; v3</div>
 <script src="/Inc/js/autosize.js"></script>
+<cfinclude template="/footer.cfm">
 <cfinclude template="/Inc/footer.cfm">
 </cfoutput>

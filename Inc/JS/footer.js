@@ -57,8 +57,15 @@ pgm.fail = function(xhr, status, response) {
 		.append(xhr.responseText)
 }
 
+pgm.each_img = function() {
+	if (!$(this).attr('title')) {
+		$(this).attr('title', $(this).attr('alt'))
+	}
+}
+$('img[alt]').each(pgm.each_img)
+
 pgm.eachTitle = function() {
-	$(this).attr('data-bs-toggle','tooltip')
+	new bootstrap.Tooltip(this)
 }
 $('[title]').each(pgm.eachTitle)
 
@@ -245,3 +252,4 @@ pgm.a_href = function() {
 	}
 }
 pgm.a_href()
+$('figcaption').addClass('figure-caption')

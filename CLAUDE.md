@@ -56,6 +56,6 @@ Before editing any file, always re-read it first to make sure you have the lates
 When using each, then prepend the criteria with each_ for the function name. Example: 
 $('.btn').each(each_btn)
 
-I have app = {} in footer.js so I want you to include an integer app.version in every JavaScript file and 
-document.getElementById('app-version').textContent = 'v' + app.version.
-Increment app.version with every change by 1.
+Every program shows its version as a static label, not JS-injected:
+<div class="nav-item">&bull; v[N]</div>
+Increment the version number with every change by 1.
