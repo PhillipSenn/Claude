@@ -1,0 +1,333 @@
+﻿/* =============================================
+   ChronAm.css — The Front Page
+   Historic Newspaper Search Tool
+   ============================================= */
+
+:root {
+	--ink:        #0D1B2A;
+	--newsprint:  #F2E8D5;
+	--sepia:      #C9A96E;
+	--red:        #8B1A1A;
+	--fog:        #E8E0D0;
+	--muted:      #7A6E60;
+	--card-bg:    #FAF4E8;
+	--rule:       #2A3E52;
+}
+
+/* ---- Base ---- */
+body {
+	background-color: var(--newsprint);
+	color: var(--ink);
+	font-family: 'Source Serif 4', Georgia, serif;
+}
+
+/* ---- Masthead ---- */
+.masthead {
+	background-color: var(--ink);
+	color: var(--newsprint);
+	padding: 0;
+}
+
+.masthead-rule {
+	height: 6px;
+	background-color: var(--red);
+}
+
+.masthead-rule.thick {
+	height: 3px;
+	background-color: var(--sepia);
+	opacity: 0.6;
+}
+
+.masthead-inner {
+	padding-top: 1.5rem;
+	padding-bottom: 1.25rem;
+	text-align: center;
+}
+
+.edition-line {
+	display: flex;
+	justify-content: center;
+	gap: 2rem;
+	margin-bottom: 0.5rem;
+}
+
+.edition-tag {
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 0.65rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--sepia);
+}
+
+.masthead-title {
+	font-family: 'Playfair Display', Georgia, serif;
+	font-size: clamp(2.8rem, 8vw, 5.5rem);
+	font-weight: 900;
+	letter-spacing: -0.02em;
+	line-height: 1;
+	color: var(--newsprint);
+	margin: 0;
+}
+
+.masthead-sub {
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 0.72rem;
+	color: var(--sepia);
+	margin-top: 0.5rem;
+	letter-spacing: 0.06em;
+}
+
+/* ---- Search Bar ---- */
+.search-bar-section {
+	background-color: var(--rule);
+	padding: 1.25rem 0;
+	border-bottom: 3px solid var(--sepia);
+}
+
+.search-label {
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 0.65rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--sepia);
+	display: block;
+	margin-bottom: 0.3rem;
+}
+
+.search-input {
+	background-color: var(--newsprint);
+	border: 1px solid var(--sepia);
+	border-radius: 0;
+	color: var(--ink);
+	font-family: 'Source Serif 4', serif;
+	font-size: 0.92rem;
+}
+
+.search-input:focus {
+	background-color: #fff;
+	border-color: var(--sepia);
+	box-shadow: 0 0 0 2px rgba(201, 169, 110, 0.35);
+	color: var(--ink);
+}
+
+.btn-search {
+	background-color: var(--red);
+	border: none;
+	border-radius: 0;
+	color: var(--newsprint);
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 0.8rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	padding: 0.55rem 1rem;
+	transition: background-color 0.15s ease;
+}
+
+.btn-search:hover {
+	background-color: #6e1414;
+	color: var(--newsprint);
+}
+
+/* ---- Results Header ---- */
+.results-header {
+	border-bottom: 2px solid var(--ink);
+	padding-bottom: 0.4rem;
+	display: flex;
+	align-items: baseline;
+	gap: 0.75rem;
+}
+
+.result-count {
+	font-family: 'Playfair Display', serif;
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: var(--red);
+}
+
+.result-query {
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 0.72rem;
+	color: var(--muted);
+	letter-spacing: 0.05em;
+}
+
+/* ---- Newspaper Cards ---- */
+.paper-card {
+	background-color: var(--card-bg);
+	border: 1px solid #C8BAA0;
+	border-top: 4px solid var(--ink);
+	box-shadow: 2px 3px 10px rgba(13, 27, 42, 0.12);
+	transition: box-shadow 0.15s ease, transform 0.15s ease;
+	cursor: pointer;
+	text-decoration: none;
+	color: inherit;
+	display: block;
+}
+
+.paper-card:hover {
+	box-shadow: 4px 6px 18px rgba(13, 27, 42, 0.22);
+	transform: translateY(-2px);
+	color: inherit;
+	text-decoration: none;
+}
+
+.card-masthead {
+	background-color: var(--ink);
+	padding: 0.5rem 0.75rem;
+}
+
+.card-paper-title {
+	font-family: 'Playfair Display', serif;
+	font-size: 0.85rem;
+	font-weight: 700;
+	color: var(--newsprint);
+	margin: 0;
+	line-height: 1.2;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.card-date {
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 0.6rem;
+	color: var(--sepia);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	margin-top: 0.2rem;
+}
+
+.card-body-inner {
+	padding: 0.75rem;
+}
+
+.card-location {
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 0.62rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--muted);
+	margin-bottom: 0.4rem;
+}
+
+.card-snippet {
+	font-family: 'Source Serif 4', serif;
+	font-size: 0.82rem;
+	line-height: 1.55;
+	color: var(--ink);
+	display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.card-link-row {
+	padding: 0.5rem 0.75rem;
+	border-top: 1px solid #D4C5AA;
+	display: flex;
+	gap: 0.75rem;
+}
+
+.card-link {
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 0.62rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--red);
+	text-decoration: none;
+}
+
+.card-link:hover {
+	text-decoration: underline;
+	color: var(--red);
+}
+
+/* ---- Load More ---- */
+.btn-outline-load {
+	border: 1px solid var(--ink);
+	border-radius: 0;
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 0.75rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--ink);
+	padding: 0.55rem 2rem;
+	transition: background-color 0.15s ease;
+}
+
+.btn-outline-load:hover {
+	background-color: var(--ink);
+	color: var(--newsprint);
+}
+
+/* ---- Empty & Loading States ---- */
+.empty-state,
+.loading-state {
+	text-align: center;
+	padding: 4rem 1rem;
+}
+
+.empty-headline {
+	font-family: 'Playfair Display', serif;
+	font-size: 1.4rem;
+	font-style: italic;
+	color: var(--muted);
+}
+
+.empty-sub {
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 0.72rem;
+	color: var(--muted);
+	letter-spacing: 0.05em;
+}
+
+.loading-label {
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 0.72rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+
+.text-sepia {
+	color: var(--sepia) !important;
+}
+
+/* ---- Footer ---- */
+.site-footer {
+	border-top: 2px solid var(--ink);
+	padding: 2rem 0 1.5rem;
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 0.68rem;
+	color: var(--muted);
+	letter-spacing: 0.04em;
+}
+
+.site-footer a {
+	color: var(--red);
+	text-decoration: none;
+}
+
+.site-footer a:hover {
+	text-decoration: underline;
+}
+
+.footer-note {
+	color: var(--muted);
+	opacity: 0.7;
+	margin-top: 0.25rem;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 576px) {
+	.edition-line {
+		flex-direction: column;
+		gap: 0.25rem;
+		align-items: center;
+	}
+	.results-header {
+		flex-direction: column;
+		gap: 0.2rem;
+	}
+}
